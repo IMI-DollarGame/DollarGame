@@ -48,7 +48,7 @@ class BaseScene extends Phaser.Scene {
 
   createSettingsBtn() {
     const settingBtn = this.add
-      .image(innerWidth * 0.85, innerHeight / 20, "settings")
+      .image(innerWidth * 0.86, innerHeight / 20, "settings")
       .setOrigin(1, 0)
       .setInteractive()
       .setScale(1);
