@@ -71,7 +71,7 @@ class BaseScene extends Phaser.Scene {
   }
   createDevelopersTxt() {
     const xPos = this.config.width / 2;
-    const yPos = this.config.height * 0.85;
+    const yPos = this.config.height * 0.95;
 
     this.make.text({
       x: xPos,
@@ -80,8 +80,11 @@ class BaseScene extends Phaser.Scene {
         "Created by the poor group of students,that were forced to do the project =(",
       origin: { x: 0.5, y: 0.5 },
       style: {
+        fontSize: "15px",
+        fill: "#F00",
         fontFamily: "Indie Flower, cursive",
-        fontSize: 15
+        stroke: "#FF0",
+        strokeThickness: 1
       }
     });
   }

@@ -18,8 +18,13 @@ class MenuScene extends BaseScene {
   }
 
   create() {
+    this.createBG();
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+  }
+
+  createBG() {
+    const backGround = this.add.image(0, 0, "country-bg").setOrigin(0);
   }
 
   setupMenuEvents(menuItem) {
