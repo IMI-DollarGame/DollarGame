@@ -17,14 +17,14 @@ var nodes = [];
 
 function preload() {
   this.load.image("sky", "assets/sky.png");
-  this.load.image("node", "assets/star.png");
+  this.load.image("node", "assets/village.svg");
   this.load.image("sound", "assets/sound.png");
+  this.load.image("soundOff", "assets/soundOff.png");
 }
 
 function create() {
   // background
   this.add.image(400, 300, "sky");
-  this.add.image(750, 40, "sound");
 
   // coordinates for nodes and edges
   let coords = [
@@ -61,21 +61,14 @@ function create() {
     coords[4][1]
   );
 
-  // const line4 = new Phaser.Geom.Line(
-  //   coords[3][0],
-  //   coords[3][1],
-  //   coords[2][0],
-  //   coords[2][1]
-  // );
-
-  const line5 = new Phaser.Geom.Line(
+  const line4 = new Phaser.Geom.Line(
     coords[2][0],
     coords[2][1],
     coords[1][0],
     coords[1][1]
   );
 
-  const line6 = new Phaser.Geom.Line(
+  const line5 = new Phaser.Geom.Line(
     coords[2][0],
     coords[2][1],
     coords[4][0],
@@ -85,9 +78,8 @@ function create() {
   graphics.strokeLineShape(line1);
   graphics.strokeLineShape(line2);
   graphics.strokeLineShape(line3);
-  // graphics.strokeLineShape(line4)
+  graphics.strokeLineShape(line4);
   graphics.strokeLineShape(line5);
-  graphics.strokeLineShape(line6);
 
   // nodes
   /*nodes = this.physics.add.staticGroup();
@@ -96,7 +88,7 @@ function create() {
     }*/
 
   for (var i = 0; i < 5; i++) {
-    var node = this.add.image(coords[i][0], coords[i][1], "node").setScale(2);
+    var node = this.add.image(coords[i][0], coords[i][1], "node");
     nodes.push(node);
   }
 
@@ -104,11 +96,12 @@ function create() {
   for (var i = 0; i < values.length; i++) {
     let textValues = this.add.text(
       coords[i][0] - 55,
-      coords[i][1] - 5,
+      coords[i][1] - 80,
       values[i],
       {
         fontSize: "20px",
         fill: "#000",
+        fontStyle: "bold",
       }
     );
   }
@@ -122,6 +115,30 @@ function create() {
 
   // buttons
   //  sound.setInteractive().on("pointerdown", this.onObjectClicked);
+
+  //var soundButton = this.add.image(750, 40, "sound");
+  var soundButton = this.add.sprite(750, 40, "sound");
+  var soundButtonOff = this.add.sprite(-750, 40, "soundOff");
+
+  // soundButton
+  //   .setInteractive()
+  //   .on("pointerdown", () => changeSound(soundButton));
+
+  soundButton.setInteractive().on(
+    "pointerdown",
+    () =>{
+        soundButtonOff.x = 750
+        soundButton.x=-750
+    }
+  );
+
+  soundButtonOff.setInteractive().on(
+    "pointerdown",
+    () =>{
+        soundButtonOff.x = -750
+        soundButton.x=750
+    }
+  );
 }
 
 function update() {}
@@ -138,7 +155,13 @@ function changeSoundMusic(id) {
   } else button.innerHTML = id + ":" + "on";
 }
 
+function changeSound(soundButton) {
+  console.log("clicked");
+  //var soundButton = this.add.image(750, 40, "soundOff");
+  soundButton = game.add.image(750, 40, "soundOff");
+}
+
 // TODO
 // function to increase steps
 //  function to fit the viewport
-//
+// need to implement undirected graph
