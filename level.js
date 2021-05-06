@@ -114,38 +114,21 @@ function create() {
   });
 
   // buttons
-  //  sound.setInteractive().on("pointerdown", this.onObjectClicked);
-
-  //var soundButton = this.add.image(750, 40, "sound");
   var soundButton = this.add.sprite(750, 40, "sound");
   var soundButtonOff = this.add.sprite(-750, 40, "soundOff");
 
-  // soundButton
-  //   .setInteractive()
-  //   .on("pointerdown", () => changeSound(soundButton));
+  soundButton.setInteractive().on("pointerdown", () => {
+    soundButtonOff.x = 750;
+    soundButton.x = -750;
+  });
 
-  soundButton.setInteractive().on(
-    "pointerdown",
-    () =>{
-        soundButtonOff.x = 750
-        soundButton.x=-750
-    }
-  );
-
-  soundButtonOff.setInteractive().on(
-    "pointerdown",
-    () =>{
-        soundButtonOff.x = -750
-        soundButton.x=750
-    }
-  );
+  soundButtonOff.setInteractive().on("pointerdown", () => {
+    soundButtonOff.x = -750;
+    soundButton.x = 750;
+  });
 }
 
 function update() {}
-
-// function onObjectClicked(gameObject) {
-//   console.log("yes");
-// }
 
 function changeSoundMusic(id) {
   var button = document.getElementById(id);
@@ -153,12 +136,6 @@ function changeSoundMusic(id) {
   if (button.innerText.slice(-2) === "on") {
     button.innerHTML = id + ": " + "off";
   } else button.innerHTML = id + ":" + "on";
-}
-
-function changeSound(soundButton) {
-  console.log("clicked");
-  //var soundButton = this.add.image(750, 40, "soundOff");
-  soundButton = game.add.image(750, 40, "soundOff");
 }
 
 // TODO
