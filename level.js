@@ -141,3 +141,4 @@ function changeSoundMusic(id) {
 // TODO
 // function to increase steps
 //  function to fit the viewport
+//
