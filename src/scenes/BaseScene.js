@@ -12,7 +12,7 @@ class BaseScene extends Phaser.Scene {
       fill: "#F00",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
-      strokeThickness: 1
+      strokeThickness: 1,
     };
   }
   create() {
@@ -21,10 +21,10 @@ class BaseScene extends Phaser.Scene {
 
   createMenu(menu, setupMenuEvents) {
     let lastMenuPositionY = 0;
-    menu.forEach(menuItem => {
+    menu.forEach((menuItem) => {
       const menuPosition = [
         this.screenCenter[0],
-        this.screenCenter[1] + lastMenuPositionY
+        this.screenCenter[1] + lastMenuPositionY,
       ];
       menuItem.textGO = this.add
         .text(...menuPosition, menuItem.text, this.fontOptions)
@@ -76,16 +76,15 @@ class BaseScene extends Phaser.Scene {
     this.make.text({
       x: xPos,
       y: yPos,
-      text:
-        "Created by the poor group of students,that were forced to do the project =(",
+      text: "Created by the group of enthusiasts",
       origin: { x: 0.5, y: 0.5 },
       style: {
         fontSize: "15px",
         fill: "#F00",
         fontFamily: "Indie Flower, cursive",
         stroke: "#FF0",
-        strokeThickness: 1
-      }
+        strokeThickness: 1,
+      },
     });
   }
   creatingAllButtons() {

@@ -6,11 +6,20 @@ class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
+    //icons
     this.load.image("arrow", "assets/arrow2x.png");
     this.load.image("settings", "assets/settings2x.png");
     this.load.image("help", "assets/help2x.png");
+    this.load.image("undo", "assets/undo_icon2x.png");
+    this.load.image("restart", "assets/restart_icon2x.png");
+    this.load.image("sound", "assets/sound.png");
+    this.load.image("soundOff", "assets/soundOff.png");
+
+    //img
     this.load.image("country-bg", "assets/country-bg.png");
     this.load.image("house-lvl", "assets/house-bg.png");
+    this.load.image("paper", "assets/paper.jpg");
+    this.load.image("node", "assets/village.svg");
   }
 
   create() {

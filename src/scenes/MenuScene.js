@@ -6,14 +6,14 @@ class MenuScene extends BaseScene {
       ...config,
       hasSettings: true,
       hasTutorial: true,
-      addDevelopers: true
+      addDevelopers: true,
     });
 
     this.menu = [
       { scene: "PlayScene", text: "Play" },
       { scene: "LevelsScene", text: "Levels" },
       { scene: "ScoreScene", text: "Score" },
-      { scene: null, text: "Exit" }
+      { scene: null, text: "Exit" },
     ];
   }
 

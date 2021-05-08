@@ -17,15 +17,13 @@ class TutorialScene extends BaseScene {
       x: xPos,
       y: yPos,
       text:
-        "Here will be the text that will explain the whole logic of our game.\
-        To be honest i was just too lasy to watch the youtube video with rule\
-        explanation again, but i promise you i will....",
+        "Here will be the text that will explain the whole logic of our game.",
       origin: { x: 0.5, y: 0.5 },
       style: {
         fontFamily: "Indie Flower, cursive",
         fontSize: 20,
-        wordWrap: { width: 300, useAdvancedWrap: true }
-      }
+        wordWrap: { width: 300, useAdvancedWrap: true },
+      },
     });
   }
 }
