@@ -7,6 +7,8 @@ class PlayScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
     });
+    this.steps = 0;
+    this.stepsText;
   }
 
   create() {
@@ -43,6 +45,10 @@ class PlayScene extends BaseScene {
       let node = this.physics.add.sprite(coords[i][0], coords[i][1], "node");
       nodesArray.push(node);
       //console.log(node.body);
+      node.setInteractive().on("pointerdown", () => {
+        this.steps++;
+        this.stepsText.setText("steps: "+ this.steps);
+      });
     }
 
     // drawing edges
@@ -107,8 +113,8 @@ class PlayScene extends BaseScene {
   }
 
   displayNumberOfSteps() {
-    let steps = 0;
-    let stepsText = this.add.text(800, 100, "steps: " + steps, {
+    //let steps = 0;
+    this.stepsText = this.add.text(800, 100, "steps: " + this.steps, {
       fontSize: "30px",
       fill: "#000",
       align: "center",
@@ -142,7 +148,9 @@ class PlayScene extends BaseScene {
       .setInteractive();
 
     restartBtn.on("pointerup", () => {
-      this.scene.start(console.log("restart to be implemented"));
+      //this.scene.start(console.log("restart to be implemented"));
+      this.steps = 0;
+      this.stepsText.setText("steps: "+ this.steps);
     });
   }
 
@@ -154,7 +162,9 @@ class PlayScene extends BaseScene {
       .setScale(0.7);
 
     undoBtn.on("pointerup", () => {
-      this.scene.start(console.log("undo to be implemented"));
+      //this.scene.start(console.log("undo to be implemented"));
+      this.steps--;
+      this.stepsText.setText("steps: "+ this.steps);
     });
   }
 
