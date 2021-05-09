@@ -7,8 +7,15 @@ class LevelsScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
       hasSettings: true,
-      hasTutorial: true
     });
+    this.menu = [
+      { scene: "PlayScene", text: "Level 1" },
+      { scene: "PlayScene", text: "Level 2" },
+      { scene: "playScene", text: "Level 3" },
+      { scene: "playScene", text: "Level 4" },
+      { scene: "playScene", text: "Level 5" },
+
+    ];
     this.fontOptions = {
       fontSize: "20px",
       fill: "#F00",
@@ -21,7 +28,7 @@ class LevelsScene extends BaseScene {
   create() {
     this.createBG();
     super.create();
-    this.createTutorialTxt();
+    this.createMenu(this.menu, this.setupMenuEvents.bind(this));
   }
   createBG() {
     const backGround = this.add.image(0, 0, "house-lvl").setOrigin(0);
@@ -29,19 +36,21 @@ class LevelsScene extends BaseScene {
     backGround.displayWidth = innerWidth;
   }
 
-  createTutorialTxt() {
-    const xPos = this.config.width / 2;
-    const yPos = this.config.height / 2;
+  setupMenuEvents(menuItem) {
+    const textGO = menuItem.textGO;
+    textGO.setInteractive();
 
-    this.make.text({
-      x: xPos,
-      y: yPos,
-      text: "Here we can place all the levels....",
-      origin: { x: 0.5, y: 0.5 },
-      style: {
-        ...this.fontOptions,
-        wordWrap: { width: 300, useAdvancedWrap: true }
-      }
+    textGO.on("pointerover", () => {
+      textGO.setStyle({ fill: "#ff0" });
+    });
+
+    textGO.on("pointerout", () => {
+      textGO.setStyle({ fill: "#f00" });
+    });
+
+    textGO.on("pointerup", () => {
+      //    textGO.setStyle({ fill: "#fff" });
+      menuItem.scene && this.scene.start(menuItem.scene);
     });
   }
 }
