@@ -1,6 +1,8 @@
 import BaseScene from "./BaseScene";
 
 class SettingsScene extends BaseScene {
+var audio = new Audio('Cipher2.mp3');
+
   constructor(config) {
     super("SettingsScene", { ...config, canGoBack: true, addDevelopers: true });
 
@@ -31,8 +33,14 @@ class SettingsScene extends BaseScene {
       //    textGO.setStyle({ fill: "#fff" });
       menuItem.scene && this.scene.start(menuItem.scene);
 
+      if(menuItem.text === "Music: On"){
+        audio.play();
+        menuItem.text = "Music: Off";
+      }
+
       if (menuItem.text === "Exit") {
         this.game.destroy(true);
+
       }
     });
   }
