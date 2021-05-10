@@ -14,14 +14,13 @@ class LevelsScene extends BaseScene {
       { scene: "playScene", text: "Level 3" },
       { scene: "playScene", text: "Level 4" },
       { scene: "playScene", text: "Level 5" },
-
     ];
     this.fontOptions = {
       fontSize: "20px",
       fill: "#F00",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
-      strokeThickness: 1
+      strokeThickness: 1,
     };
   }
 
@@ -29,11 +28,17 @@ class LevelsScene extends BaseScene {
     this.createBG();
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+    this.playMusic();
   }
   createBG() {
     const backGround = this.add.image(0, 0, "house-lvl").setOrigin(0);
     backGround.displayHeight = innerHeight;
     backGround.displayWidth = innerWidth;
+  }
+
+  playMusic() {
+    const bgMusic = this.sound.add("music", { loop: true });
+    bgMusic.play();
   }
 
   setupMenuEvents(menuItem) {

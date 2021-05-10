@@ -40,7 +40,7 @@ const config = {
     },
   },
   scale: {
-    mode: Phaser.Scale.ScaleModes.HEIGHT_CONTROLS_WIDTH,
+    mode: Phaser.Scale.ScaleModes.WIDTH_CONTROLS_HEIGHT,
     autoCenter: Phaser.Scale.Center.CENTER_BOTH,
   },
   backgroundColor: "rgb(163, 163, 194)",

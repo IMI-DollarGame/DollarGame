@@ -20,6 +20,9 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("house-lvl", "assets/house-bg.png");
     this.load.image("paper", "assets/paper.jpg");
     this.load.image("node", "assets/village.svg");
+
+    //music
+    this.load.audio("music", ["assets/Cipher2.mp3"]);
   }
 
   create() {
