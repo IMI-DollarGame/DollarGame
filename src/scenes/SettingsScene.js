@@ -15,7 +15,12 @@ class SettingsScene extends BaseScene {
   create() {
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
-    
+    this.playMusic();
+  }
+
+  playMusic() {
+    const bgMusic = this.sound.add("music", { loop: true });
+    bgMusic.play();
   }
 
   setupMenuEvents(menuItem) {

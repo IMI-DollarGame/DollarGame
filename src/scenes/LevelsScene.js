@@ -28,7 +28,6 @@ class LevelsScene extends BaseScene {
     this.createBG();
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
-    this.playMusic();
   }
   createBG() {
     const backGround = this.add.image(0, 0, "house-lvl").setOrigin(0);
@@ -36,10 +35,6 @@ class LevelsScene extends BaseScene {
     backGround.displayWidth = innerWidth;
   }
 
-  playMusic() {
-    const bgMusic = this.sound.add("music", { loop: true });
-    bgMusic.play();
-  }
 
   setupMenuEvents(menuItem) {
     const textGO = menuItem.textGO;
