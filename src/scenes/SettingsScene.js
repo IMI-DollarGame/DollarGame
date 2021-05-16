@@ -1,7 +1,7 @@
 import BaseScene from "./BaseScene";
 
 class SettingsScene extends BaseScene {
- 
+
   constructor(config) {
     super("SettingsScene", { ...config, canGoBack: true, addDevelopers: true });
 
@@ -14,15 +14,10 @@ class SettingsScene extends BaseScene {
   create() {
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
-    this.playMusic();
-  }
-
-  playMusic() {
-    const bgMusic = this.sound.add("music", { loop: true });
-    bgMusic.play();
   }
 
   setupMenuEvents(menuItem) {
+    this.bgMusic = this.sound.add("music", { volume: 0.5,loop: true });
     const textGO = menuItem.textGO;
     textGO.setInteractive();
 
@@ -38,8 +33,14 @@ class SettingsScene extends BaseScene {
       //    textGO.setStyle({ fill: "#fff" });
       menuItem.scene && this.scene.start(menuItem.scene);
 
-      if (menuItem.text === "Music: On") {
-        menuItem.text = "Music: Off";
+      if(this.game.config.bgMusicPlaying === false ){
+
+        this.game.config.bgMusicPlaying = true;
+        this.bgMusic.play();
+      }
+      else{
+        this.game.config.bgMusicPlaying = false;
+        this.game.sound.stopAll();
       }
 
       if (menuItem.text === "Exit") {
