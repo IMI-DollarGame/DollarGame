@@ -21,9 +21,9 @@ class TutorialScene extends BaseScene {
       origin: { x: 0.5, y: 0.5 },
       style: {
         fontFamily: "Indie Flower, cursive",
-        fontSize: 20,
-        wordWrap: { width: 300, useAdvancedWrap: true },
-      },
+        fontSize: `${1.5}vw`,
+        wordWrap: { width: 300, useAdvancedWrap: true }
+      }
     });
   }
 }

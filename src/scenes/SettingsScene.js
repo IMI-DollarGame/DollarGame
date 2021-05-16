@@ -8,8 +8,9 @@ class SettingsScene extends BaseScene {
 
     this.menu = [
       { scene: null, text: "Music: On" },
-      { scene: null, text: "Sound: On" },
+      { scene: null, text: "Sound: On" }
     ];
+    this.fontSize = 2.3;
   }
 
   create() {

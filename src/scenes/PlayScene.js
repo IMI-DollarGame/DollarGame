@@ -6,7 +6,11 @@ class PlayScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
+      hasSoundButton: true,
+      hasRestartButton: true,
+      hasUndoButton: true
     });
+    this.fontSize = 1;
     this.steps = 0;
     this.stepsText;
     this.nodesArray = [];
@@ -18,9 +22,6 @@ class PlayScene extends BaseScene {
     this.addBackGround();
     this.addGraphics();
     this.displayNumberOfSteps();
-    this.displaySoundButton();
-    this.displayRestartButton();
-    this.displayUndoButton();
     this.drawGraph();
     super.create();
   }
@@ -33,16 +34,16 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 4, color: 0xffffff }
     });
   }
 
   addNode(id, value, coordX, coordY) {
     let nodeFront = this.physics.add.sprite(coordX, coordY, "node");
     let valueFront = this.add.text(coordX - 55, coordY - 80, value, {
-      fontSize: "20px",
+      fontSize: `${this.fontSize}vw`,
       fill: "#000",
-      fontStyle: "bold",
+      fontStyle: "bold"
     });
 
     var node = new Node(id, value, coordX, coordY, nodeFront, valueFront);
@@ -56,22 +57,34 @@ class PlayScene extends BaseScene {
       this.updateValues();
       if (this.checkWinCondition()) {
         this.displayEndgameMess();
-      };
+      }
     });
   }
 
   displayEndgameMess() {
-    let winnerText = this.add.text(800, 200, "Congratulation, you won the game!!!", {
-      fontSize: "50px",
-      fill: "#000",
-      fontStyle: "bold",
+    const posX = this.config.width / 2;
+    const posY = this.config.height / 2;
+    let winnerText = this.make.text({
+      x: posX,
+      y: posY,
+      text: "Congratulations, you won the game!!!",
+      origin: { x: 0.5, y: 0.5 },
+      style: {
+        fontFamily: "Indie Flower, cursive",
+        fontSize: `${2}vw`,
+        fill: "#F00",
+        stroke: "#FF0",
+        strokeThickness: 1,
+        wordWrap: { width: 400, useAdvancedWrap: true },
+        align: "center"
+      }
     });
   }
 
   updateValues() {
     this.nodesArray.forEach(element => {
-      element.valueFront.setText(element.value)
-    })
+      element.valueFront.setText(element.value);
+    });
   }
 
   getNodeFromId(nodeId) {
@@ -85,14 +98,16 @@ class PlayScene extends BaseScene {
   }
 
   addEdge(nodeIdA, nodeIdB) {
-    let edge = new Edge(this.getNodeFromId(nodeIdA), this.getNodeFromId(nodeIdB));
+    let edge = new Edge(
+      this.getNodeFromId(nodeIdA),
+      this.getNodeFromId(nodeIdB)
+    );
     this.graphics.strokeLineShape(edge.getEdgeCoord());
     this.edgesArray.push(edge);
   }
 
   checkWinCondition() {
-    return this.nodesArray.every(element => element.isPositiveValue()
-    );
+    return this.nodesArray.every(element => element.isPositiveValue());
   }
 
   drawGraph() {
@@ -109,57 +124,17 @@ class PlayScene extends BaseScene {
   }
 
   displayNumberOfSteps() {
-    this.stepsText = this.add.text(800, 100, "steps: " + this.steps, {
-      fontSize: "30px",
-      fill: "#000",
-      align: "center",
-    });
-  }
+    const posX = this.config.width / 2;
+    const posY = this.config.height * 0.1;
 
-  displaySoundButton() {
-    //innerWidth * 0.1, innerHeight / 20
-    const soundButton = this.add
-      .sprite(innerWidth * 0.9, innerHeight / 10, "sound")
-      .setScale(1.9);
-    const soundButtonOff = this.add
-      .sprite(-750, innerHeight / 10, "soundOff")
-      .setScale(1.9);
-
-    soundButton.setInteractive().on("pointerdown", () => {
-      soundButtonOff.x = innerWidth * 0.9;
-      soundButton.x = -750;
-    });
-
-    soundButtonOff.setInteractive().on("pointerdown", () => {
-      soundButtonOff.x = -750;
-      soundButton.x = innerWidth * 0.9;
-    });
-  }
-
-  displayRestartButton() {
-    const restartBtn = this.add
-      .image(innerWidth * 0.8, innerHeight / 20, "restart")
-      .setOrigin(1, 0)
-      .setInteractive();
-
-    restartBtn.on("pointerup", () => {
-      //this.scene.start(console.log("restart to be implemented"));
-      this.steps = 0;
-      this.stepsText.setText("steps: " + this.steps);
-    });
-  }
-
-  displayUndoButton() {
-    const undoBtn = this.add
-      .image(innerWidth * 0.85, innerHeight / 15, "undo")
-      .setOrigin(1, 0)
-      .setInteractive()
-      .setScale(0.7);
-
-    undoBtn.on("pointerup", () => {
-      //this.scene.start(console.log("undo to be implemented"));
-      this.steps--;
-      this.stepsText.setText("steps: " + this.steps);
+    this.stepsText = this.add.text(posX, posY, "steps: " + this.steps, {
+      fontFamily: "Indie Flower, cursive",
+      fontSize: `${2}vw`,
+      fill: "#F00",
+      stroke: "#FF0",
+      strokeThickness: 1,
+      wordWrap: { width: 300, useAdvancedWrap: true },
+      align: "center"
     });
   }
 
@@ -189,7 +164,7 @@ export default PlayScene;
 
 class Node {
   constructor(id, value, coordX, coordY, nodeFront, valueFront) {
-    this.id = id
+    this.id = id;
     this.value = value;
     this.coordX = coordX;
     this.coordY = coordY;
@@ -199,8 +174,7 @@ class Node {
   }
 
   addNodeNeighbor(node) {
-    if (this.neighborNodes.indexOf(node) == -1)
-      this.neighborNodes.push(node);
+    if (this.neighborNodes.indexOf(node) == -1) this.neighborNodes.push(node);
   }
 
   decreaseNodeValue() {
@@ -214,21 +188,17 @@ class Node {
   updateNeighborNodeValue() {
     this.neighborNodes.forEach(element => {
       element.increaseNodeValueBy1();
-    })
+    });
   }
 
   isPositiveValue() {
-    if (this.value >= 0)
-      return true;
-    else
-      return false;
+    if (this.value >= 0) return true;
+    else return false;
   }
 
   isNegativeValue() {
-    if (this.value < 0)
-      return true;
-    else
-      return false;
+    if (this.value < 0) return true;
+    else return false;
   }
 }
 
@@ -245,6 +215,11 @@ class Edge {
   }
 
   getEdgeCoord() {
-    return new Phaser.Geom.Line(this.nodeA.coordX, this.nodeA.coordY, this.nodeB.coordX, this.nodeB.coordY);
+    return new Phaser.Geom.Line(
+      this.nodeA.coordX,
+      this.nodeA.coordY,
+      this.nodeB.coordX,
+      this.nodeB.coordY
+    );
   }
 }

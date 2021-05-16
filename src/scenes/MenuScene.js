@@ -6,25 +6,28 @@ class MenuScene extends BaseScene {
       ...config,
       hasSettings: true,
       hasTutorial: true,
-      addDevelopers: true,
+      addDevelopers: true
     });
 
     this.menu = [
       { scene: "PlayScene", text: "Play" },
       { scene: "LevelsScene", text: "Levels" },
       { scene: "ScoreScene", text: "Score" },
-      { scene: null, text: "Exit" },
+      { scene: null, text: "Exit" }
     ];
   }
 
   create() {
     this.createBG();
-    super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+    super.create();
   }
 
   createBG() {
-    const backGround = this.add.image(0, 0, "country-bg").setOrigin(0);
+    const backGround = this.add.image(0, 0, "country-bg").setOrigin(0, 0);
+
+    backGround.displayHeight = innerHeight;
+    backGround.displayWidth = innerWidth;
   }
 
   setupMenuEvents(menuItem) {

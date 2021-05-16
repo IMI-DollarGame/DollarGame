@@ -9,6 +9,7 @@ class ScoreScene extends BaseScene {
       hasSettings: true,
       hasTutorial: true
     });
+    this.fontSize = 2.3;
   }
 
   create() {
@@ -22,7 +23,7 @@ class ScoreScene extends BaseScene {
     const bestScore = localStorage.getItem("bestScore");
     this.add
       .text(...this.screenCenter, `Your best score is: ${bestScore}`, {
-        fontSize: "40px",
+        fontSize: `${this.fontSize}vw`,
         fill: "#F00"
       })
       .setOrigin(0.5);

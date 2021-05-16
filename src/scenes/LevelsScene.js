@@ -6,21 +6,23 @@ class LevelsScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
-      hasSettings: true,
+      hasSettings: true
     });
+    this.fontSize = 2.3;
+    this.lineHeight = config.height / 12.5;
     this.menu = [
       { scene: "PlayScene", text: "Level 1" },
       { scene: "PlayScene", text: "Level 2" },
       { scene: "playScene", text: "Level 3" },
       { scene: "playScene", text: "Level 4" },
-      { scene: "playScene", text: "Level 5" },
+      { scene: "playScene", text: "Level 5" }
     ];
     this.fontOptions = {
-      fontSize: "20px",
+      fontSize: `${this.fontSize}vw`,
       fill: "#F00",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
-      strokeThickness: 1,
+      strokeThickness: 1
     };
   }
 
@@ -34,7 +36,6 @@ class LevelsScene extends BaseScene {
     backGround.displayHeight = innerHeight;
     backGround.displayWidth = innerWidth;
   }
-
 
   setupMenuEvents(menuItem) {
     const textGO = menuItem.textGO;
