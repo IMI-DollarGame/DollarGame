@@ -1,50 +1,83 @@
 import BaseScene from "./BaseScene";
 
 class SettingsScene extends BaseScene {
-
   constructor(config) {
-    super("SettingsScene", { ...config, canGoBack: true, addDevelopers: true });
+    super("SettingsScene", {
+      ...config,
+      canGoBack: true,
+      addDevelopers: true,
+    });
 
-    this.menu = [
-      { scene: null, text: "Music: On" },
-      { scene: null, text: "Sound: On" },
-    ];
+    //this.menu = [{ text: "Off" || "On" }, { text: "Off" || "On" }];
   }
 
   create() {
     super.create();
-    this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+    this.createText();
+    //this.createMenu(this.menu, this.setupMenuEvents.bind(this));
   }
 
-  setupMenuEvents(menuItem) {
-    this.bgMusic = this.sound.add("music", { volume: 0.5,loop: true });
-    const textGO = menuItem.textGO;
-    textGO.setInteractive();
+  createText() {
+    this.bgMusic = this.sound.add("music", { volume: 0.5, loop: true });
 
-    textGO.on("pointerover", () => {
-      textGO.setStyle({ fill: "#ff0" });
+    let on = " ";
+
+    if (this.game.config.bgMusicPlaying === true) {
+      on = "On";
+    } else {
+      on = "Off";
+    }
+
+    const width = this.screenCenter[0];
+    const height = this.screenCenter[1];
+
+    const musicText = this.add.text(width, height, `Music: ${on}`);
+    const soundText = this.add.text(width, height + 80, `Sound: ${on}`);
+
+    musicText.setInteractive();
+    soundText.setInteractive();
+
+    musicText.on("pointerover", () => {
+      musicText.setStyle({ fill: "#ff0" });
     });
 
-    textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#f00" });
+    soundText.on("pointerover", () => {
+      soundText.setStyle({ fill: "#ff0" });
     });
 
-    textGO.on("pointerup", () => {
-      //    textGO.setStyle({ fill: "#fff" });
-      menuItem.scene && this.scene.start(menuItem.scene);
+    musicText.on("pointerover", () => {
+      musicText.setStyle({ fill: "#ff0" });
+    });
 
-      if(this.game.config.bgMusicPlaying === false ){
+    soundText.on("pointerover", () => {
+      soundText.setStyle({ fill: "#ff0" });
+    });
 
+    musicText.on("pointerout", () => {
+      musicText.setStyle({ fill: "#f00" });
+    });
+
+    soundText.on("pointerout", () => {
+      soundText.setStyle({ fill: "#f00" });
+    });
+
+    musicText.on("pointerup", () => {
+      if (this.game.config.bgMusicPlaying === false) {
         this.game.config.bgMusicPlaying = true;
         this.bgMusic.play();
-      }
-      else{
+      } else {
         this.game.config.bgMusicPlaying = false;
         this.game.sound.stopAll();
       }
+    });
 
-      if (menuItem.text === "Exit") {
-        this.game.destroy(true);
+    soundText.on("pointerup", () => {
+      if (this.game.config.bgMusicPlaying === false) {
+        this.game.config.bgMusicPlaying = true;
+        this.bgMusic.play();
+      } else {
+        this.game.config.bgMusicPlaying = false;
+        this.game.sound.stopAll();
       }
     });
   }
