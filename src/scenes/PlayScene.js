@@ -7,8 +7,9 @@ class PlayScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
     });
-    this.steps = 0;
-    this.stepsText;
+
+    this.steps; // the best score = the less number of steps
+    this.stepsText; // = scoreText
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
@@ -17,7 +18,7 @@ class PlayScene extends BaseScene {
   create() {
     this.addBackGround();
     this.addGraphics();
-    this.displayNumberOfSteps();
+    this.createSteps();
     this.displaySoundButton();
     this.displayRestartButton();
     this.displayUndoButton();
@@ -49,34 +50,38 @@ class PlayScene extends BaseScene {
     this.nodesArray.push(node);
 
     nodeFront.setInteractive().on("pointerdown", () => {
-      this.steps++;
-      this.stepsText.setText("steps: " + this.steps);
+      this.updateSteps();
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
       this.updateValues();
       if (this.checkWinCondition()) {
         this.displayEndgameMess();
-      };
+      }
+
+      if (this.steps > 30) {
+        this.gameOver();
+      }
     });
   }
 
-  displayEndgameMess() {
-    let winnerText = this.add.text(800, 200, "Congratulation, you won the game!!!", {
-      fontSize: "50px",
-      fill: "#000",
-      fontStyle: "bold",
-    });
+  addEdge(nodeIdA, nodeIdB) {
+    let edge = new Edge(
+      this.getNodeFromId(nodeIdA),
+      this.getNodeFromId(nodeIdB)
+    );
+    this.graphics.strokeLineShape(edge.getEdgeCoord());
+    this.edgesArray.push(edge);
   }
 
   updateValues() {
-    this.nodesArray.forEach(element => {
-      element.valueFront.setText(element.value)
-    })
+    this.nodesArray.forEach((element) => {
+      element.valueFront.setText(element.value);
+    });
   }
 
   getNodeFromId(nodeId) {
     var node;
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -84,15 +89,8 @@ class PlayScene extends BaseScene {
     return node;
   }
 
-  addEdge(nodeIdA, nodeIdB) {
-    let edge = new Edge(this.getNodeFromId(nodeIdA), this.getNodeFromId(nodeIdB));
-    this.graphics.strokeLineShape(edge.getEdgeCoord());
-    this.edgesArray.push(edge);
-  }
-
   checkWinCondition() {
-    return this.nodesArray.every(element => element.isPositiveValue()
-    );
+    return this.nodesArray.every((element) => element.isPositiveValue());
   }
 
   drawGraph() {
@@ -108,16 +106,31 @@ class PlayScene extends BaseScene {
     this.addEdge("C", "E");
   }
 
-  displayNumberOfSteps() {
-    this.stepsText = this.add.text(800, 100, "steps: " + this.steps, {
+  createSteps() {
+    this.steps = 0;
+    this.stepsText = this.add.text(800, 100, `Steps: ${0}`, {
       fontSize: "30px",
       fill: "#000",
       align: "center",
     });
+
+    const bestScore = localStorage.getItem("bestScore");
+
+    const bestScoreText = this.add.text(800, 200, `Best Score: ${0}`);
+
+    if (bestScore) {
+      bestScoreText.setText(`Best Score: ${bestScore}`);
+    } else {
+      bestScoreText.setText(`Best Score: ${0}`);
+    }
+  }
+
+  updateSteps() {
+    this.steps++;
+    this.stepsText.setText(`Steps: ${this.steps}`);
   }
 
   displaySoundButton() {
-    //innerWidth * 0.1, innerHeight / 20
     const soundButton = this.add
       .sprite(innerWidth * 0.9, innerHeight / 10, "sound")
       .setScale(1.9);
@@ -143,9 +156,10 @@ class PlayScene extends BaseScene {
       .setInteractive();
 
     restartBtn.on("pointerup", () => {
-      //this.scene.start(console.log("restart to be implemented"));
+      //TODO: restart to be implemented here;
+
       this.steps = 0;
-      this.stepsText.setText("steps: " + this.steps);
+      this.stepsText.setText(`Steps: ${this.steps}`);
     });
   }
 
@@ -157,39 +171,53 @@ class PlayScene extends BaseScene {
       .setScale(0.7);
 
     undoBtn.on("pointerup", () => {
-      //this.scene.start(console.log("undo to be implemented"));
-      this.steps--;
-      this.stepsText.setText("steps: " + this.steps);
+      //TODO: undo to be implemented here;
+      //////////////////
+      // this.steps--;
+      // this.stepsText.setText("steps: " + this.steps);
     });
   }
 
-  //update(){}
+  displayEndgameMess() {
+    const bestScoreText = localStorage.getItem("bestScore");
+    const bestScore = bestScoreText && parseInt(bestScoreText, 10);
+    if (!bestScore || this.steps > bestScore) {
+      localStorage.setItem("bestScore", this.steps);
+    }
+
+    const winnerText = this.add.text(
+      800,
+      200,
+      "Congratulations, you won the game!!!",
+      {
+        fontSize: "50px",
+        fill: "#000",
+        fontStyle: "bold",
+      }
+    );
+  }
+
+  gameOver() {
+    //TODO: improve the function
+
+    const looserText = this.add.text(
+      600,
+      200,
+      "Game over :( You used too many steps  ",
+      {
+        fontSize: "50px",
+        fill: "#000",
+        fontStyle: "bold",
+      }
+    );
+  }
 }
 
 export default PlayScene;
 
-// changeSoundMusic(id) {
-//     var button = document.getElementById(id);
-
-//     if (button.innerText.slice(-2) === "on") {
-//       button.innerHTML = id + ": " + "off";
-//     } else button.innerHTML = id + ":" + "on";
-//   }
-
-// nodes
-/*nodes = this.physics.add.staticGroup();
-      for(var i = 0; i<5; i++){
-          nodes.create(coords[i][0],coords[i][1], 'node').setScale(2).refreshBody();
-      }*/
-
-// TODO
-// function to increase steps
-//  function to fit the viewport
-// need to implement undirected graph
-
 class Node {
   constructor(id, value, coordX, coordY, nodeFront, valueFront) {
-    this.id = id
+    this.id = id;
     this.value = value;
     this.coordX = coordX;
     this.coordY = coordY;
@@ -199,8 +227,7 @@ class Node {
   }
 
   addNodeNeighbor(node) {
-    if (this.neighborNodes.indexOf(node) == -1)
-      this.neighborNodes.push(node);
+    if (this.neighborNodes.indexOf(node) == -1) this.neighborNodes.push(node);
   }
 
   decreaseNodeValue() {
@@ -212,23 +239,19 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach(element => {
+    this.neighborNodes.forEach((element) => {
       element.increaseNodeValueBy1();
-    })
+    });
   }
 
   isPositiveValue() {
-    if (this.value >= 0)
-      return true;
-    else
-      return false;
+    if (this.value >= 0) return true;
+    else return false;
   }
 
   isNegativeValue() {
-    if (this.value < 0)
-      return true;
-    else
-      return false;
+    if (this.value < 0) return true;
+    else return false;
   }
 }
 
@@ -245,6 +268,11 @@ class Edge {
   }
 
   getEdgeCoord() {
-    return new Phaser.Geom.Line(this.nodeA.coordX, this.nodeA.coordY, this.nodeB.coordX, this.nodeB.coordY);
+    return new Phaser.Geom.Line(
+      this.nodeA.coordX,
+      this.nodeA.coordY,
+      this.nodeB.coordX,
+      this.nodeB.coordY
+    );
   }
 }
