@@ -27,6 +27,7 @@ class PreloadScene extends Phaser.Scene {
 
   create() {
     this.scene.start("MenuScene");
+    this.game.config.bgMusicPlaying = false;
   }
 }
 
