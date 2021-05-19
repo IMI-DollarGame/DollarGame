@@ -38,17 +38,20 @@ class PlayScene extends BaseScene {
   }
 
   addNode(id, value, coordX, coordY) {
-    let nodeFront = this.physics.add.sprite(coordX, coordY, "node");
-    let valueFront = this.add.text(coordX - 55, coordY - 80, value, {
+    let nodeImage = this.physics.add.sprite(0, 0, "node");
+    let nodeValueText = this.add.text(-55, -80, value, {
       fontSize: "20px",
       fill: "#000",
       fontStyle: "bold",
     });
 
-    var node = new Node(id, value, coordX, coordY, nodeFront, valueFront);
+    let nodeContainer = this.add.container(coordX,coordY, [nodeImage,nodeValueText]);
+    nodeContainer.setSize(128,128);
+
+    var node = new Node(id, value, nodeContainer);
     this.nodesArray.push(node);
 
-    nodeFront.setInteractive().on("pointerdown", () => {
+    nodeContainer.setInteractive().on("pointerdown", () => {
       this.steps++;
       this.stepsText.setText("steps: " + this.steps);
       node.decreaseNodeValue();
@@ -70,7 +73,7 @@ class PlayScene extends BaseScene {
 
   updateValues() {
     this.nodesArray.forEach(element => {
-      element.valueFront.setText(element.value)
+      element.container.getAt(1).setText(element.value)
     })
   }
 
@@ -193,13 +196,10 @@ export default PlayScene;
 // need to implement undirected graph
 
 class Node {
-  constructor(id, value, coordX, coordY, nodeFront, valueFront) {
+  constructor(id, value, container) {
     this.id = id
     this.value = value;
-    this.coordX = coordX;
-    this.coordY = coordY;
-    this.nodeFront = nodeFront;
-    this.valueFront = valueFront;
+    this.container = container;
     this.neighborNodes = [];
   }
 
