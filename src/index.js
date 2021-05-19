@@ -45,6 +45,8 @@ const config = {
   },
   backgroundColor: "rgb(163, 163, 194)",
 
+  bgMusicPlaying: false,
+
   //Basically what a user sees on the screen
   scene: initScenes(),
 };

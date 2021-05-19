@@ -15,6 +15,7 @@ class BaseScene extends Phaser.Scene {
       strokeThickness: 1,
     };
   }
+  
   create() {
     this.creatingAllButtons();
   }
