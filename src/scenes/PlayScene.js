@@ -7,9 +7,10 @@ class PlayScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
     });
-
-    this.steps; // the best score = the less number of steps
-    this.stepsText; // = scoreText
+    this.stepText = "Steps left till you die: ";
+    this.maximumStepAllowed = 30;
+    this.steps; 
+    this.stepsText; 
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
@@ -18,7 +19,8 @@ class PlayScene extends BaseScene {
   create() {
     this.addBackGround();
     this.addGraphics();
-    this.createSteps();
+    this.setMaxSteps();
+    this.displayBestScore();
     this.displaySoundButton();
     this.displayRestartButton();
     this.displayUndoButton();
@@ -39,27 +41,33 @@ class PlayScene extends BaseScene {
   }
 
   addNode(id, value, coordX, coordY) {
-    let nodeFront = this.physics.add.sprite(coordX, coordY, "node");
-    let valueFront = this.add.text(coordX - 55, coordY - 80, value, {
+    let nodeImage = this.physics.add.sprite(0, 0, "node");
+    let nodeValueText = this.add.text(-55, -80, value, {
       fontSize: "20px",
       fill: "#000",
       fontStyle: "bold",
     });
 
-    var node = new Node(id, value, coordX, coordY, nodeFront, valueFront);
+    let nodeContainer = this.add.container(coordX, coordY, [
+      nodeImage,
+      nodeValueText,
+    ]);
+    nodeContainer.setSize(128, 128);
+
+    var node = new Node(id, value, nodeContainer);
     this.nodesArray.push(node);
 
-    nodeFront.setInteractive().on("pointerdown", () => {
+    nodeContainer.setInteractive().on("pointerdown", () => {
       this.updateSteps();
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
       this.updateValues();
       if (this.checkWinCondition()) {
-        this.displayEndgameMess();
-      }
-
-      if (this.steps > 30) {
-        this.gameOver();
+        this.winTheGame();
+      } else {
+        if (this.steps == 0) {
+          this.loseTheGame();
+        }
       }
     });
   }
@@ -75,7 +83,7 @@ class PlayScene extends BaseScene {
 
   updateValues() {
     this.nodesArray.forEach((element) => {
-      element.valueFront.setText(element.value);
+      element.container.getAt(1).setText(element.value);
     });
   }
 
@@ -106,16 +114,22 @@ class PlayScene extends BaseScene {
     this.addEdge("C", "E");
   }
 
-  createSteps() {
-    this.steps = 0;
-    this.stepsText = this.add.text(800, 100, `Steps: ${0}`, {
-      fontSize: "30px",
-      fill: "#000",
-      align: "center",
-    });
+  setMaxSteps() {
+    this.steps = this.maximumStepAllowed;
+    this.stepsText = this.add.text(
+      800,
+      100,
+      this.stepText + this.steps,
+      {
+        fontSize: "30px",
+        fill: "#000",
+        align: "center",
+      }
+    );
+  }
 
+  displayBestScore() {
     const bestScore = localStorage.getItem("bestScore");
-
     const bestScoreText = this.add.text(800, 200, `Best Score: ${0}`);
 
     if (bestScore) {
@@ -126,8 +140,8 @@ class PlayScene extends BaseScene {
   }
 
   updateSteps() {
-    this.steps++;
-    this.stepsText.setText(`Steps: ${this.steps}`);
+    this.steps--;
+    this.stepsText.setText(this.stepText + this.steps);
   }
 
   displaySoundButton() {
@@ -156,11 +170,17 @@ class PlayScene extends BaseScene {
       .setInteractive();
 
     restartBtn.on("pointerup", () => {
-      //TODO: restart to be implemented here;
-
-      this.steps = 0;
-      this.stepsText.setText(`Steps: ${this.steps}`);
+      this.steps = this.maximumStepAllowed;
+      this.stepsText.setText(this.stepText + this.steps);
+      this.resetTheGame();
     });
+  }
+
+  resetTheGame(){
+    this.nodesArray.forEach((element) => {
+      element.resetValue();
+    });
+    this.updateValues();
   }
 
   displayUndoButton() {
@@ -178,7 +198,7 @@ class PlayScene extends BaseScene {
     });
   }
 
-  displayEndgameMess() {
+  winTheGame() {
     const bestScoreText = localStorage.getItem("bestScore");
     const bestScore = bestScoreText && parseInt(bestScoreText, 10);
     if (!bestScore || this.steps > bestScore) {
@@ -197,11 +217,9 @@ class PlayScene extends BaseScene {
     );
   }
 
-  gameOver() {
-    //TODO: improve the function
-
+  loseTheGame() {
     const looserText = this.add.text(
-      600,
+      800,
       200,
       "Game over :( You used too many steps  ",
       {
@@ -216,14 +234,12 @@ class PlayScene extends BaseScene {
 export default PlayScene;
 
 class Node {
-  constructor(id, value, coordX, coordY, nodeFront, valueFront) {
+  constructor(id, value, container) {
     this.id = id;
     this.value = value;
-    this.coordX = coordX;
-    this.coordY = coordY;
-    this.nodeFront = nodeFront;
-    this.valueFront = valueFront;
+    this.container = container;
     this.neighborNodes = [];
+    this.baseValue = value;
   }
 
   addNodeNeighbor(node) {
@@ -252,6 +268,10 @@ class Node {
   isNegativeValue() {
     if (this.value < 0) return true;
     else return false;
+  }
+
+  resetValue() {
+    this.value = this.baseValue;
   }
 }
 
