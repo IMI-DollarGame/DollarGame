@@ -1,4 +1,5 @@
 import BaseScene from "./BaseScene";
+import { brotliCompress } from "zlib";
 
 class MenuScene extends BaseScene {
   constructor(config) {
@@ -24,10 +25,11 @@ class MenuScene extends BaseScene {
   }
 
   createBG() {
-    const backGround = this.add.image(0, 0, "country-bg").setOrigin(0, 0);
-
-    backGround.displayHeight = innerHeight;
-    backGround.displayWidth = innerWidth;
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "clouds-bg")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.4;
   }
 
   setupMenuEvents(menuItem) {

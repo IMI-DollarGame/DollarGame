@@ -13,6 +13,7 @@ class ScoreScene extends BaseScene {
   }
 
   create() {
+    this.createBG();
     super.create();
     this.getBestScore();
     this.createDevelopersTxt();
@@ -27,6 +28,14 @@ class ScoreScene extends BaseScene {
         fill: "#F00"
       })
       .setOrigin(0.5);
+  }
+
+  createBG() {
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "clouds-bg")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.4;
   }
 
   createTutorialTxt() {

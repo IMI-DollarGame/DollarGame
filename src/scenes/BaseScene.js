@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { EventEmitter } from "events";
 
 class BaseScene extends Phaser.Scene {
   constructor(key, config) {
@@ -52,9 +53,8 @@ class BaseScene extends Phaser.Scene {
     const backButton = this.add
       .image(innerWidth / 20, innerHeight / 20, "arrow")
       .setInteractive()
-      .setScale(1)
       .setOrigin(0, 0);
-    this.scaleButton(backButton, 15);
+    this.scaleButton(backButton, 18);
 
     backButton.on("pointerup", () => {
       this.scene.start("MenuScene");
@@ -65,9 +65,9 @@ class BaseScene extends Phaser.Scene {
     const settingBtn = this.add
       .image(innerWidth * 0.87, innerHeight / 20, "settings")
       .setOrigin(1, 0)
-      .setInteractive()
-      .setScale(1);
-    this.scaleButton(settingBtn, 15);
+      .setInteractive();
+
+    this.scaleButton(settingBtn, 20);
     settingBtn.on("pointerup", () => {
       this.scene.start("SettingsScene");
     });
@@ -79,21 +79,19 @@ class BaseScene extends Phaser.Scene {
       .setOrigin(1, 0)
       .setInteractive()
       .setScale(1.95);
-    this.scaleButton(helpBtn, 15);
+    this.scaleButton(helpBtn, 20);
     helpBtn.on("pointerup", () => {
       this.scene.start("TutorialScene");
     });
   }
   displaySoundButton() {
-    //innerWidth * 0.1, innerHeight / 20
     const soundButton = this.add
       .sprite(innerWidth * 0.9, innerHeight / 20, "sound")
-      .setOrigin(0, 0)
-      .setScale(1.9);
+      .setOrigin(0, 0);
+
     const soundButtonOff = this.add
       .sprite(-750, innerHeight / 20, "soundOff")
-      .setOrigin(0, 0)
-      .setScale(1.9);
+      .setOrigin(0, 0);
 
     soundButton.setInteractive().on("pointerdown", () => {
       soundButtonOff.x = innerWidth * 0.9;
@@ -104,22 +102,20 @@ class BaseScene extends Phaser.Scene {
       soundButtonOff.x = -750;
       soundButton.x = innerWidth * 0.9;
     });
-    this.scaleButton(soundButton, 15);
-    this.scaleButton(soundButtonOff, 15);
+    this.scaleButton(soundButton, 20);
+    this.scaleButton(soundButtonOff, 20);
   }
   displayUndoButton() {
     const undoBtn = this.add
       .image(innerWidth * 0.83, innerHeight / 20, "undo")
       .setOrigin(0, 0)
-      .setInteractive()
-      .setScale(0.7);
+      .setInteractive();
 
     undoBtn.on("pointerup", () => {
-      //this.scene.start(console.log("undo to be implemented"));
       this.steps--;
       this.stepsText.setText("steps: " + this.steps);
     });
-    this.scaleButton(undoBtn, 15);
+    this.scaleButton(undoBtn, 20);
   }
   displayRestartButton() {
     const restartBtn = this.add
@@ -132,7 +128,11 @@ class BaseScene extends Phaser.Scene {
       this.steps = 0;
       this.stepsText.setText("steps: " + this.steps);
     });
-    this.scaleButton(restartBtn, 15);
+    this.scaleButton(restartBtn, 20);
+
+    restartBtn.on("pointerdown", () => {
+      this.scene.restart("PlayScene");
+    });
   }
   createDevelopersTxt() {
     const xPos = this.config.width / 2;

@@ -12,13 +12,14 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("help", "assets/help2x.png");
     this.load.image("undo", "assets/undo_icon2x.png");
     this.load.image("restart", "assets/restart_icon2x.png");
-    this.load.image("sound", "assets/sound.png");
-    this.load.image("soundOff", "assets/soundOff.png");
+    this.load.image("sound", "assets/volumeUp.png");
+    this.load.image("soundOff", "assets/volumeOff.png");
 
     //img
-    this.load.image("country-bg", "assets/country-bg.png");
-    this.load.image("house-lvl", "assets/house-bg.png");
-    this.load.image("paper", "assets/paper.jpg");
+    this.load.image("clouds-bg", "assets/clouds-cyan.png");
+    this.load.image("cyan-lvl", "assets/bg-cyan.png");
+    this.load.image("play-bg", "assets/clouds-light.png");
+
     this.load.image("node", "assets/village.svg");
 
     //music
@@ -27,6 +28,9 @@ class PreloadScene extends Phaser.Scene {
 
   create() {
     this.scene.start("MenuScene");
+    //this.scene.start("LevelsScene");
+    //this.scene.start("ScoreScene");
+    //this.scene.start("PlayScene");
   }
 }
 

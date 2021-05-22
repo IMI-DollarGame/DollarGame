@@ -19,17 +19,19 @@ class PlayScene extends BaseScene {
   }
 
   create() {
-    this.addBackGround();
+    this.createBG();
     this.addGraphics();
     this.displayNumberOfSteps();
     this.drawGraph();
     super.create();
   }
 
-  addBackGround() {
-    const backGround = this.add.image(0, 0, "paper").setOrigin(0, 0);
-    backGround.displayHeight = innerHeight;
-    backGround.displayWidth = innerWidth;
+  createBG() {
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "play-bg")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.5;
   }
 
   addGraphics() {
@@ -137,30 +139,9 @@ class PlayScene extends BaseScene {
       align: "center"
     });
   }
-
-  //update(){}
 }
 
 export default PlayScene;
-
-// changeSoundMusic(id) {
-//     var button = document.getElementById(id);
-
-//     if (button.innerText.slice(-2) === "on") {
-//       button.innerHTML = id + ": " + "off";
-//     } else button.innerHTML = id + ":" + "on";
-//   }
-
-// nodes
-/*nodes = this.physics.add.staticGroup();
-      for(var i = 0; i<5; i++){
-          nodes.create(coords[i][0],coords[i][1], 'node').setScale(2).refreshBody();
-      }*/
-
-// TODO
-// function to increase steps
-//  function to fit the viewport
-// need to implement undirected graph
 
 class Node {
   constructor(id, value, coordX, coordY, nodeFront, valueFront) {

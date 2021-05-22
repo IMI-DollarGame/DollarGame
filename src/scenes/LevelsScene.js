@@ -32,9 +32,11 @@ class LevelsScene extends BaseScene {
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
   }
   createBG() {
-    const backGround = this.add.image(0, 0, "house-lvl").setOrigin(0);
-    backGround.displayHeight = innerHeight;
-    backGround.displayWidth = innerWidth;
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "cyan-lvl")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.2;
   }
 
   setupMenuEvents(menuItem) {
