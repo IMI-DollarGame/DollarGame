@@ -9,11 +9,13 @@ class PlayScene extends BaseScene {
     });
     this.stepText = "Steps left till you die: ";
     this.maximumStepAllowed = 30;
-    this.steps; 
-    this.stepsText; 
+    this.steps;
+    this.stepsText;
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
   }
 
   create() {
@@ -29,9 +31,12 @@ class PlayScene extends BaseScene {
   }
 
   addBackGround() {
-    const backGround = this.add.image(0, 0, "paper").setOrigin(0, 0);
-    backGround.displayHeight = innerHeight;
-    backGround.displayWidth = innerWidth;
+    const bg = this.add.image(
+      this.windowWidth / 2,
+      this.windowHeight / 2,
+      "playScene-bg"
+    );
+    bg.setDisplaySize(this.windowWidth, this.windowHeight);
   }
 
   addGraphics() {
@@ -40,28 +45,43 @@ class PlayScene extends BaseScene {
     });
   }
 
+  getNodeImage(value) {
+    if (value < 1) return "node1";
+    else if (value >= 1 && value < 4) return "node2";
+    else return "node3";
+  }
+
+  updateNodeImages() {
+    this.nodesArray.forEach((element) => {
+      element.container.getAt(0).setTexture(this.getNodeImage(element.value));
+    });
+  }
+
   addNode(id, value, coordX, coordY) {
-    let nodeImage = this.physics.add.sprite(0, 0, "node");
-    let nodeValueText = this.add.text(-55, -80, value, {
+    let nodeImage = this.physics.add.sprite(0, 0, this.getNodeImage(value));
+    nodeImage.setDisplaySize(200, 200);
+
+    let nodeValueText = this.add.text(-100, -100, value, {
       fontSize: "20px",
       fill: "#000",
       fontStyle: "bold",
     });
 
-    let nodeContainer = this.add.container(coordX, coordY, [
-      nodeImage,
-      nodeValueText,
-    ]);
-    nodeContainer.setSize(128, 128);
+    let container = this.add.container(coordX, coordY,[nodeImage, nodeValueText]);
+    container.setSize(200, 200);
 
-    var node = new Node(id, value, nodeContainer);
+    var node = new Node(id, value, container);
     this.nodesArray.push(node);
+    this.setupNodeClick(node);
+  }
 
-    nodeContainer.setInteractive().on("pointerdown", () => {
+  setupNodeClick(node){
+    node.container.setInteractive().on("pointerdown", () => {
       this.updateSteps();
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
       this.updateValues();
+      this.updateNodeImages();
       if (this.checkWinCondition()) {
         this.winTheGame();
       } else {
@@ -102,30 +122,22 @@ class PlayScene extends BaseScene {
   }
 
   drawGraph() {
-    this.addNode("A", -2, 600, 350);
-    this.addNode("B", -1, 1000, 350);
-    this.addNode("C", 2, 800, 500);
-    this.addNode("D", 5, 600, 650);
-    this.addNode("E", -2, 1000, 650);
-    this.addEdge("A", "D");
-    this.addEdge("A", "C");
-    this.addEdge("B", "C");
-    this.addEdge("D", "E");
-    this.addEdge("C", "E");
+    var obj = this.cache.json.get("level1");
+    for(var i = 0; i < obj.nodes.length; i++){
+      this.addNode(obj.nodes[i].id,obj.nodes[i].value,obj.nodes[i].x,obj.nodes[i].y);
+    }
+    for(var i = 0; i < obj.edges.length; i++){
+      this.addEdge(obj.edges[i].nodeA,obj.edges[i].nodeB);
+    }
   }
 
   setMaxSteps() {
     this.steps = this.maximumStepAllowed;
-    this.stepsText = this.add.text(
-      800,
-      100,
-      this.stepText + this.steps,
-      {
-        fontSize: "30px",
-        fill: "#000",
-        align: "center",
-      }
-    );
+    this.stepsText = this.add.text(800, 100, this.stepText + this.steps, {
+      fontSize: "30px",
+      fill: "#000",
+      align: "center",
+    });
   }
 
   displayBestScore() {
@@ -145,7 +157,7 @@ class PlayScene extends BaseScene {
   }
 
   displaySoundButton() {
-    this.bgMusic = this.sound.add("music", { volume: 0.5,loop: true });
+    this.bgMusic = this.sound.add("music", { volume: 0.5, loop: true });
 
     const soundButton = this.add
       .sprite(-750, innerHeight / 10, "sound")
@@ -154,19 +166,19 @@ class PlayScene extends BaseScene {
       .sprite(innerWidth * 0.9, innerHeight / 10, "soundOff")
       .setScale(1.9);
 
-      soundButton.setInteractive().on("pointerdown", () => {
-        soundButtonOff.x = innerWidth * 0.9;
-        soundButton.x = -750;
-        this.game.config.bgMusicPlaying = false;
-        this.game.sound.stopAll();
-      });
+    soundButton.setInteractive().on("pointerdown", () => {
+      soundButtonOff.x = innerWidth * 0.9;
+      soundButton.x = -750;
+      this.game.config.bgMusicPlaying = false;
+      this.game.sound.stopAll();
+    });
 
-      soundButtonOff.setInteractive().on("pointerdown", () => {
-        soundButtonOff.x = -750;
-        soundButton.x = innerWidth * 0.9;
-        this.game.config.bgMusicPlaying = true;
-        this.bgMusic.play();
-      });
+    soundButtonOff.setInteractive().on("pointerdown", () => {
+      soundButtonOff.x = -750;
+      soundButton.x = innerWidth * 0.9;
+      this.game.config.bgMusicPlaying = true;
+      this.bgMusic.play();
+    });
   }
 
   displayRestartButton() {
@@ -182,11 +194,12 @@ class PlayScene extends BaseScene {
     });
   }
 
-  resetTheGame(){
+  resetTheGame() {
     this.nodesArray.forEach((element) => {
       element.resetValue();
     });
     this.updateValues();
+    this.updateNodeImages();
   }
 
   displayUndoButton() {
@@ -295,10 +308,10 @@ class Edge {
 
   getEdgeCoord() {
     return new Phaser.Geom.Line(
-      this.nodeA.coordX,
-      this.nodeA.coordY,
-      this.nodeB.coordX,
-      this.nodeB.coordY
+      this.nodeA.container.x,
+      this.nodeA.container.y,
+      this.nodeB.container.x,
+      this.nodeB.container.y
     );
   }
 }

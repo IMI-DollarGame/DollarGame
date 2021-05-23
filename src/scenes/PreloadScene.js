@@ -19,16 +19,22 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("country-bg", "assets/country-bg.png");
     this.load.image("house-lvl", "assets/house-bg.png");
 
-    //this.load.image("paper", "assets/paper.jpg");
-    this.load.image("paper", "assets/sky_blue.png");
+    //playScene bg
+    //source: https://wallpaperaccess.com/anime-island
+    this.load.image("playScene-bg", "assets/playScene/bg_island.png");
 
-    //this.load.image("node", "assets/index3.png");
-    this.load.image("node", "assets/island1_250px.png");
+    //node image
+    this.load.image("node1", "assets/playScene/floating_island1.png");
+    this.load.image("node2", "assets/playScene/floating_island2.png");
+    this.load.image("node3", "assets/playScene/floating_island3.png");
 
     //music
     this.load.audio("music", ["assets/Cipher2.mp3"]);
+    
+    //json file
+    this.load.json("level1", "assets/jsonLevels/level1.json");
   }
-
+  
   create() {
     this.scene.start("MenuScene");
     this.game.config.bgMusicPlaying = false;
