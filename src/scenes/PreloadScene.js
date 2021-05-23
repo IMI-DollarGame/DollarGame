@@ -19,6 +19,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("clouds-bg", "assets/clouds-cyan.png");
     this.load.image("cyan-lvl", "assets/bg-cyan.png");
     this.load.image("play-bg", "assets/clouds-light.png");
+    this.load.image("settings-bg", "assets/bg-brown.png");
 
     this.load.image("node", "assets/village.svg");
 

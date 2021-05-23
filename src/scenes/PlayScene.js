@@ -109,7 +109,13 @@ class PlayScene extends BaseScene {
   }
 
   checkWinCondition() {
-    return this.nodesArray.every(element => element.isPositiveValue());
+    if (this.nodesArray.every(element => element.isPositiveValue())) {
+      this.scene.start("gameEnded", { message: "Level Completed" });
+    } else if (this.steps > 6) {
+      this.scene.start("gameEnded", {
+        message: "You ran out of steps. Game over LOSER!"
+      });
+    }
   }
 
   drawGraph() {

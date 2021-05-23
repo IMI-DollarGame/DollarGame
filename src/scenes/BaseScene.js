@@ -127,12 +127,14 @@ class BaseScene extends Phaser.Scene {
       //this.scene.start(console.log("restart to be implemented"));
       this.steps = 0;
       this.stepsText.setText("steps: " + this.steps);
+      this.scene.restart();
     });
     this.scaleButton(restartBtn, 20);
 
-    restartBtn.on("pointerdown", () => {
+    /*   restartBtn.on("pointerdown", () => {
       this.scene.restart("PlayScene");
     });
+    */
   }
   createDevelopersTxt() {
     const xPos = this.config.width / 2;

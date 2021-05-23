@@ -14,6 +14,7 @@ class SettingsScene extends BaseScene {
   }
 
   create() {
+    this.createBG();
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
     this.playMusic();
@@ -23,7 +24,13 @@ class SettingsScene extends BaseScene {
     const bgMusic = this.sound.add("music", { loop: true });
     bgMusic.play();
   }
-
+  createBG() {
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "settings-bg")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.4;
+  }
   setupMenuEvents(menuItem) {
     const textGO = menuItem.textGO;
     textGO.setInteractive();
