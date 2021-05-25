@@ -15,8 +15,10 @@ class BaseScene extends Phaser.Scene {
       strokeThickness: 1,
     };
   }
+
   create() {
     this.creatingAllButtons();
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.5});
   }
 
   createMenu(menu, setupMenuEvents) {
@@ -42,6 +44,12 @@ class BaseScene extends Phaser.Scene {
       .setOrigin(0, 0);
 
     backButton.on("pointerup", () => {
+      if (this.game.config.soundPlaying === true) {
+        this.game.config.soundPlaying = true;
+        this.soundMenu.play();
+      } else {
+        this.game.config.soundPlaying = false;
+      }
       this.scene.start("MenuScene");
     });
   }
@@ -54,6 +62,9 @@ class BaseScene extends Phaser.Scene {
       .setScale(1);
 
     settingBtn.on("pointerup", () => {
+      if (this.game.config.soundPlaying === true) {
+        this.soundMenu.play();
+      }
       this.scene.start("SettingsScene");
     });
   }
@@ -66,6 +77,9 @@ class BaseScene extends Phaser.Scene {
       .setScale(1.95);
 
     helpBtn.on("pointerup", () => {
+      if (this.game.config.soundPlaying === true) {
+        this.soundMenu.play();
+      }
       this.scene.start("TutorialScene");
     });
   }

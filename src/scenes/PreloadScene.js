@@ -18,16 +18,32 @@ class PreloadScene extends Phaser.Scene {
     //img
     this.load.image("country-bg", "assets/country-bg.png");
     this.load.image("house-lvl", "assets/house-bg.png");
-    this.load.image("paper", "assets/paper.jpg");
-    this.load.image("node", "assets/village.svg");
+
+    //playScene bg
+    //source: https://wallpaperaccess.com/anime-island
+    this.load.image("playScene-bg", "assets/playScene/bg_island.png");
+
+    //node image
+    this.load.image("node1", "assets/playScene/floating_island1.png");
+    this.load.image("node2", "assets/playScene/floating_island2.png");
+    this.load.image("node3", "assets/playScene/floating_island3.png");
 
     //music
+    //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
     this.load.audio("music", ["assets/Cipher2.mp3"]);
+    //source: https://www.fesliyanstudios.com/
+    this.load.audio("soundMenu", ["assets/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"]);
+    //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
+    this.load.audio("soundNode", ["assets/lowRandom.mp3"]);
+
+    //json file
+    this.load.json("level1", "assets/jsonLevels/level1.json");
   }
 
   create() {
     this.scene.start("MenuScene");
     this.game.config.bgMusicPlaying = false;
+    this.game.config.soundPlaying = false;
   }
 }
 

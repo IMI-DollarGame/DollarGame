@@ -21,6 +21,7 @@ class MenuScene extends BaseScene {
     this.createBG();
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.8});
   }
 
   createBG() {
@@ -43,6 +44,9 @@ class MenuScene extends BaseScene {
       //    textGO.setStyle({ fill: "#fff" });
       menuItem.scene && this.scene.start(menuItem.scene);
 
+      if (this.game.config.soundPlaying === true) {
+        this.soundMenu.play();
+      }
       if (menuItem.text === "Exit") {
         this.game.destroy(true);
       }

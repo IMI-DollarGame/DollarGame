@@ -37,6 +37,7 @@ class LevelsScene extends BaseScene {
 
 
   setupMenuEvents(menuItem) {
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.8});
     const textGO = menuItem.textGO;
     textGO.setInteractive();
 
@@ -51,6 +52,9 @@ class LevelsScene extends BaseScene {
     textGO.on("pointerup", () => {
       //    textGO.setStyle({ fill: "#fff" });
       menuItem.scene && this.scene.start(menuItem.scene);
+      if (this.game.config.soundPlaying === true) {
+        this.soundMenu.play();
+      }
     });
   }
 }

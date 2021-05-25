@@ -7,17 +7,22 @@ class PlayScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
     });
-    this.steps = 0;
+    this.stepText = "Steps left till you die: ";
+    this.maximumStepAllowed = 30;
+    this.steps;
     this.stepsText;
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
+    this.windowWidth = window.innerWidth;
+    this.windowHeight = window.innerHeight;
   }
 
   create() {
     this.addBackGround();
     this.addGraphics();
-    this.displayNumberOfSteps();
+    this.setMaxSteps();
+    this.displayBestScore();
     this.displaySoundButton();
     this.displayRestartButton();
     this.displayUndoButton();
@@ -26,9 +31,12 @@ class PlayScene extends BaseScene {
   }
 
   addBackGround() {
-    const backGround = this.add.image(0, 0, "paper").setOrigin(0, 0);
-    backGround.displayHeight = innerHeight;
-    backGround.displayWidth = innerWidth;
+    const bg = this.add.image(
+      this.windowWidth / 2,
+      this.windowHeight / 2,
+      "playScene-bg"
+    );
+    bg.setDisplaySize(this.windowWidth, this.windowHeight);
   }
 
   addGraphics() {
@@ -37,46 +45,75 @@ class PlayScene extends BaseScene {
     });
   }
 
+  getNodeImage(value) {
+    if (value < 1) return "node1";
+    else if (value >= 1 && value < 4) return "node2";
+    else return "node3";
+  }
+
+  updateNodeImages() {
+    this.nodesArray.forEach((element) => {
+      element.container.getAt(0).setTexture(this.getNodeImage(element.value));
+    });
+  }
+
   addNode(id, value, coordX, coordY) {
-    let nodeFront = this.physics.add.sprite(coordX, coordY, "node");
-    let valueFront = this.add.text(coordX - 55, coordY - 80, value, {
+    let nodeImage = this.physics.add.sprite(0, 0, this.getNodeImage(value));
+    nodeImage.setDisplaySize(200, 200);
+
+    let nodeValueText = this.add.text(-100, -100, value, {
       fontSize: "20px",
       fill: "#000",
       fontStyle: "bold",
     });
 
-    var node = new Node(id, value, coordX, coordY, nodeFront, valueFront);
-    this.nodesArray.push(node);
+    let container = this.add.container(coordX, coordY,[nodeImage, nodeValueText]);
+    container.setSize(200, 200);
 
-    nodeFront.setInteractive().on("pointerdown", () => {
-      this.steps++;
-      this.stepsText.setText("steps: " + this.steps);
+    var node = new Node(id, value, container);
+    this.nodesArray.push(node);
+    this.setupNodeClick(node);
+  }
+
+  setupNodeClick(node){
+    this.soundNode = this.sound.add("soundNode", { volume: 2.0});
+    node.container.setInteractive().on("pointerdown", () => {
+      this.updateSteps();
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
       this.updateValues();
+      this.updateNodeImages();
       if (this.checkWinCondition()) {
-        this.displayEndgameMess();
-      };
+        this.winTheGame();
+      } else {
+        if (this.steps == 0) {
+          this.loseTheGame();
+        }
+      }
+      if (this.game.config.soundPlaying === true) {
+        this.soundNode.play();
+      }
     });
   }
 
-  displayEndgameMess() {
-    let winnerText = this.add.text(800, 200, "Congratulation, you won the game!!!", {
-      fontSize: "50px",
-      fill: "#000",
-      fontStyle: "bold",
-    });
+  addEdge(nodeIdA, nodeIdB) {
+    let edge = new Edge(
+      this.getNodeFromId(nodeIdA),
+      this.getNodeFromId(nodeIdB)
+    );
+    this.graphics.strokeLineShape(edge.getEdgeCoord());
+    this.edgesArray.push(edge);
   }
 
   updateValues() {
-    this.nodesArray.forEach(element => {
-      element.valueFront.setText(element.value)
-    })
+    this.nodesArray.forEach((element) => {
+      element.container.getAt(1).setText(element.value);
+    });
   }
 
   getNodeFromId(nodeId) {
     var node;
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -84,41 +121,48 @@ class PlayScene extends BaseScene {
     return node;
   }
 
-  addEdge(nodeIdA, nodeIdB) {
-    let edge = new Edge(this.getNodeFromId(nodeIdA), this.getNodeFromId(nodeIdB));
-    this.graphics.strokeLineShape(edge.getEdgeCoord());
-    this.edgesArray.push(edge);
-  }
-
   checkWinCondition() {
-    return this.nodesArray.every(element => element.isPositiveValue()
-    );
+    return this.nodesArray.every((element) => element.isPositiveValue());
   }
 
   drawGraph() {
-    this.addNode("A", -2, 600, 350);
-    this.addNode("B", -1, 1000, 350);
-    this.addNode("C", 2, 800, 500);
-    this.addNode("D", 5, 600, 650);
-    this.addNode("E", -2, 1000, 650);
-    this.addEdge("A", "D");
-    this.addEdge("A", "C");
-    this.addEdge("B", "C");
-    this.addEdge("D", "E");
-    this.addEdge("C", "E");
+    var obj = this.cache.json.get("level1");
+    for(var i = 0; i < obj.nodes.length; i++){
+      this.addNode(obj.nodes[i].id,obj.nodes[i].value,obj.nodes[i].x,obj.nodes[i].y);
+    }
+    for(var i = 0; i < obj.edges.length; i++){
+      this.addEdge(obj.edges[i].nodeA,obj.edges[i].nodeB);
+    }
   }
 
-  displayNumberOfSteps() {
-    this.stepsText = this.add.text(800, 100, "steps: " + this.steps, {
+  setMaxSteps() {
+    this.steps = this.maximumStepAllowed;
+    this.stepsText = this.add.text(800, 100, this.stepText + this.steps, {
       fontSize: "30px",
       fill: "#000",
       align: "center",
     });
   }
 
+  displayBestScore() {
+    const bestScore = localStorage.getItem("bestScore");
+    const bestScoreText = this.add.text(800, 200, `Best Score: ${0}`);
+
+    if (bestScore) {
+      bestScoreText.setText(`Best Score: ${bestScore}`);
+    } else {
+      bestScoreText.setText(`Best Score: ${0}`);
+    }
+  }
+
+  updateSteps() {
+    this.steps--;
+    this.stepsText.setText(this.stepText + this.steps);
+  }
+
   displaySoundButton() {
-    this.bgMusic = this.sound.add("music", { volume: 0.5,loop: true });
-    //innerWidth * 0.1, innerHeight / 20
+    this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
+
     const soundButton = this.add
       .sprite(-750, innerHeight / 10, "sound")
       .setScale(1.9);
@@ -126,19 +170,21 @@ class PlayScene extends BaseScene {
       .sprite(innerWidth * 0.9, innerHeight / 10, "soundOff")
       .setScale(1.9);
 
-      soundButton.setInteractive().on("pointerdown", () => {
-        soundButtonOff.x = innerWidth * 0.9;
-        soundButton.x = -750;
-        this.game.config.bgMusicPlaying = false;
-        this.game.sound.stopAll();
-      });
+    soundButton.setInteractive().on("pointerdown", () => {
+      soundButtonOff.x = innerWidth * 0.9;
+      soundButton.x = -750;
+      this.game.config.soundPlaying = false;
+      this.game.config.bgMusicPlaying = false;
+      this.game.sound.stopAll();
+    });
 
-      soundButtonOff.setInteractive().on("pointerdown", () => {
-        soundButtonOff.x = -750;
-        soundButton.x = innerWidth * 0.9;
-        this.game.config.bgMusicPlaying = true;
-        this.bgMusic.play();
-      });
+    soundButtonOff.setInteractive().on("pointerdown", () => {
+      soundButtonOff.x = -750;
+      soundButton.x = innerWidth * 0.9;
+      this.game.config.soundPlaying = true;
+      this.game.config.bgMusicPlaying = true;
+      this.bgMusic.play();
+    });
   }
 
   displayRestartButton() {
@@ -148,10 +194,18 @@ class PlayScene extends BaseScene {
       .setInteractive();
 
     restartBtn.on("pointerup", () => {
-      //this.scene.start(console.log("restart to be implemented"));
-      this.steps = 0;
-      this.stepsText.setText("steps: " + this.steps);
+      this.steps = this.maximumStepAllowed;
+      this.stepsText.setText(this.stepText + this.steps);
+      this.resetTheGame();
     });
+  }
+
+  resetTheGame() {
+    this.nodesArray.forEach((element) => {
+      element.resetValue();
+    });
+    this.updateValues();
+    this.updateNodeImages();
   }
 
   displayUndoButton() {
@@ -162,50 +216,59 @@ class PlayScene extends BaseScene {
       .setScale(0.7);
 
     undoBtn.on("pointerup", () => {
-      //this.scene.start(console.log("undo to be implemented"));
-      this.steps--;
-      this.stepsText.setText("steps: " + this.steps);
+      //TODO: undo to be implemented here;
+      //////////////////
+      // this.steps--;
+      // this.stepsText.setText("steps: " + this.steps);
     });
   }
 
-  //update(){}
+  winTheGame() {
+    const bestScoreText = localStorage.getItem("bestScore");
+    const bestScore = bestScoreText && parseInt(bestScoreText, 10);
+    if (!bestScore || this.steps > bestScore) {
+      localStorage.setItem("bestScore", this.steps);
+    }
+
+    const winnerText = this.add.text(
+      800,
+      200,
+      "Congratulations, you won the game!!!",
+      {
+        fontSize: "50px",
+        fill: "#000",
+        fontStyle: "bold",
+      }
+    );
+  }
+
+  loseTheGame() {
+    const looserText = this.add.text(
+      800,
+      200,
+      "Game over :( You used too many steps  ",
+      {
+        fontSize: "50px",
+        fill: "#000",
+        fontStyle: "bold",
+      }
+    );
+  }
 }
 
 export default PlayScene;
 
-// changeSoundMusic(id) {
-//     var button = document.getElementById(id);
-
-//     if (button.innerText.slice(-2) === "on") {
-//       button.innerHTML = id + ": " + "off";
-//     } else button.innerHTML = id + ":" + "on";
-//   }
-
-// nodes
-/*nodes = this.physics.add.staticGroup();
-      for(var i = 0; i<5; i++){
-          nodes.create(coords[i][0],coords[i][1], 'node').setScale(2).refreshBody();
-      }*/
-
-// TODO
-// function to increase steps
-//  function to fit the viewport
-// need to implement undirected graph
-
 class Node {
-  constructor(id, value, coordX, coordY, nodeFront, valueFront) {
-    this.id = id
+  constructor(id, value, container) {
+    this.id = id;
     this.value = value;
-    this.coordX = coordX;
-    this.coordY = coordY;
-    this.nodeFront = nodeFront;
-    this.valueFront = valueFront;
+    this.container = container;
     this.neighborNodes = [];
+    this.baseValue = value;
   }
 
   addNodeNeighbor(node) {
-    if (this.neighborNodes.indexOf(node) == -1)
-      this.neighborNodes.push(node);
+    if (this.neighborNodes.indexOf(node) == -1) this.neighborNodes.push(node);
   }
 
   decreaseNodeValue() {
@@ -217,23 +280,23 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach(element => {
+    this.neighborNodes.forEach((element) => {
       element.increaseNodeValueBy1();
-    })
+    });
   }
 
   isPositiveValue() {
-    if (this.value >= 0)
-      return true;
-    else
-      return false;
+    if (this.value >= 0) return true;
+    else return false;
   }
 
   isNegativeValue() {
-    if (this.value < 0)
-      return true;
-    else
-      return false;
+    if (this.value < 0) return true;
+    else return false;
+  }
+
+  resetValue() {
+    this.value = this.baseValue;
   }
 }
 
@@ -250,6 +313,11 @@ class Edge {
   }
 
   getEdgeCoord() {
-    return new Phaser.Geom.Line(this.nodeA.coordX, this.nodeA.coordY, this.nodeB.coordX, this.nodeB.coordY);
+    return new Phaser.Geom.Line(
+      this.nodeA.container.x,
+      this.nodeA.container.y,
+      this.nodeB.container.x,
+      this.nodeB.container.y
+    );
   }
 }
