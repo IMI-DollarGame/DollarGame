@@ -20,6 +20,7 @@ class PlayScene extends BaseScene {
 
   create() {
     this.createBG();
+    this.displayRestartButton();
     this.addGraphics();
     this.displayNumberOfSteps();
     this.drawGraph();
@@ -33,7 +34,18 @@ class PlayScene extends BaseScene {
       .setScale(1.8);
     backGround.x = backGround.displayWidth * 0.5;
   }
-
+  displayRestartButton() {
+    const restartBtn = this.add
+      .image(innerWidth * 0.76, innerHeight / 20, "restart")
+      .setOrigin(0, 0)
+      .setInteractive();
+    restartBtn.on("pointerup", () => {
+      this.steps = this.maximumStepAllowed;
+      this.stepsText.setText(this.stepText + this.steps);
+      this.resetTheGame();
+    });
+    this.scaleButton(restartBtn, 20);
+  }
   addGraphics() {
     this.graphics = this.add.graphics({
       lineStyle: { width: 4, color: 0xffffff }
