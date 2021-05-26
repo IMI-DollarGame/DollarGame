@@ -117,25 +117,22 @@ class BaseScene extends Phaser.Scene {
     });
     this.scaleButton(undoBtn, 20);
   }
+
   displayRestartButton() {
     const restartBtn = this.add
       .image(innerWidth * 0.76, innerHeight / 20, "restart")
       .setOrigin(0, 0)
       .setInteractive();
-
+    /*
     restartBtn.on("pointerup", () => {
-      //this.scene.start(console.log("restart to be implemented"));
       this.steps = 0;
       this.stepsText.setText("steps: " + this.steps);
-      this.scene.restart();
-    });
-    this.scaleButton(restartBtn, 20);
-
-    /*   restartBtn.on("pointerdown", () => {
-      this.scene.restart("PlayScene");
+      // this.scene.start("PlayScene");
     });
     */
+    this.scaleButton(restartBtn, 20);
   }
+
   createDevelopersTxt() {
     const xPos = this.config.width / 2;
     const yPos = this.config.height * 0.95;

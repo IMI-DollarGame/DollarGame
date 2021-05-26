@@ -90,7 +90,7 @@ class PlayScene extends BaseScene {
   }
 
   getNodeFromId(nodeId) {
-    var node;
+    let node;
     this.nodesArray.forEach(element => {
       if (element.id === nodeId) {
         node = element;
