@@ -76,7 +76,9 @@ class PlayScene extends BaseScene {
   }
 
   setupNodeClick(node){
+
     this.soundNode = this.sound.add("soundNode", { volume: 2.0});
+
     node.container.setInteractive().on("pointerdown", () => {
       this.updateSteps();
       node.decreaseNodeValue();
@@ -90,9 +92,11 @@ class PlayScene extends BaseScene {
           this.loseTheGame();
         }
       }
+
       if (this.game.config.soundPlaying === true) {
         this.soundNode.play();
       }
+
     });
   }
 
@@ -161,7 +165,9 @@ class PlayScene extends BaseScene {
   }
 
   displaySoundButton() {
+
     this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
+
 
     const soundButton = this.add
       .sprite(-750, innerHeight / 10, "sound")
@@ -173,7 +179,9 @@ class PlayScene extends BaseScene {
     soundButton.setInteractive().on("pointerdown", () => {
       soundButtonOff.x = innerWidth * 0.9;
       soundButton.x = -750;
+
       this.game.config.soundPlaying = false;
+
       this.game.config.bgMusicPlaying = false;
       this.game.sound.stopAll();
     });
@@ -181,7 +189,9 @@ class PlayScene extends BaseScene {
     soundButtonOff.setInteractive().on("pointerdown", () => {
       soundButtonOff.x = -750;
       soundButton.x = innerWidth * 0.9;
+
       this.game.config.soundPlaying = true;
+
       this.game.config.bgMusicPlaying = true;
       this.bgMusic.play();
     });

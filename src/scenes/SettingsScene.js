@@ -15,6 +15,7 @@ class SettingsScene extends BaseScene {
   }
 
   createText() {
+
     this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
     this.soundMenu = this.sound.add("soundMenu", { volume: 0.8});
 
@@ -36,6 +37,7 @@ class SettingsScene extends BaseScene {
     else{
       musicText.text = "Sound: On";
     }
+
     musicText.setInteractive();
     soundText.setInteractive();
 
@@ -68,12 +70,14 @@ class SettingsScene extends BaseScene {
     });
 
     soundText.on("pointerup", () => {
+
       if (this.game.config.soundPlaying === false) {
         this.game.config.soundPlaying = true;
         this.soundMenu.play();
         soundText.text = "Sound: On";
       } else {
         this.game.config.soundPlaying = false;
+
         soundText.text = "Sound: Off";
       }
     });
