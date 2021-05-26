@@ -31,11 +31,11 @@ class SettingsScene extends BaseScene {
     else{
       soundText.text = "Sound: On";
     }
-    if (this.game.config.soundPlaying === false) {
-      musicText.text = "Sound: Off";
+    if (this.game.config.bgMusicPlaying === false) {
+      musicText.text = "Music: Off";
     }
     else{
-      musicText.text = "Sound: On";
+      musicText.text = "Music: On";
     }
 
     musicText.setInteractive();
