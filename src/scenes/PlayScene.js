@@ -218,22 +218,13 @@ class PlayScene extends BaseScene {
   }
 
   winTheGame() {
+
     const bestScoreText = localStorage.getItem("bestScore");
     const bestScore = bestScoreText && parseInt(bestScoreText, 10);
     if (!bestScore || this.steps > bestScore) {
       localStorage.setItem("bestScore", this.steps);
     }
-
-    const winnerText = this.add.text(
-      800,
-      200,
-      "Congratulations, you won the game!!!",
-      {
-        fontSize: "50px",
-        fill: "#000",
-        fontStyle: "bold",
-      }
-    );
+    this.scene.start("WinScene");
   }
 
   loseTheGame() {

@@ -6,6 +6,7 @@ import TutorialScene from "./scenes/TutorialScene";
 import ScoreScene from "./scenes/ScoreScene";
 import LevelsScene from "./scenes/LevelsScene";
 import PlayScene from "./scenes/PlayScene";
+import WinScene from "./scenes/WinScene";
 
 //const WIDTH = window.screen.availWidth;
 //const HEIGHT = window.screen.availHeight;
@@ -26,6 +27,7 @@ const Scenes = [
   TutorialScene,
   SettingsScene,
   PlayScene,
+  WinScene
 ];
 const createScene = (Scene) => new Scene(SHARED_CONFIG);
 const initScenes = () => Scenes.map(createScene);
