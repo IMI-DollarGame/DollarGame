@@ -14,6 +14,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("restart", "assets/restart_icon2x.png");
     this.load.image("sound", "assets/sound.png");
     this.load.image("soundOff", "assets/soundOff.png");
+    this.load.image("musicOn", "assets/musicOn.png");
+    this.load.image("musicOff", "assets/musicOff.png");
 
     //img
     this.load.image("country-bg", "assets/country-bg.png");
@@ -41,7 +43,7 @@ class PreloadScene extends Phaser.Scene {
     //json file
     this.load.json("level1", "assets/jsonLevels/level1.json");
   }
-  
+
   create() {
     this.scene.start("MenuScene");
     this.game.config.bgMusicPlaying = false;
