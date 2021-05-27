@@ -174,12 +174,32 @@ class PlayScene extends BaseScene {
     const musicOff = this.add
       .sprite(innerWidth * 0.95, innerHeight / 10, "musicOff")
       .setScale(1.9);
+
     const soundButton = this.add
       .sprite(-750, innerHeight / 10, "sound")
       .setScale(1.9);
     const soundButtonOff = this.add
       .sprite(innerWidth * 0.9, innerHeight / 10, "soundOff")
       .setScale(1.9);
+      
+    if(this.game.config.bgMusicPlaying === true){
+      musicOff.x = -750;
+      musicOn.x = innerWidth * 0.95;
+    }
+    else {
+      musicOff.x = innerWidth * 0.95;
+      musicOn.x = -750;
+    }
+
+    if(this.game.config.soundPlaying === true){
+      soundButtonOff.x = -750;
+      soundButton.x = innerWidth * 0.9;
+    }
+    else {
+      soundButtonOff.x = innerWidth * 0.9;
+      soundButton.x = -750;
+    }
+
 
     soundButton.setInteractive().on("pointerdown", () => {
       soundButtonOff.x = innerWidth * 0.9;
