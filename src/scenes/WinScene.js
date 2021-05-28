@@ -46,8 +46,9 @@ class WinScene extends BaseScene {
   }
   createNextLevelButton(){
   const nextLevelButton = this.add
-      .text(innerWidth * 0.48 , innerHeight *0.55, "➡️", {fontSize:"100px"})
+      .image(innerWidth * 0.47 , innerHeight *0.54, "nextLevel")
       .setInteractive()
+      .setScale(0.2)
       .setOrigin(0, 0);
 
     nextLevelButton.on("pointerup", () => {
