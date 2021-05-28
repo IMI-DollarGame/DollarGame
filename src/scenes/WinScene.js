@@ -16,13 +16,14 @@ class WinScene extends BaseScene {
     this.createDevelopersTxt();
     this.createPassedLevelTxt();
     this.createNextLevelButton();
-    this.getScore();
+    this.createLevelScoreText();
+    this.createBestScoreText()
   }
 
   getBestScore() {
     const bestScore = localStorage.getItem("bestScore");
     this.add
-      .text(...this.screenCenter, `Congratulations!🥳`, {
+      .text(...this.screenCenter, `Congratulations!`, {
         fontSize: "55px",
         fill: "#a2e5a2"
       })
@@ -34,7 +35,7 @@ class WinScene extends BaseScene {
     this.make.text({
       x: this.config.width / 2,
       y: this.config.height * 0.4,
-      text: "You just passed level ### ",
+      text: "You just passed level 1 ",
       origin: { x: 0.5, y: 0.5 },
       style: {
         fontFamily: "Indie Flower, cursive",
@@ -45,18 +46,28 @@ class WinScene extends BaseScene {
   }
   createNextLevelButton(){
   const nextLevelButton = this.add
-      .text(innerWidth * 0.48 , innerHeight *0.55, "➡️", {fontSize:"100px"})
+      .image(innerWidth * 0.47 , innerHeight *0.54, "nextLevel")
       .setInteractive()
+      .setScale(0.2)
       .setOrigin(0, 0);
 
     nextLevelButton.on("pointerup", () => {
       this.scene.start("MenuScene");
     });
   }
-  getScore() {
+  createLevelScoreText() {
+    const currentScore = sessionStorage.getItem("currentScore");
+    this.add
+        .text(innerWidth * 0.50, innerHeight * 0.44,  `Your score: ${currentScore}`, {
+          fontSize: "30px",
+          fill: "#a2e5a2"
+        })
+        .setOrigin(0.5);
+  }
+  createBestScoreText() {
     const bestScore = localStorage.getItem("bestScore");
     this.add
-        .text(innerWidth * 0.50, innerHeight * 0.46,  `Your score: ${bestScore}`, {
+        .text(innerWidth * 0.50, innerHeight * 0.47,  `Best score: ${bestScore}`, {
           fontSize: "30px",
           fill: "#a2e5a2"
         })
