@@ -221,6 +221,7 @@ class PlayScene extends BaseScene {
 
     const bestScoreText = localStorage.getItem("bestScore");
     const bestScore = bestScoreText && parseInt(bestScoreText, 10);
+    sessionStorage.setItem("currentScore", this.steps);
     if (!bestScore || this.steps > bestScore) {
       localStorage.setItem("bestScore", this.steps);
     }
