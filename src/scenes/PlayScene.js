@@ -58,7 +58,7 @@ class PlayScene extends BaseScene {
   }
 
   addNode(id, value, coordX, coordY) {
-    let nodeImage = this.physics.add.sprite(0, 0, this.getNodeImage(value));
+    let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     nodeImage.setDisplaySize(200, 200);
 
     let nodeValueText = this.add.text(-100, -100, value, {
