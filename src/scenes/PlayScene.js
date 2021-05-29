@@ -77,7 +77,7 @@ class PlayScene extends BaseScene {
 
   setupNodeClick(node){
 
-    this.soundNode = this.sound.add("soundNode", { volume: 2.0});
+    this.soundNode = this.sound.add("soundNode", { volume: 3.0});
 
     node.container.setInteractive().on("pointerdown", () => {
       this.updateSteps();
@@ -181,7 +181,7 @@ class PlayScene extends BaseScene {
     const soundButtonOff = this.add
       .sprite(innerWidth * 0.9, innerHeight / 10, "soundOff")
       .setScale(1.9);
-      
+
     if(this.game.config.bgMusicPlaying === true){
       musicOff.x = -750;
       musicOn.x = innerWidth * 0.95;

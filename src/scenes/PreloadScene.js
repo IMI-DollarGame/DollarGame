@@ -32,12 +32,12 @@ class PreloadScene extends Phaser.Scene {
 
     //music
     //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
-    this.load.audio("music", ["assets/Cipher2.mp3"]);
+    this.load.audio("music", ["assets/sounds/Cipher2.mp3"]);
 
     //source: https://www.fesliyanstudios.com/
-    this.load.audio("soundMenu", ["assets/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"]);
+    this.load.audio("soundMenu", ["assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"]);
     //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
-    this.load.audio("soundNode", ["assets/lowRandom.mp3"]);
+    this.load.audio("soundNode", ["assets/sounds/lowRandom.mp3"]);
 
 
     //json file
