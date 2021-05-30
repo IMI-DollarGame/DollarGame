@@ -1,29 +1,31 @@
 import BaseScene from "./BaseScene";
 
 class SettingsScene extends BaseScene {
-  //const audioj = new Audio('Cipher2.mp3');
-
   constructor(config) {
     super("SettingsScene", { ...config, canGoBack: true, addDevelopers: true });
-
     this.menu = [
       { scene: null, text: "Music: On" },
       { scene: null, text: "Sound: On" }
     ];
     this.fontSize = 2.3;
+    super("SettingsScene", {
+      ...config,
+      canGoBack: true,
+      addDevelopers: true,
+    });
   }
 
   create() {
     this.createBG();
     super.create();
-    this.createMenu(this.menu, this.setupMenuEvents.bind(this));
-    this.playMusic();
+    this.createText();
   }
 
   playMusic() {
     const bgMusic = this.sound.add("music", { loop: true });
     bgMusic.play();
   }
+  
   createBG() {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "settings-bg")
@@ -31,30 +33,61 @@ class SettingsScene extends BaseScene {
       .setScale(1.8);
     backGround.x = backGround.displayWidth * 0.4;
   }
+  
   setupMenuEvents(menuItem) {
     const textGO = menuItem.textGO;
     textGO.setInteractive();
+  }
+  
+  createText() {
+    this.bgMusic = this.sound.add("music", { volume: 0.5, loop: true });
 
-    textGO.on("pointerover", () => {
-      textGO.setStyle({ fill: "#ff0" });
+    const width = this.screenCenter[0];
+    const height = this.screenCenter[1];
+
+    const musicText = this.add.text(width, height, "Music: Off", this.fontOptions).setOrigin(0.5, 1);
+    const soundText = this.add.text(width, height + 80, "Sound: Off",this.fontOptions).setOrigin(0.5, 1);
+
+    musicText.setInteractive();
+    soundText.setInteractive();
+
+    musicText.on("pointerover", () => {
+      musicText.setStyle({ fill: "#ff0" });
     });
 
-    textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#f00" });
+    soundText.on("pointerover", () => {
+      soundText.setStyle({ fill: "#ff0" });
     });
 
-    textGO.on("pointerup", () => {
-      //    textGO.setStyle({ fill: "#fff" });
-      menuItem.scene && this.scene.start(menuItem.scene);
+    musicText.on("pointerout", () => {
+      musicText.setStyle({ fill: "#f00" });
+    });
 
-      // this.sound.add("music", { loop: false });
-      if (menuItem.text === "Music: On") {
-        // music.play();
-        menuItem.text = "Music: Off";
+    soundText.on("pointerout", () => {
+      soundText.setStyle({ fill: "#f00" });
+    });
+
+    musicText.on("pointerup", () => {
+      if (this.game.config.bgMusicPlaying === false) {
+        this.game.config.bgMusicPlaying = true;
+        this.bgMusic.play();
+        musicText.text = "Music: On";
+      } else {
+        this.game.config.bgMusicPlaying = false;
+        this.game.sound.stopAll();
+        musicText.text = "Music: Off";
       }
+    });
 
-      if (menuItem.text === "Exit") {
-        this.game.destroy(true);
+    soundText.on("pointerup", () => {
+      if (this.game.config.bgMusicPlaying === false) {
+        this.game.config.bgMusicPlaying = true;
+        this.bgMusic.play();
+        soundText.text = "Sound: On";
+      } else {
+        this.game.config.bgMusicPlaying = false;
+        this.game.sound.stopAll();
+        soundText.text = "Sound: Off";
       }
     });
   }

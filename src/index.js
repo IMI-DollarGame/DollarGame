@@ -6,7 +6,11 @@ import TutorialScene from "./scenes/TutorialScene";
 import ScoreScene from "./scenes/ScoreScene";
 import LevelsScene from "./scenes/LevelsScene";
 import PlayScene from "./scenes/PlayScene";
+import WinScene from "./scenes/WinScene";
 import gameEnded from "./scenes/gameEnded";
+
+//const WIDTH = window.screen.availWidth;
+//const HEIGHT = window.screen.availHeight;
 
 const WIDTH = innerWidth;
 const HEIGHT = innerHeight;
@@ -24,6 +28,7 @@ const Scenes = [
   TutorialScene,
   SettingsScene,
   PlayScene,
+  WinScene,
   gameEnded
 ];
 const createScene = Scene => new Scene(SHARED_CONFIG);
@@ -43,6 +48,8 @@ const config = {
     autoCenter: Phaser.Scale.Center.CENTER_BOTH
   },
   backgroundColor: "rgb(163, 163, 194)",
+
+  bgMusicPlaying: false,
 
   //Basically what a user sees on the screen
   scene: initScenes()
