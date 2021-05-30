@@ -8,11 +8,6 @@ class SettingsScene extends BaseScene {
       { scene: null, text: "Sound: On" }
     ];
     this.fontSize = 2.3;
-    super("SettingsScene", {
-      ...config,
-      canGoBack: true,
-      addDevelopers: true,
-    });
   }
 
   create() {

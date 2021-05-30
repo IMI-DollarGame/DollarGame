@@ -146,7 +146,7 @@ addEdge(nodeIdA, nodeIdB) {
       localStorage.setItem("bestScore", this.steps);
     }
       this.scene.start("gameEnded", { message: "Level Completed" });
-    } else if (this.steps > 6) {
+    } else if (this.steps == 0) {
       this.scene.start("gameEnded", {
         message: "You ran out of steps. Game over LOSER!"
       });
@@ -226,6 +226,14 @@ addEdge(nodeIdA, nodeIdB) {
       //////////////////
       // this.steps--;
       // this.stepsText.setText("steps: " + this.steps);
+    });
+  }
+
+  displayNumberOfSteps() {
+    this.stepsText = this.add.text(800, 100, "steps: " + this.steps, {
+      fontSize: "30px",
+      fill: "#000",
+      align: "center",
     });
   }
 }
