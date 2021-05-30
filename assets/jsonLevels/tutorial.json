@@ -1,0 +1,14 @@
+{
+    "level": "tutorial",
+    "difficulty": "easy",
+    "nodes": [
+      { "id": "A", "value": "3", "x": 600, "y": 350 },
+      { "id": "B", "value": "-4", "x": 1000, "y": 350 },
+      { "id": "C", "value": "2", "x": 1000, "y": 650 }
+    ],
+    "edges": [
+      { "nodeA": "A", "nodeB": "B" },
+      { "nodeA": "B", "nodeB": "C" }
+    ]
+  }
+  
