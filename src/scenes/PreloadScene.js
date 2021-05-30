@@ -12,10 +12,15 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("help", "assets/help2x.png");
     this.load.image("undo", "assets/undo_icon2x.png");
     this.load.image("restart", "assets/restart_icon2x.png");
-    this.load.image("sound", "assets/sound.png");
-    this.load.image("soundOff", "assets/soundOff.png");
-    this.load.image("nextLevel", "assets/right-arrow.png");
+    this.load.image("sound", "assets/volumeUp.png");
+    this.load.image("soundOff", "assets/volumeOff.png");
 
+    //img
+    this.load.image("clouds-bg", "assets/clouds-cyan.png");
+    this.load.image("cyan-lvl", "assets/bg-cyan.png");
+    this.load.image("play-bg", "assets/clouds-light.png");
+    this.load.image("settings-bg", "assets/bg-brown.png");
+    this.load.image("nextLevel", "assets/right-arrow.png");
 
     //img
     this.load.image("country-bg", "assets/country-bg.png");

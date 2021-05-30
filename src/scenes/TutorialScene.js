@@ -6,8 +6,16 @@ class TutorialScene extends BaseScene {
   }
 
   create() {
+    this.createBG();
     super.create();
     this.createTutorialTxt();
+  }
+  createBG() {
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "settings-bg")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.4;
   }
   createTutorialTxt() {
     const xPos = this.config.width / 2;
@@ -21,9 +29,9 @@ class TutorialScene extends BaseScene {
       origin: { x: 0.5, y: 0.5 },
       style: {
         fontFamily: "Indie Flower, cursive",
-        fontSize: 20,
-        wordWrap: { width: 300, useAdvancedWrap: true },
-      },
+        fontSize: `${1.5}vw`,
+        wordWrap: { width: 300, useAdvancedWrap: true }
+      }
     });
   }
 }

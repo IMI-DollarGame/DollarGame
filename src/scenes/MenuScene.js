@@ -1,4 +1,5 @@
 import BaseScene from "./BaseScene";
+import { brotliCompress } from "zlib";
 
 class MenuScene extends BaseScene {
   constructor(config) {
@@ -6,25 +7,29 @@ class MenuScene extends BaseScene {
       ...config,
       hasSettings: true,
       hasTutorial: true,
-      addDevelopers: true,
+      addDevelopers: true
     });
 
     this.menu = [
       { scene: "PlayScene", text: "Play" },
       { scene: "LevelsScene", text: "Levels" },
       { scene: "ScoreScene", text: "Score" },
-      { scene: null, text: "Exit" },
+      { scene: null, text: "Exit" }
     ];
   }
 
   create() {
     this.createBG();
-    super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+    super.create();
   }
 
   createBG() {
-    const backGround = this.add.image(0, 0, "country-bg").setOrigin(0);
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "clouds-bg")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.4;
   }
 
   setupMenuEvents(menuItem) {

@@ -2,18 +2,38 @@ import BaseScene from "./BaseScene";
 
 class SettingsScene extends BaseScene {
   constructor(config) {
-    super("SettingsScene", {
-      ...config,
-      canGoBack: true,
-      addDevelopers: true,
-    });
+    super("SettingsScene", { ...config, canGoBack: true, addDevelopers: true });
+    this.menu = [
+      { scene: null, text: "Music: On" },
+      { scene: null, text: "Sound: On" }
+    ];
+    this.fontSize = 2.3;
   }
 
   create() {
+    this.createBG();
     super.create();
     this.createText();
   }
 
+  playMusic() {
+    const bgMusic = this.sound.add("music", { loop: true });
+    bgMusic.play();
+  }
+  
+  createBG() {
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "settings-bg")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.4;
+  }
+  
+  setupMenuEvents(menuItem) {
+    const textGO = menuItem.textGO;
+    textGO.setInteractive();
+  }
+  
   createText() {
     this.bgMusic = this.sound.add("music", { volume: 0.5, loop: true });
 

@@ -6,7 +6,12 @@ class PlayScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
+      hasSoundButton: true,
+      hasRestartButton: true,
+      hasUndoButton: true
     });
+    this.fontSize = 1;
+    this.steps = 0;
     this.stepText = "Steps left till you die: ";
     this.maximumStepAllowed = 30;
     this.steps;
@@ -19,29 +24,28 @@ class PlayScene extends BaseScene {
   }
 
   create() {
-    this.addBackGround();
+    this.createBG();
     this.addGraphics();
+    this.displayNumberOfSteps();
     this.setMaxSteps();
     this.displayBestScore();
-    this.displaySoundButton();
     this.displayRestartButton();
     this.displayUndoButton();
     this.drawGraph();
     super.create();
   }
 
-  addBackGround() {
-    const bg = this.add.image(
-      this.windowWidth / 2,
-      this.windowHeight / 2,
-      "playScene-bg"
-    );
-    bg.setDisplaySize(this.windowWidth, this.windowHeight);
+  createBG() {
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "play-bg")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.5;
   }
-
+ 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 4, color: 0xffffff }
     });
   }
 
@@ -58,41 +62,58 @@ class PlayScene extends BaseScene {
   }
 
   addNode(id, value, coordX, coordY) {
-    let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
+    let nodeImage = this.physics.add.sprite(0, 0, this.getNodeImage(value));
     nodeImage.setDisplaySize(200, 200);
 
     let nodeValueText = this.add.text(-100, -100, value, {
-      fontSize: "20px",
+      fontSize: `${this.fontSize}vw`,
       fill: "#000",
       fontStyle: "bold",
     });
 
-    let container = this.add.container(coordX, coordY,[nodeImage, nodeValueText]);
+    let container = this.add.container(coordX, coordY, [
+      nodeImage,
+      nodeValueText,
+    ]);
     container.setSize(200, 200);
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
     this.setupNodeClick(node);
   }
+  
+  displayEndgameMess() {
+    const posX = this.config.width / 2;
+    const posY = this.config.height / 2;
+    let winnerText = this.make.text({
+      x: posX,
+      y: posY,
+      text: "Congratulations, you won the game!!!",
+      origin: { x: 0.5, y: 0.5 },
+      style: {
+        fontFamily: "Indie Flower, cursive",
+        fontSize: `${2}vw`,
+        fill: "#F00",
+        stroke: "#FF0",
+        strokeThickness: 1,
+        wordWrap: { width: 400, useAdvancedWrap: true },
+        align: "center"
+      }
+    });
+  }
 
-  setupNodeClick(node){
+  setupNodeClick(node) {
     node.container.setInteractive().on("pointerdown", () => {
       this.updateSteps();
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
       this.updateValues();
       this.updateNodeImages();
-      if (this.checkWinCondition()) {
-        this.winTheGame();
-      } else {
-        if (this.steps == 0) {
-          this.loseTheGame();
-        }
-      }
+      this.checkWinLoseCondition();
     });
   }
 
-  addEdge(nodeIdA, nodeIdB) {
+addEdge(nodeIdA, nodeIdB) {
     let edge = new Edge(
       this.getNodeFromId(nodeIdA),
       this.getNodeFromId(nodeIdB)
@@ -117,17 +138,33 @@ class PlayScene extends BaseScene {
     return node;
   }
 
-  checkWinCondition() {
-    return this.nodesArray.every((element) => element.isPositiveValue());
+  checkWinLoseCondition() {
+    if (this.nodesArray.every(element => element.isPositiveValue())) {
+      const bestScoreText = localStorage.getItem("bestScore");
+      const bestScore = bestScoreText && parseInt(bestScoreText, 10);
+      if (!bestScore || this.steps > bestScore) {
+      localStorage.setItem("bestScore", this.steps);
+    }
+      this.scene.start("gameEnded", { message: "Level Completed" });
+    } else if (this.steps == 0) {
+      this.scene.start("gameEnded", {
+        message: "You ran out of steps. Game over LOSER!"
+      });
+    }
   }
 
   drawGraph() {
     var obj = this.cache.json.get("level1");
-    for(var i = 0; i < obj.nodes.length; i++){
-      this.addNode(obj.nodes[i].id,obj.nodes[i].value,obj.nodes[i].x,obj.nodes[i].y);
+    for (var i = 0; i < obj.nodes.length; i++) {
+      this.addNode(
+        obj.nodes[i].id,
+        obj.nodes[i].value,
+        obj.nodes[i].x,
+        obj.nodes[i].y
+      );
     }
-    for(var i = 0; i < obj.edges.length; i++){
-      this.addEdge(obj.edges[i].nodeA,obj.edges[i].nodeB);
+    for (var i = 0; i < obj.edges.length; i++) {
+      this.addEdge(obj.edges[i].nodeA, obj.edges[i].nodeB);
     }
   }
 
@@ -154,31 +191,6 @@ class PlayScene extends BaseScene {
   updateSteps() {
     this.steps--;
     this.stepsText.setText(this.stepText + this.steps);
-  }
-
-  displaySoundButton() {
-    this.bgMusic = this.sound.add("music", { volume: 0.5, loop: true });
-
-    const soundButton = this.add
-      .sprite(-750, innerHeight / 10, "sound")
-      .setScale(1.9);
-    const soundButtonOff = this.add
-      .sprite(innerWidth * 0.9, innerHeight / 10, "soundOff")
-      .setScale(1.9);
-
-    soundButton.setInteractive().on("pointerdown", () => {
-      soundButtonOff.x = innerWidth * 0.9;
-      soundButton.x = -750;
-      this.game.config.bgMusicPlaying = false;
-      this.game.sound.stopAll();
-    });
-
-    soundButtonOff.setInteractive().on("pointerdown", () => {
-      soundButtonOff.x = -750;
-      soundButton.x = innerWidth * 0.9;
-      this.game.config.bgMusicPlaying = true;
-      this.bgMusic.play();
-    });
   }
 
   displayRestartButton() {
@@ -217,28 +229,12 @@ class PlayScene extends BaseScene {
     });
   }
 
-  winTheGame() {
-
-    const bestScoreText = localStorage.getItem("bestScore");
-    const bestScore = bestScoreText && parseInt(bestScoreText, 10);
-    sessionStorage.setItem("currentScore", this.steps);
-    if (!bestScore || this.steps > bestScore) {
-      localStorage.setItem("bestScore", this.steps);
-    }
-    this.scene.start("WinScene");
-  }
-
-  loseTheGame() {
-    const looserText = this.add.text(
-      800,
-      200,
-      "Game over :( You used too many steps  ",
-      {
-        fontSize: "50px",
-        fill: "#000",
-        fontStyle: "bold",
-      }
-    );
+  displayNumberOfSteps() {
+    this.stepsText = this.add.text(800, 100, "steps: " + this.steps, {
+      fontSize: "30px",
+      fill: "#000",
+      align: "center",
+    });
   }
 }
 

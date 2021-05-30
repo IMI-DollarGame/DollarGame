@@ -1,8 +1,8 @@
 import BaseScene from "./BaseScene";
 
-class ScoreScene extends BaseScene {
+class gameEnded extends BaseScene {
   constructor(config) {
-    super("ScoreScene", {
+    super("gameEnded", {
       ...config,
       canGoBack: true,
       addDevelopers: true,
@@ -15,19 +15,7 @@ class ScoreScene extends BaseScene {
   create() {
     this.createBG();
     super.create();
-    this.getBestScore();
-    this.createDevelopersTxt();
-    this.createTutorialTxt();
-  }
-
-  getBestScore() {
-    const bestScore = localStorage.getItem("bestScore");
-    this.add
-      .text(...this.screenCenter, `Your best score is: ${bestScore}`, {
-        fontSize: `${this.fontSize}vw`,
-        fill: "#F00"
-      })
-      .setOrigin(0.5);
+    this.createGOTxt();
   }
 
   createBG() {
@@ -38,21 +26,28 @@ class ScoreScene extends BaseScene {
     backGround.x = backGround.displayWidth * 0.4;
   }
 
-  createTutorialTxt() {
+  init(data) {
+    this.message = data.message;
+  }
+
+  createGOTxt() {
     const xPos = this.config.width / 2;
-    const yPos = this.config.height * 0.7;
+    const yPos = this.config.height * 0.5;
 
     this.make.text({
       x: xPos,
       y: yPos,
-      text: "Here we can place the highest score of the player,",
+      text: this.message,
       origin: { x: 0.5, y: 0.5 },
       style: {
         fontFamily: "Indie Flower, cursive",
-        fontSize: 20,
-        wordWrap: { width: 300, useAdvancedWrap: true }
+        fontSize: `${this.fontSize}vw`,
+        fill: "#F00",
+        stroke: "#FF0",
+        strokeThickness: 1,
+        wordWrap: { width: 800, useAdvancedWrap: true }
       }
     });
   }
 }
-export default ScoreScene;
+export default gameEnded;
