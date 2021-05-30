@@ -7,26 +7,21 @@ class PlayScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
-      hasRestartButton: true,
-      hasUndoButton: true
     });
     this.fontSize = 1;
     this.steps = 0;
-    this.stepText = "Steps left till you die: ";
+    this.stepText = "Steps left: ";
     this.maximumStepAllowed = 30;
     this.steps;
     this.stepsText;
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
-    this.windowWidth = window.innerWidth;
-    this.windowHeight = window.innerHeight;
   }
 
   create() {
     this.createBG();
     this.addGraphics();
-    this.displayNumberOfSteps();
     this.setMaxSteps();
     this.displayBestScore();
     this.displayRestartButton();
@@ -42,10 +37,10 @@ class PlayScene extends BaseScene {
       .setScale(1.8);
     backGround.x = backGround.displayWidth * 0.5;
   }
- 
+
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff }
+      lineStyle: { width: 4, color: 0xffffff },
     });
   }
 
@@ -62,10 +57,10 @@ class PlayScene extends BaseScene {
   }
 
   addNode(id, value, coordX, coordY) {
-    let nodeImage = this.physics.add.sprite(0, 0, this.getNodeImage(value));
-    nodeImage.setDisplaySize(200, 200);
+    let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
+    this.scaleObject(nodeImage,10);
 
-    let nodeValueText = this.add.text(-100, -100, value, {
+    let nodeValueText = this.add.text(-innerWidth/20, -innerHeight/20, value, {
       fontSize: `${this.fontSize}vw`,
       fill: "#000",
       fontStyle: "bold",
@@ -75,45 +70,29 @@ class PlayScene extends BaseScene {
       nodeImage,
       nodeValueText,
     ]);
-    container.setSize(200, 200);
+    container.setSize(innerWidth/10, innerHeight/10);
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
     this.setupNodeClick(node);
   }
-  
-  displayEndgameMess() {
-    const posX = this.config.width / 2;
-    const posY = this.config.height / 2;
-    let winnerText = this.make.text({
-      x: posX,
-      y: posY,
-      text: "Congratulations, you won the game!!!",
-      origin: { x: 0.5, y: 0.5 },
-      style: {
-        fontFamily: "Indie Flower, cursive",
-        fontSize: `${2}vw`,
-        fill: "#F00",
-        stroke: "#FF0",
-        strokeThickness: 1,
-        wordWrap: { width: 400, useAdvancedWrap: true },
-        align: "center"
-      }
-    });
-  }
 
   setupNodeClick(node) {
+    this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
     node.container.setInteractive().on("pointerdown", () => {
       this.updateSteps();
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
       this.updateValues();
       this.updateNodeImages();
+      if (this.game.config.soundPlaying === true) {
+        this.soundNode.play();
+      }
       this.checkWinLoseCondition();
     });
   }
 
-addEdge(nodeIdA, nodeIdB) {
+  addEdge(nodeIdA, nodeIdB) {
     let edge = new Edge(
       this.getNodeFromId(nodeIdA),
       this.getNodeFromId(nodeIdB)
@@ -139,16 +118,16 @@ addEdge(nodeIdA, nodeIdB) {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every(element => element.isPositiveValue())) {
+    if (this.nodesArray.every((element) => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
-      localStorage.setItem("bestScore", this.steps);
-    }
-      this.scene.start("gameEnded", { message: "Level Completed" });
+        localStorage.setItem("bestScore", this.steps);
+      }
+      this.scene.start("EndGameScene", { message: "Level Completed" });
     } else if (this.steps == 0) {
-      this.scene.start("gameEnded", {
-        message: "You ran out of steps. Game over LOSER!"
+      this.scene.start("EndGameScene", {
+        message: "You ran out of steps. Game over LOSER!",
       });
     }
   }
@@ -170,7 +149,7 @@ addEdge(nodeIdA, nodeIdB) {
 
   setMaxSteps() {
     this.steps = this.maximumStepAllowed;
-    this.stepsText = this.add.text(800, 100, this.stepText + this.steps, {
+    this.stepsText = this.add.text(innerWidth/2, innerHeight/20, this.stepText + this.steps, {
       fontSize: "30px",
       fill: "#000",
       align: "center",
@@ -179,7 +158,7 @@ addEdge(nodeIdA, nodeIdB) {
 
   displayBestScore() {
     const bestScore = localStorage.getItem("bestScore");
-    const bestScoreText = this.add.text(800, 200, `Best Score: ${0}`);
+    const bestScoreText = this.add.text(innerWidth/2, innerHeight/10, `Best Score: ${0}`);
 
     if (bestScore) {
       bestScoreText.setText(`Best Score: ${bestScore}`);
@@ -195,9 +174,11 @@ addEdge(nodeIdA, nodeIdB) {
 
   displayRestartButton() {
     const restartBtn = this.add
-      .image(innerWidth * 0.8, innerHeight / 20, "restart")
+      .image(innerWidth * 0.8, this.defaultTopBtnHeight, "restart")
       .setOrigin(1, 0)
       .setInteractive();
+
+    this.scaleObject(restartBtn, 20);
 
     restartBtn.on("pointerup", () => {
       this.steps = this.maximumStepAllowed;
@@ -216,25 +197,11 @@ addEdge(nodeIdA, nodeIdB) {
 
   displayUndoButton() {
     const undoBtn = this.add
-      .image(innerWidth * 0.85, innerHeight / 15, "undo")
-      .setOrigin(1, 0)
-      .setInteractive()
-      .setScale(0.7);
+      .image(innerWidth * 0.70, this.defaultTopBtnHeight, "undo")
+      .setOrigin(0, 0)
+      .setInteractive();
 
-    undoBtn.on("pointerup", () => {
-      //TODO: undo to be implemented here;
-      //////////////////
-      // this.steps--;
-      // this.stepsText.setText("steps: " + this.steps);
-    });
-  }
-
-  displayNumberOfSteps() {
-    this.stepsText = this.add.text(800, 100, "steps: " + this.steps, {
-      fontSize: "30px",
-      fill: "#000",
-      align: "center",
-    });
+    this.scaleObject(undoBtn, 20);
   }
 }
 

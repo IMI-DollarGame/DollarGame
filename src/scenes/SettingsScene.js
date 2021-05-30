@@ -35,13 +35,27 @@ class SettingsScene extends BaseScene {
   }
   
   createText() {
-    this.bgMusic = this.sound.add("music", { volume: 0.5, loop: true });
+    this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.8});
 
     const width = this.screenCenter[0];
     const height = this.screenCenter[1];
 
     const musicText = this.add.text(width, height, "Music: Off", this.fontOptions).setOrigin(0.5, 1);
     const soundText = this.add.text(width, height + 80, "Sound: Off",this.fontOptions).setOrigin(0.5, 1);
+
+    if (this.game.config.soundPlaying === false) {
+      soundText.text = "Sound: Off";
+    }
+    else{
+      soundText.text = "Sound: On";
+    }
+    if (this.game.config.bgMusicPlaying === false) {
+      musicText.text = "Music: Off";
+    }
+    else{
+      musicText.text = "Music: On";
+    }
 
     musicText.setInteractive();
     soundText.setInteractive();
@@ -75,13 +89,12 @@ class SettingsScene extends BaseScene {
     });
 
     soundText.on("pointerup", () => {
-      if (this.game.config.bgMusicPlaying === false) {
-        this.game.config.bgMusicPlaying = true;
-        this.bgMusic.play();
+      if (this.game.config.soundPlaying === false) {
+        this.game.config.soundPlaying = true;
+        this.soundMenu.play();
         soundText.text = "Sound: On";
       } else {
-        this.game.config.bgMusicPlaying = false;
-        this.game.sound.stopAll();
+        this.game.config.soundPlaying = false;
         soundText.text = "Sound: Off";
       }
     });

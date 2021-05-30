@@ -1,8 +1,8 @@
 import BaseScene from "./BaseScene";
 
-class gameEnded extends BaseScene {
+class EndGameScene extends BaseScene {
   constructor(config) {
-    super("gameEnded", {
+    super("EndGameScene", {
       ...config,
       canGoBack: true,
       addDevelopers: true,
@@ -50,4 +50,4 @@ class gameEnded extends BaseScene {
     });
   }
 }
-export default gameEnded;
+export default EndGameScene;

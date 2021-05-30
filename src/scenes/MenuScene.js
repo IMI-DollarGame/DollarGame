@@ -5,16 +5,14 @@ class MenuScene extends BaseScene {
   constructor(config) {
     super("MenuScene", {
       ...config,
-      hasSettings: true,
-      hasTutorial: true,
-      addDevelopers: true
+      addDevelopers: true,
+      hasSoundButton: true,
     });
 
     this.menu = [
-      { scene: "PlayScene", text: "Play" },
-      { scene: "LevelsScene", text: "Levels" },
+      { scene: "LevelsScene", text: "Play" },
       { scene: "ScoreScene", text: "Score" },
-      { scene: null, text: "Exit" }
+      { scene: "TutorialScene", text: "Tutorial" },
     ];
   }
 
@@ -45,11 +43,9 @@ class MenuScene extends BaseScene {
     });
 
     textGO.on("pointerup", () => {
-      //    textGO.setStyle({ fill: "#fff" });
       menuItem.scene && this.scene.start(menuItem.scene);
-
-      if (menuItem.text === "Exit") {
-        this.game.destroy(true);
+      if (this.game.config.soundPlaying === true) {
+        this.soundMenu.play();
       }
     });
   }
