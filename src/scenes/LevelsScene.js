@@ -6,7 +6,7 @@ class LevelsScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
-      hasSettings: true
+      hasSoundButton: true,
     });
     this.fontSize = 2.3;
     this.lineHeight = config.height / 12.5;
@@ -31,15 +31,17 @@ class LevelsScene extends BaseScene {
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
   }
+
   createBG() {
     const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "cyan-lvl")
+      .image(this.config.width / 2, this.config.height / 2, "cyan-bg")
       .setOrigin(0.5, 0.5)
       .setScale(1.8);
     backGround.x = backGround.displayWidth * 0.2;
   }
 
   setupMenuEvents(menuItem) {
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.8});
     const textGO = menuItem.textGO;
     textGO.setInteractive();
 
@@ -54,6 +56,9 @@ class LevelsScene extends BaseScene {
     textGO.on("pointerup", () => {
       //    textGO.setStyle({ fill: "#fff" });
       menuItem.scene && this.scene.start(menuItem.scene);
+      if (this.game.config.soundPlaying === true) {
+        this.soundMenu.play();
+      }
     });
   }
 }

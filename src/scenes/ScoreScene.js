@@ -6,8 +6,7 @@ class ScoreScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
-      hasSettings: true,
-      hasTutorial: true
+      hasSoundButton: true
     });
     this.fontSize = 2.3;
   }

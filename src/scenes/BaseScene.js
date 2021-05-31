@@ -13,34 +13,23 @@ class BaseScene extends Phaser.Scene {
       fill: "#F00",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
-      strokeThickness: 1
+      strokeThickness: 1,
     };
+    this.defaultTopBtnHeight = innerHeight / 20;
+    this.bgMusic;
   }
-  
+
   create() {
     this.creatingAllButtons();
-  }
-
-  resize() {
-    let canvas = this.game.canvas;
-    let wRatio = this.config.width / this.config.height;
-    let ratio = canvas.width / canvas.height;
-
-    if (wRatio < ratio) {
-      canvas.style.width = this.config.width + "px";
-      canvas.style.height = this.config.width / ratio + "px";
-    } else {
-      canvas.style.width = this.config.height * ratio + "px";
-      canvas.style.height = this.config.height + "px";
-    }
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
   }
 
   createMenu(menu, setupMenuEvents) {
     let lastMenuPositionY = 0;
-    menu.forEach(menuItem => {
+    menu.forEach((menuItem) => {
       const menuPosition = [
         this.screenCenter[0],
-        this.screenCenter[1] + lastMenuPositionY
+        this.screenCenter[1] + lastMenuPositionY,
       ];
       menuItem.textGO = this.add
         .text(...menuPosition, menuItem.text, this.fontOptions)
@@ -55,68 +44,75 @@ class BaseScene extends Phaser.Scene {
       .image(innerWidth / 20, innerHeight / 20, "arrow")
       .setInteractive()
       .setOrigin(0, 0);
-    this.scaleButton(backButton, 18);
+    this.scaleObject(backButton, 20);
 
     backButton.on("pointerup", () => {
+      this.playButtonSound();
       this.scene.start("MenuScene");
     });
   }
 
-  createSettingsBtn() {
-    const settingBtn = this.add
-      .image(innerWidth * 0.87, innerHeight / 20, "settings")
-      .setOrigin(1, 0)
-      .setInteractive();
-
-    this.scaleButton(settingBtn, 20);
-    settingBtn.on("pointerup", () => {
-      this.scene.start("SettingsScene");
-    });
-  }
-
-  createHelpBtn() {
-    const helpBtn = this.add
-      .image(innerWidth * 0.95, innerHeight / 20, "help")
-      .setOrigin(1, 0)
-      .setInteractive()
-      .setScale(1.95);
-    this.scaleButton(helpBtn, 20);
-    helpBtn.on("pointerup", () => {
-      this.scene.start("TutorialScene");
-    });
-  }
   displaySoundButton() {
-    const soundButton = this.add
-      .sprite(innerWidth * 0.9, innerHeight / 20, "sound")
-      .setOrigin(0, 0);
+    if (!this.game.config.bgMusicPlaying) {
+      this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
+    } else {
+      this.bgMusic = this.bgMusic;
+    }
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
 
-    const soundButtonOff = this.add
-      .sprite(-750, innerHeight / 20, "soundOff")
-      .setOrigin(0, 0);
-
-    soundButton.setInteractive().on("pointerdown", () => {
-      soundButtonOff.x = innerWidth * 0.9;
-      soundButton.x = -750;
-    });
-
-    soundButtonOff.setInteractive().on("pointerdown", () => {
-      soundButtonOff.x = -750;
-      soundButton.x = innerWidth * 0.9;
-    });
-    this.scaleButton(soundButton, 20);
-    this.scaleButton(soundButtonOff, 20);
-  }
-  displayUndoButton() {
-    const undoBtn = this.add
-      .image(innerWidth * 0.83, innerHeight / 20, "undo")
-      .setOrigin(0, 0)
+    const musicOn = this.add
+      .image(innerWidth * 0.85, this.defaultTopBtnHeight, "musicOn")
+      .setOrigin(1, 0)
       .setInteractive();
+    musicOn.visible = this.game.config.bgMusicPlaying;
+    this.scaleObject(musicOn, 20);
 
-    undoBtn.on("pointerup", () => {
-      this.steps--;
-      this.stepsText.setText("steps: " + this.steps);
+    const musicOff = this.add
+      .image(innerWidth * 0.85, this.defaultTopBtnHeight, "musicOff")
+      .setOrigin(1, 0)
+      .setInteractive();
+    musicOff.visible = !this.game.config.bgMusicPlaying;
+    this.scaleObject(musicOff, 20);
+
+    const soundOn = this.add
+      .image(innerWidth * 0.9, this.defaultTopBtnHeight, "soundOn")
+      .setOrigin(1, 0)
+      .setInteractive();
+    soundOn.visible = this.game.config.soundPlaying;
+    this.scaleObject(soundOn, 20);
+
+    const soundOff = this.add
+      .image(innerWidth * 0.9, this.defaultTopBtnHeight, "soundOff")
+      .setOrigin(1, 0)
+      .setInteractive();
+    soundOff.visible = !this.game.config.soundPlaying;
+    this.scaleObject(soundOff, 20);
+
+    soundOn.on("pointerdown", () => {
+      this.game.config.soundPlaying = false;
+      soundOn.visible = this.game.config.soundPlaying;
+      soundOff.visible = !this.game.config.soundPlaying;
     });
-    this.scaleButton(undoBtn, 20);
+
+    soundOff.on("pointerdown", () => {
+      this.game.config.soundPlaying = true;
+      soundOn.visible = this.game.config.soundPlaying;
+      soundOff.visible = !this.game.config.soundPlaying;
+    });
+
+    musicOn.on("pointerdown", () => {
+      this.game.config.bgMusicPlaying = false;
+      musicOff.visible = !this.game.config.bgMusicPlaying;
+      musicOn.visible = this.game.config.bgMusicPlaying;
+      this.bgMusic.stop();
+    });
+
+    musicOff.on("pointerdown", () => {
+      this.game.config.bgMusicPlaying = true;
+      musicOff.visible = !this.game.config.bgMusicPlaying;
+      musicOn.visible = this.game.config.bgMusicPlaying;
+      this.bgMusic.play();
+    });
   }
 
   createDevelopersTxt() {
@@ -133,19 +129,14 @@ class BaseScene extends Phaser.Scene {
         fill: "#F00",
         fontFamily: "Indie Flower, cursive",
         stroke: "#FF0",
-        strokeThickness: 1
-      }
+        strokeThickness: 1,
+      },
     });
   }
+
   creatingAllButtons() {
     if (this.config.canGoBack) {
       this.createBackButton();
-    }
-    if (this.config.hasSettings) {
-      this.createSettingsBtn();
-    }
-    if (this.config.hasTutorial) {
-      this.createHelpBtn();
     }
     if (this.config.addDevelopers) {
       this.createDevelopersTxt();
@@ -153,17 +144,18 @@ class BaseScene extends Phaser.Scene {
     if (this.config.hasSoundButton) {
       this.displaySoundButton();
     }
-    /*   if (this.config.hasRestartButton) {
-      this.displayRestartButton();
-    }*/
-    if (this.config.hasUndoButton) {
-      this.displayUndoButton();
-    }
   }
 
-  scaleButton(obj, per) {
-    obj.displayWidth = this.game.config.width / per;
-    obj.scaleY = obj.scaleX;
+  scaleObject(obj, wPer) {
+    obj.displayWidth = this.game.config.width / wPer;
+    let hPer = (innerHeight / innerWidth) * wPer;
+    obj.displayHeight = this.game.config.height / hPer;
+  }
+
+  playButtonSound() {
+    if (this.game.config.soundPlaying === true) {
+      this.soundMenu.play();
+    }
   }
 }
 export default BaseScene;

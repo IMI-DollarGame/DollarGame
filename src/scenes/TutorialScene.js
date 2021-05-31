@@ -2,7 +2,7 @@ import BaseScene from "./BaseScene";
 
 class TutorialScene extends BaseScene {
   constructor(config) {
-    super("TutorialScene", { ...config, canGoBack: true, addDevelopers: true });
+    super("TutorialScene", { ...config, canGoBack: true, addDevelopers: true, hasSoundButton: true });
   }
 
   create() {
