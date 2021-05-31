@@ -17,6 +17,9 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("musicOn", "assets/buttons/musicOn.png");
     this.load.image("musicOff", "assets/buttons/musicOff.png");
     this.load.image("nextLevel", "assets/buttons/rightArrow.png");
+    this.load.image("all-levels-arrow", "assets/buttons/backToLvls.png");
+    this.load.image("nextLvlArrow", "assets/buttons/nextLvlArrow.png");
+    this.load.image("restartLvl", "assets/buttons/restartCurrentLvl.png");
 
     //backgrounds
     this.load.image("clouds-bg", "assets/backgrounds/clouds-cyan.png");
@@ -31,13 +34,13 @@ class PreloadScene extends Phaser.Scene {
 
     //music
     this.load.audio("music", ["assets/sounds/Cipher2.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
-    this.load.audio("soundMenu", ["assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"]); //source: https://www.fesliyanstudios.com/
+    this.load.audio("soundMenu", [
+      "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"
+    ]); //source: https://www.fesliyanstudios.com/
     this.load.audio("soundNode", ["assets/sounds/lowRandom.mp3"]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
     //json file
     this.load.json("level1", "assets/jsonLevels/level1.json");
-
-    
   }
 
   create() {
