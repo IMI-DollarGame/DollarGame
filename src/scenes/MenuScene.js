@@ -10,7 +10,7 @@ class MenuScene extends BaseScene {
     });
 
     this.menu = [
-      { scene: "LevelsScene", text: "Play" },
+      { scene: "DifficultyScene", text: "Play" },
       { scene: "ScoreScene", text: "Score" },
       { scene: "TutorialScene", text: "Tutorial" },
     ];
@@ -28,26 +28,6 @@ class MenuScene extends BaseScene {
       .setOrigin(0.5, 0.5)
       .setScale(1.8);
     backGround.x = backGround.displayWidth * 0.4;
-  }
-
-  setupMenuEvents(menuItem) {
-    const textGO = menuItem.textGO;
-    textGO.setInteractive();
-
-    textGO.on("pointerover", () => {
-      textGO.setStyle({ fill: "#ff0" });
-    });
-
-    textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#f00" });
-    });
-
-    textGO.on("pointerup", () => {
-      menuItem.scene && this.scene.start(menuItem.scene);
-      if (this.game.config.soundPlaying === true) {
-        this.soundMenu.play();
-      }
-    });
   }
 }
 
