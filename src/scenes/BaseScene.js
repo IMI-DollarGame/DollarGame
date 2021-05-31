@@ -148,9 +148,7 @@ class BaseScene extends Phaser.Scene {
 
     textGO.on("pointerup", () => {
       menuItem.scene && this.scene.start(menuItem.scene);
-      if (this.game.config.soundPlaying === true) {
-        this.soundMenu.play();
-      }
+      this.playButtonSound();
     });
   }
 

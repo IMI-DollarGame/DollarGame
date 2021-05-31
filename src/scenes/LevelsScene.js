@@ -82,9 +82,7 @@ class LevelsScene extends BaseScene {
           edges: menuItem.edges,
           maximumStepAllowed: menuItem.steps,
         });
-      if (this.game.config.soundPlaying === true) {
-        this.soundMenu.play();
-      }
+        this.playButtonSound();
     });
   }
 }

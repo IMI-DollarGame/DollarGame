@@ -53,9 +53,7 @@ class DifficultyScene extends BaseScene {
     textGO.on("pointerup", () => {
       menuItem.scene &&
         this.scene.start(menuItem.scene, { difficulty: menuItem.difficulty });
-      if (this.game.config.soundPlaying === true) {
-        this.soundMenu.play();
-      }
+        this.playButtonSound();
     });
   }
 }

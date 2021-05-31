@@ -192,6 +192,7 @@ class PlayScene extends BaseScene {
     this.scaleObject(restartBtn, 20);
 
     restartBtn.on("pointerup", () => {
+      this.playButtonSound();
       this.steps = this.maximumStepAllowed;
       this.stepsText.setText(this.stepText + this.steps);
       this.resetTheGame();
@@ -213,6 +214,10 @@ class PlayScene extends BaseScene {
       .setInteractive();
 
     this.scaleObject(undoBtn, 20);
+
+    undoBtn.on("pointerup", () => {
+      this.playButtonSound();
+    });
   }
 }
 
