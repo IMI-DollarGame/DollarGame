@@ -66,7 +66,7 @@ class PlayScene extends BaseScene {
       fontStyle: "bold",
     });
 
-    let container = this.add.container(coordX, coordY, [
+    let container = this.add.container(this.config.width * coordX, this.config.height * coordY, [
       nodeImage,
       nodeValueText,
     ]);

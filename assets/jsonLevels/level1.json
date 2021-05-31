@@ -2,17 +2,15 @@
   "level": "1",
   "difficulty": "easy",
   "nodes": [
-    { "id": "A", "value": "-2", "x": 600, "y": 350 },
-    { "id": "B", "value": "-1", "x": 1000, "y": 350 },
-    { "id": "C", "value": "2", "x": 800, "y": 500 },
-    { "id": "D", "value": "5", "x": 600, "y": 650 },
-    { "id": "E", "value": "-2", "x": 1000, "y": 650 }
+    { "id": "A", "value": "3", "x": 0.228, "y": 0.4 },
+    { "id": "B", "value": "-1", "x": 0.7, "y": 0.4 },
+    { "id": "C", "value": "2", "x": 0.5, "y": 0.65 },
+    { "id": "E", "value": "-2", "x": 0.7, "y": 0.85 }
   ],
   "edges": [
     { "nodeA": "A", "nodeB": "B" },
     { "nodeA": "A", "nodeB": "C" },
     { "nodeA": "B", "nodeB": "C" },
-    { "nodeA": "D", "nodeB": "E" },
     { "nodeA": "C", "nodeB": "E" }
   ]
 }
