@@ -35,18 +35,12 @@ class PreloadScene extends Phaser.Scene {
 
     //json file
     this.load.json("levels", "assets/jsonLevels/levels.json");
-
-    
   }
 
   create() {
     this.scene.start("MenuScene");
     this.game.config.bgMusicPlaying = false;
     this.game.config.soundPlaying = true;
-  }
-
-  loadAllJsonLevels(){
-
   }
 }
 

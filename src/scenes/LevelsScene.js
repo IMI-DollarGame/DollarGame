@@ -26,7 +26,6 @@ class LevelsScene extends BaseScene {
 
   create() {
     this.menu = [];
-    console.log(this.count);
     this.createBG();
     super.create();
     this.loadAllLevel(this.menu);
