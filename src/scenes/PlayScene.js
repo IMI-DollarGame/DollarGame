@@ -11,7 +11,6 @@ class PlayScene extends BaseScene {
     this.fontSize = 1;
     this.steps = 0;
     this.stepText = "Steps left: ";
-    this.maximumStepAllowed = 30;
     this.steps;
     this.stepsText;
     this.nodesArray = [];
@@ -19,7 +18,14 @@ class PlayScene extends BaseScene {
     this.graphics;
   }
 
+  init(data) {
+    this.nodes = data.nodes;
+    this.edges = data.edges;
+    this.maximumStepAllowed = data.maximumStepAllowed;
+  }
+
   create() {
+    this.renewScene();
     this.createBG();
     this.addGraphics();
     this.setMaxSteps();
@@ -28,6 +34,12 @@ class PlayScene extends BaseScene {
     this.displayUndoButton();
     this.drawGraph();
     super.create();
+  }
+
+  renewScene(){
+    this.nodesArray = [];
+    this.edgesArray = [];
+    this.graphics;
   }
 
   createBG() {
@@ -133,17 +145,16 @@ class PlayScene extends BaseScene {
   }
 
   drawGraph() {
-    var obj = this.cache.json.get("level1");
-    for (var i = 0; i < obj.nodes.length; i++) {
+    for (var i = 0; i < this.nodes.length; i++) {
       this.addNode(
-        obj.nodes[i].id,
-        obj.nodes[i].value,
-        obj.nodes[i].x,
-        obj.nodes[i].y
+        this.nodes[i].id,
+        this.nodes[i].value,
+        this.nodes[i].x,
+        this.nodes[i].y
       );
     }
-    for (var i = 0; i < obj.edges.length; i++) {
-      this.addEdge(obj.edges[i].nodeA, obj.edges[i].nodeB);
+    for (var i = 0; i < this.edges.length; i++) {
+      this.addEdge(this.edges[i].nodeA, this.edges[i].nodeB);
     }
   }
 

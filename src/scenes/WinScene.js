@@ -6,7 +6,6 @@ class WinScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
-      hasSettings: true,
     });
   }
 
