@@ -32,7 +32,7 @@ class TutorialScene extends BaseScene {
             x: this.textXPos,
             y: this.textYPos,
             text:
-                "Here will be the text that will explain the whole logic of our game.",
+            "These are your islands.",
             origin: { x: 0.5, y: 0.5 },
             style: {
                 fontFamily: "Indie Flower, cursive",
