@@ -16,6 +16,7 @@ class BaseScene extends Phaser.Scene {
       strokeThickness: 1,
     };
     this.defaultTopBtnHeight = innerHeight / 20;
+    this.bgMusic;
   }
 
   create() {
@@ -52,8 +53,12 @@ class BaseScene extends Phaser.Scene {
   }
 
   displaySoundButton() {
-    this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
-    this.soundMenu = this.sound.add("soundMenu", { volume: 0.8 });
+    if (!this.game.config.bgMusicPlaying) {
+      this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
+    } else {
+      this.bgMusic = this.bgMusic;
+    }
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
 
     const musicOn = this.add
       .image(innerWidth * 0.85, this.defaultTopBtnHeight, "musicOn")

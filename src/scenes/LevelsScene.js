@@ -31,7 +31,7 @@ class LevelsScene extends BaseScene {
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
   }
-  
+
   createBG() {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "cyan-bg")

@@ -36,6 +36,8 @@ class PreloadScene extends Phaser.Scene {
 
     //json file
     this.load.json("level1", "assets/jsonLevels/level1.json");
+
+    
   }
 
   create() {
