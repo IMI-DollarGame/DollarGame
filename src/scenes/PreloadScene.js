@@ -8,7 +8,6 @@ class PreloadScene extends Phaser.Scene {
   preload() {
     //buttons
     this.load.image("arrow", "assets/buttons/backArrow.png");
-    this.load.image("settings", "assets/buttons/settingsButton.png");
     this.load.image("help", "assets/buttons/helpButton.png");
     this.load.image("undo", "assets/buttons/undoButton.png");
     this.load.image("restart", "assets/buttons/restartButton.png");
@@ -39,8 +38,8 @@ class PreloadScene extends Phaser.Scene {
     ]); //source: https://www.fesliyanstudios.com/
     this.load.audio("soundNode", ["assets/sounds/lowRandom.mp3"]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
-    //json file
-    this.load.json("level1", "assets/jsonLevels/level1.json");
+
+    this.load.json("levels", "assets/jsonLevels/levels.json");
   }
 
   create() {

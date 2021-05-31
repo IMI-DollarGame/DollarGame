@@ -1,8 +1,8 @@
 import BaseScene from "./BaseScene";
 
-class LevelsScene extends BaseScene {
+class DifficultyScene extends BaseScene {
   constructor(config) {
-    super("LevelsScene", {
+    super("DifficultyScene", {
       ...config,
       canGoBack: true,
       addDevelopers: true,
@@ -10,7 +10,11 @@ class LevelsScene extends BaseScene {
     });
     this.fontSize = 2.3;
     this.lineHeight = config.height / 12.5;
-    this.menu = [];
+    this.menu = [
+      { scene: "LevelsScene", text: "Easy" , difficulty: "easy"},
+      { scene: "LevelsScene", text: "Normal" , difficulty: "normal"},
+      { scene: "LevelsScene", text: "Difficult" , difficulty: "hard"},
+    ];
     this.fontOptions = {
       fontSize: `${this.fontSize}vw`,
       fill: "#F00",
@@ -20,39 +24,10 @@ class LevelsScene extends BaseScene {
     };
   }
 
-  init(data) {
-    this.difficulty = data.difficulty;
-  }
-
   create() {
-    this.menu = [];
     this.createBG();
     super.create();
-    this.loadAllLevel(this.menu);
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
-  }
-
-  loadAllLevel(menu) {
-    this.obj = this.cache.json.get("levels");
-
-    const allLevels = this.obj.scenario;
-
-    for (var i = 0; i < allLevels.length; i++) {
-      const level = allLevels[i];
-      if (level.difficulty === this.difficulty) {
-        const item = {
-          scene: "PlayScene",
-          text: level.level,
-          steps: level.steps,
-          nodes: level.nodes,
-          edges: level.edges,
-        };
-
-        if (menu.findIndex((x) => x.text === item.text) === -1) {
-          menu.push(item);
-        }
-      }
-    }
   }
 
   createBG() {
@@ -77,14 +52,10 @@ class LevelsScene extends BaseScene {
 
     textGO.on("pointerup", () => {
       menuItem.scene &&
-        this.scene.start(menuItem.scene, {
-          nodes: menuItem.nodes,
-          edges: menuItem.edges,
-          maximumStepAllowed: menuItem.steps,
-        });
+        this.scene.start(menuItem.scene, { difficulty: menuItem.difficulty });
         this.playButtonSound();
     });
   }
 }
 
-export default LevelsScene;
+export default DifficultyScene;

@@ -6,7 +6,7 @@ class EndGameScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
-      hasSettings: true,
+      hasSoundButton: true,
       hasTutorial: true
     });
     this.fontSize = 2.3;

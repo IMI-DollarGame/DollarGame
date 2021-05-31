@@ -134,6 +134,24 @@ class BaseScene extends Phaser.Scene {
     });
   }
 
+  setupMenuEvents(menuItem) {
+    const textGO = menuItem.textGO;
+    textGO.setInteractive();
+
+    textGO.on("pointerover", () => {
+      textGO.setStyle({ fill: "#ff0" });
+    });
+
+    textGO.on("pointerout", () => {
+      textGO.setStyle({ fill: "#f00" });
+    });
+
+    textGO.on("pointerup", () => {
+      menuItem.scene && this.scene.start(menuItem.scene);
+      this.playButtonSound();
+    });
+  }
+
   creatingAllButtons() {
     if (this.config.canGoBack) {
       this.createBackButton();
