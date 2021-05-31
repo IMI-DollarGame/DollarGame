@@ -6,7 +6,7 @@ class PlayScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
-      hasSoundButton: true,
+      hasSoundButton: true
     });
     this.fontSize = 1;
     this.steps = 0;
@@ -52,7 +52,7 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 4, color: 0xffffff }
     });
   }
 
@@ -63,26 +63,32 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
 
   addNode(id, value, coordX, coordY) {
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
-    this.scaleObject(nodeImage,10);
+    this.scaleObject(nodeImage, 10);
 
-    let nodeValueText = this.add.text(-innerWidth/20, -innerHeight/20, value, {
-      fontSize: `${this.fontSize}vw`,
-      fill: "#000",
-      fontStyle: "bold",
-    });
+    let nodeValueText = this.add.text(
+      -innerWidth / 20,
+      -innerHeight / 20,
+      value,
+      {
+        fontSize: `${this.fontSize}vw`,
+        fill: "#000",
+        fontStyle: "bold"
+      }
+    );
 
-    let container = this.add.container(this.config.width * coordX, this.config.height * coordY, [
-      nodeImage,
-      nodeValueText,
-    ]);
-    container.setSize(innerWidth/10, innerHeight/10);
+    let container = this.add.container(
+      this.config.width * coordX,
+      this.config.height * coordY,
+      [nodeImage, nodeValueText]
+    );
+    container.setSize(innerWidth / 10, innerHeight / 10);
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
@@ -114,14 +120,14 @@ class PlayScene extends BaseScene {
   }
 
   updateValues() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(1).setText(element.value);
     });
   }
 
   getNodeFromId(nodeId) {
     var node;
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -130,7 +136,7 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every((element) => element.isPositiveValue())) {
+    if (this.nodesArray.every(element => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
@@ -139,7 +145,7 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", { message: "Level Completed" });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over LOSER!",
+        message: "You ran out of steps. Game over!!"
       });
     }
   }
@@ -160,16 +166,25 @@ class PlayScene extends BaseScene {
 
   setMaxSteps() {
     this.steps = this.maximumStepAllowed;
-    this.stepsText = this.add.text(innerWidth/2, innerHeight/20, this.stepText + this.steps, {
-      fontSize: "30px",
-      fill: "#000",
-      align: "center",
-    });
+    this.stepsText = this.add.text(
+      innerWidth / 2,
+      innerHeight / 20,
+      this.stepText + this.steps,
+      {
+        fontSize: "30px",
+        fill: "#000",
+        align: "center"
+      }
+    );
   }
 
   displayBestScore() {
     const bestScore = localStorage.getItem("bestScore");
-    const bestScoreText = this.add.text(innerWidth/2, innerHeight/10, `Best Score: ${0}`);
+    const bestScoreText = this.add.text(
+      innerWidth / 2,
+      innerHeight / 10,
+      `Best Score: ${0}`
+    );
 
     if (bestScore) {
       bestScoreText.setText(`Best Score: ${bestScore}`);
@@ -200,7 +215,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.resetValue();
     });
     this.updateValues();
@@ -209,7 +224,7 @@ class PlayScene extends BaseScene {
 
   displayUndoButton() {
     const undoBtn = this.add
-      .image(innerWidth * 0.70, this.defaultTopBtnHeight, "undo")
+      .image(innerWidth * 0.7, this.defaultTopBtnHeight, "undo")
       .setOrigin(0, 0)
       .setInteractive();
 
@@ -245,7 +260,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach((element) => {
+    this.neighborNodes.forEach(element => {
       element.increaseNodeValueBy1();
     });
   }
