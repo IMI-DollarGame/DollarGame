@@ -15,6 +15,8 @@ class PlayScene extends BaseScene {
     this.stepsText;
     this.nodesArray = [];
     this.edgesArray = [];
+    this.currentValues = [];
+    this.allValuesArray = [];
     this.graphics;
   }
 
@@ -34,11 +36,15 @@ class PlayScene extends BaseScene {
     this.displayUndoButton();
     this.drawGraph();
     super.create();
+    this.monitorValues();
+    //console.log(this.allValuesArray);
   }
 
-  renewScene(){
+  renewScene() {
     this.nodesArray = [];
     this.edgesArray = [];
+    this.currentValues = [];
+    this.allValuesArray = [];
     this.graphics;
   }
 
@@ -90,10 +96,11 @@ class PlayScene extends BaseScene {
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
 
-    var node = new Node(id, value, container);
+    let node = new Node(id, value, container);
     this.nodesArray.push(node);
     this.setupNodeClick(node);
   }
+  /**-------------------------------------------- */
 
   setupNodeClick(node) {
     this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
@@ -106,8 +113,21 @@ class PlayScene extends BaseScene {
       if (this.game.config.soundPlaying === true) {
         this.soundNode.play();
       }
+
+      this.monitorValues();
+      console.log(this.allValuesArray);
       this.checkWinLoseCondition();
     });
+  }
+  monitorValues() {
+    // @Linh Look for output in Browser console.
+    for (const node of this.nodesArray) {
+      //this.currentValues.push({ id: node.id, val: node.value * 1 });
+      this.currentValues.push([node.id, node.value * 1]);
+      // this.currentValues.push(node);
+    }
+    this.allValuesArray.push(this.currentValues);
+    this.currentValues = [];
   }
 
   addEdge(nodeIdA, nodeIdB) {
@@ -126,7 +146,7 @@ class PlayScene extends BaseScene {
   }
 
   getNodeFromId(nodeId) {
-    var node;
+    let node;
     this.nodesArray.forEach(element => {
       if (element.id === nodeId) {
         node = element;
@@ -151,7 +171,7 @@ class PlayScene extends BaseScene {
   }
 
   drawGraph() {
-    for (var i = 0; i < this.nodes.length; i++) {
+    for (let i = 0; i < this.nodes.length; i++) {
       this.addNode(
         this.nodes[i].id,
         this.nodes[i].value,
@@ -159,7 +179,7 @@ class PlayScene extends BaseScene {
         this.nodes[i].y
       );
     }
-    for (var i = 0; i < this.edges.length; i++) {
+    for (let i = 0; i < this.edges.length; i++) {
       this.addEdge(this.edges[i].nodeA, this.edges[i].nodeB);
     }
   }
@@ -232,6 +252,20 @@ class PlayScene extends BaseScene {
 
     undoBtn.on("pointerup", () => {
       this.playButtonSound();
+
+      // this.allValuesArray.forEach(element => {
+      //   console.log(element);
+
+      //   // for (const val of element) {
+      //   //   console.log(val[0]);
+      //   // }
+      // });
+      for (let i = this.allValuesArray.length - 1; i > 0; i--) {
+        const lastEl = this.allValuesArray[i];
+        // for (const v of lastEl) {
+        //   console.log(v);
+        // }
+      }
     });
   }
 }
