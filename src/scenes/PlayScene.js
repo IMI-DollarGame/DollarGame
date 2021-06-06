@@ -6,7 +6,7 @@ class PlayScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
-      hasSoundButton: true
+      hasSoundButton: true,
     });
     this.fontSize = 1;
     this.steps = 0;
@@ -22,21 +22,37 @@ class PlayScene extends BaseScene {
     this.nodes = data.nodes;
     this.edges = data.edges;
     this.maximumStepAllowed = data.maximumStepAllowed;
+    this.tutorialMode = data.tutorialMode;
+    this.tutorialSteps = data.tutorialSteps;
   }
 
   create() {
     this.renewScene();
     this.createBG();
     this.addGraphics();
+    if (this.tutorialMode === true) {
+      this.createTutorialMode();
+    } else {
+      this.createPlayMode();
+    }
+    super.create();
+  }
+
+  createPlayMode() {
     this.setMaxSteps();
     this.displayBestScore();
     this.displayRestartButton();
     this.displayUndoButton();
     this.drawGraph();
-    super.create();
   }
 
-  renewScene(){
+  createTutorialMode() {
+    //show island without value and edges
+    //show value of island
+    //show edge
+  }
+
+  renewScene() {
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
@@ -52,7 +68,7 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff }
+      lineStyle: { width: 4, color: 0xffffff },
     });
   }
 
@@ -63,25 +79,15 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
 
   addNode(id, value, coordX, coordY) {
-    let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
-    this.scaleObject(nodeImage, 10);
+    let nodeImage = this.createNodeImage(this.getNodeImage(value));
 
-    let nodeValueText = this.add.text(
-      -innerWidth / 20,
-      -innerHeight / 20,
-      value,
-      {
-        fontSize: `${this.fontSize}vw`,
-        fill: "#000",
-        fontStyle: "bold"
-      }
-    );
+    let nodeValueText = this.createNodeValueText(value);
 
     let container = this.add.container(
       this.config.width * coordX,
@@ -93,6 +99,27 @@ class PlayScene extends BaseScene {
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
     this.setupNodeClick(node);
+  }
+
+  createNodeImage(image){
+    let nodeImage = this.add.image(0, 0, image);
+    this.scaleObject(nodeImage, 10);
+    return nodeImage;
+  }
+
+  createNodeValueText(value){
+    let nodeValueText = this.add.text(
+      -innerWidth / 20,
+      -innerHeight / 20,
+      value,
+      {
+        fontSize: `${this.fontSize}vw`,
+        fill: "#000",
+        fontStyle: "bold",
+      }
+    );
+
+    return nodeValueText;
   }
 
   setupNodeClick(node) {
@@ -120,14 +147,14 @@ class PlayScene extends BaseScene {
   }
 
   updateValues() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(1).setText(element.value);
     });
   }
 
   getNodeFromId(nodeId) {
     var node;
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -136,7 +163,7 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every(element => element.isPositiveValue())) {
+    if (this.nodesArray.every((element) => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
@@ -145,7 +172,7 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", { message: "Level Completed" });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!"
+        message: "You ran out of steps. Game over!!",
       });
     }
   }
@@ -173,7 +200,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: "30px",
         fill: "#000",
-        align: "center"
+        align: "center",
       }
     );
   }
@@ -215,7 +242,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.resetValue();
     });
     this.updateValues();
@@ -260,7 +287,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach(element => {
+    this.neighborNodes.forEach((element) => {
       element.increaseNodeValueBy1();
     });
   }

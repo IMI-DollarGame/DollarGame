@@ -2,37 +2,31 @@ import BaseScene from "./BaseScene";
 
 class TutorialScene extends BaseScene {
   constructor(config) {
-    super("TutorialScene", { ...config, canGoBack: true, addDevelopers: true, hasSoundButton: true });
+    super("TutorialScene", {
+      ...config,
+    });
+    this.nodes;
+    this.edges;
+    this.steps;
+    this.tutorialSteps;
   }
 
   create() {
-    this.createBG();
-    super.create();
-    this.createTutorialTxt();
-  }
-  createBG() {
-    const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "settings-bg")
-      .setOrigin(0.5, 0.5)
-      .setScale(1.8);
-    backGround.x = backGround.displayWidth * 0.4;
-  }
-  createTutorialTxt() {
-    const xPos = this.config.width / 2;
-    const yPos = this.config.height / 2;
-
-    this.make.text({
-      x: xPos,
-      y: yPos,
-      text:
-        "Here will be the text that will explain the whole logic of our game.",
-      origin: { x: 0.5, y: 0.5 },
-      style: {
-        fontFamily: "Indie Flower, cursive",
-        fontSize: `${1.5}vw`,
-        wordWrap: { width: 300, useAdvancedWrap: true }
-      }
+    this.getTutorialInfo();
+    this.scene.start("PlayScene", {
+      nodes: this.nodes,
+      edges: this.edges,
+      maximumStepAllowed: this.steps,
+      tutorialMode: true,
     });
+  }
+
+  getTutorialInfo() {
+    var obj = this.cache.json.get("tutorial");
+    this.nodes = obj.nodes;
+    this.edges = obj.edges;
+    this.steps = obj.steps;
+    this.tutorialSteps = obj.tutorialSteps;
   }
 }
 
