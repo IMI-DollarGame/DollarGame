@@ -16,6 +16,17 @@ class PlayScene extends BaseScene {
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
+    this.currentTutorialStep = 1;
+    this.tutorialText = [
+      "These are your islands.",
+      "Each island has a certain number assigned to it representing its wealth and population.",
+      "Many islands are connected by travel routes, that enable you to spread your wealth.",
+      "Your goal is to populate as many islands as possible. You do so by clicking on the islands you want to populate. Click on the middle island!",
+      "Every connected island will share a wealth point with the island you clicked on.",
+      "If every island has a wealth score of 0 or higher, you win the game. Try it!",
+      "If an island is too wealthy or poor, it will crumble and fall from the sky, so avoid wealth scores higher or lower than +7 or -7",
+      "Try to win the game with as few moves as possible. Good luck!",
+    ];
   }
 
   init(data) {
@@ -47,6 +58,8 @@ class PlayScene extends BaseScene {
   }
 
   createTutorialMode() {
+    this.createTutorialButton();
+
     //show island without value and edges
     //show value of island
     //show edge
@@ -101,13 +114,13 @@ class PlayScene extends BaseScene {
     this.setupNodeClick(node);
   }
 
-  createNodeImage(image){
+  createNodeImage(image) {
     let nodeImage = this.add.image(0, 0, image);
     this.scaleObject(nodeImage, 10);
     return nodeImage;
   }
 
-  createNodeValueText(value){
+  createNodeValueText(value) {
     let nodeValueText = this.add.text(
       -innerWidth / 20,
       -innerHeight / 20,
@@ -260,6 +273,43 @@ class PlayScene extends BaseScene {
     undoBtn.on("pointerup", () => {
       this.playButtonSound();
     });
+  }
+
+  createTutorialButton() {
+    const tutorialText = this.add.text(0, 0, this.getHelpText(), {
+      fontFamily: "Indie Flower, cursive",
+      fontSize: 20,
+      wordWrap: { width: this.textWidth, useAdvancedWrap: true },
+  });
+
+    const nextButton = this.add
+      .sprite(200, 0, "next")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.currentTutorialStep++;
+        tutorialText.setText(this.getHelpText());
+      });
+    this.scaleObject(nextButton, 15);
+
+    const prevButton = this.add
+      .sprite(-200, 0, "previous")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.currentTutorialStep--;
+        tutorialText.setText(this.getHelpText());
+      });
+    this.scaleObject(prevButton, 15);
+
+    const container = this.add.container(
+      this.config.width * 0.2,
+      this.config.height * 0.5,
+      [nextButton, prevButton, tutorialText]
+    );
+    container.setSize(innerWidth / 7, innerHeight / 7);
+  }
+
+  getHelpText() {
+    return this.tutorialText[this.currentTutorialStep];
   }
 }
 
