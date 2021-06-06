@@ -4,7 +4,6 @@ class LevelsScene extends BaseScene {
   constructor(config) {
     super("LevelsScene", {
       ...config,
-      canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
     });
@@ -28,8 +27,23 @@ class LevelsScene extends BaseScene {
     this.menu = [];
     this.createBG();
     super.create();
+    this.createBackButton();
     this.loadAllLevel(this.menu);
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+  }
+
+  createBackButton() {
+    const backButton = this.add
+      .image(innerWidth / 20, innerHeight / 20, "arrow")
+      .setInteractive()
+      .setOrigin(0, 0);
+    this.scaleObject(backButton, 20);
+
+    backButton.on("pointerup", () => {
+      this.playButtonSound();
+      this.scene.stop();
+      this.scene.start("DifficultyScene");
+    });
   }
 
   loadAllLevel(menu) {
@@ -82,7 +96,7 @@ class LevelsScene extends BaseScene {
           edges: menuItem.edges,
           maximumStepAllowed: menuItem.steps,
         });
-        this.playButtonSound();
+      this.playButtonSound();
     });
   }
 }
