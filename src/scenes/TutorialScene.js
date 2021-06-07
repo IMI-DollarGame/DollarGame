@@ -18,6 +18,7 @@ class TutorialScene extends BaseScene {
       edges: this.edges,
       maximumStepAllowed: this.steps,
       tutorialMode: true,
+      tutorialSteps: this.tutorialSteps,
     });
   }
 

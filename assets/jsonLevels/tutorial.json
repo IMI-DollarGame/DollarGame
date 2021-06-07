@@ -13,33 +13,26 @@
     { "nodeA": "C", "nodeB": "E" }
   ],
   "tutorialSteps": [
-    { "step": 1, "text": "These are your islands." },
+    { "text": "These are your islands." },
     {
-      "step": 2,
       "text": "Each island has a certain number assigned to it representing its wealth and population."
     },
     {
-      "step": 3,
       "text": "Many islands are connected by travel routes, that enable you to spread your wealth."
     },
     {
-      "step": 4,
       "text": "Your goal is to populate as many islands as possible. You do so by clicking on the islands you want to populate. Click on the middle island!"
     },
     {
-      "step": 5,
       "text": "Every connected island will share a wealth point with the island you clicked on."
     },
     {
-      "step": 6,
       "text": "If every island has a wealth score of 0 or higher, you win the game. Try it!"
     },
     {
-      "step": 7,
       "text": "If an island is too wealthy or poor, it will crumble and fall from the sky, so avoid wealth scores higher or lower than +7 or -7"
     },
     {
-      "step": 8,
       "text": "Try to win the game with as few moves as possible. Good luck!"
     }
   ]

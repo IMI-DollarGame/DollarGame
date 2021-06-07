@@ -16,17 +16,7 @@ class PlayScene extends BaseScene {
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
-    this.currentTutorialStep = 1;
-    this.tutorialText = [
-      "These are your islands.",
-      "Each island has a certain number assigned to it representing its wealth and population.",
-      "Many islands are connected by travel routes, that enable you to spread your wealth.",
-      "Your goal is to populate as many islands as possible. You do so by clicking on the islands you want to populate. Click on the middle island!",
-      "Every connected island will share a wealth point with the island you clicked on.",
-      "If every island has a wealth score of 0 or higher, you win the game. Try it!",
-      "If an island is too wealthy or poor, it will crumble and fall from the sky, so avoid wealth scores higher or lower than +7 or -7",
-      "Try to win the game with as few moves as possible. Good luck!",
-    ];
+    this.currentTutorialStep = 0;
   }
 
   init(data) {
@@ -59,6 +49,7 @@ class PlayScene extends BaseScene {
 
   createTutorialMode() {
     this.createTutorialButton();
+    this.updateTutorialScene();
 
     //show island without value and edges
     //show value of island
@@ -111,7 +102,6 @@ class PlayScene extends BaseScene {
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
-    this.setupNodeClick(node);
   }
 
   createNodeImage(image) {
@@ -135,18 +125,34 @@ class PlayScene extends BaseScene {
     return nodeValueText;
   }
 
-  setupNodeClick(node) {
-    this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
-    node.container.setInteractive().on("pointerdown", () => {
-      this.updateSteps();
-      node.decreaseNodeValue();
-      node.updateNeighborNodeValue();
-      this.updateValues();
-      this.updateNodeImages();
-      if (this.game.config.soundPlaying === true) {
-        this.soundNode.play();
-      }
-      this.checkWinLoseCondition();
+  changeNodeValueTextVisible(visibleState) {
+    this.nodesArray.forEach((element) => {
+      element.container.getAt(1).visible = visibleState;
+    });
+  }
+
+  changeEdgeVisible(visibleState) {
+    this.edgesArray.forEach((element) => {
+      element.container.getAt(1).visible = visibleState;
+    });
+  }
+
+  setupNodeClick() {
+    this.nodesArray.forEach((node) => {
+      this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
+      node.container.setInteractive().on("pointerdown", () => {
+        node.decreaseNodeValue();
+        node.updateNeighborNodeValue();
+        this.updateValues();
+        this.updateNodeImages();
+        if (this.game.config.soundPlaying === true) {
+          this.soundNode.play();
+        }
+        if (!this.tutorialMode) {
+          this.updateSteps();
+          this.checkWinLoseCondition();
+        }
+      });
     });
   }
 
@@ -155,7 +161,10 @@ class PlayScene extends BaseScene {
       this.getNodeFromId(nodeIdA),
       this.getNodeFromId(nodeIdB)
     );
-    this.graphics.strokeLineShape(edge.getEdgeCoord());
+    this.graphics.strokeLineShape(edge.getEdgeLine());
+
+    //let edgeImage = this.add.image(edge.getEdgeCoordX(),edge.getEdgeCoordY(), "bridge");
+
     this.edgesArray.push(edge);
   }
 
@@ -191,6 +200,12 @@ class PlayScene extends BaseScene {
   }
 
   drawGraph() {
+    this.drawNodes();
+    this.setupNodeClick();
+    this.drawEdges();
+  }
+
+  drawNodes() {
     for (var i = 0; i < this.nodes.length; i++) {
       this.addNode(
         this.nodes[i].id,
@@ -199,6 +214,9 @@ class PlayScene extends BaseScene {
         this.nodes[i].y
       );
     }
+  }
+
+  drawEdges() {
     for (var i = 0; i < this.edges.length; i++) {
       this.addEdge(this.edges[i].nodeA, this.edges[i].nodeB);
     }
@@ -276,40 +294,62 @@ class PlayScene extends BaseScene {
   }
 
   createTutorialButton() {
-    const tutorialText = this.add.text(0, 0, this.getHelpText(), {
+    const tutorialText = this.add.text(-150, -50, this.getHelpText(), {
       fontFamily: "Indie Flower, cursive",
       fontSize: 20,
-      wordWrap: { width: this.textWidth, useAdvancedWrap: true },
-  });
+      wordWrap: { width: 350, useAdvancedWrap: true },
+    });
 
     const nextButton = this.add
-      .sprite(200, 0, "next")
+      .image(250, 0, "next")
       .setInteractive()
       .on("pointerdown", () => {
-        this.currentTutorialStep++;
-        tutorialText.setText(this.getHelpText());
+        this.changeTutorialStep("next", tutorialText);
       });
-    this.scaleObject(nextButton, 15);
+    this.scaleObject(nextButton, 20);
 
     const prevButton = this.add
-      .sprite(-200, 0, "previous")
+      .image(-250, 0, "previous")
       .setInteractive()
       .on("pointerdown", () => {
-        this.currentTutorialStep--;
-        tutorialText.setText(this.getHelpText());
+        this.changeTutorialStep("previous", tutorialText);
       });
-    this.scaleObject(prevButton, 15);
+    this.scaleObject(prevButton, 20);
 
     const container = this.add.container(
-      this.config.width * 0.2,
-      this.config.height * 0.5,
+      this.config.width * 0.5,
+      this.config.height * 0.1,
       [nextButton, prevButton, tutorialText]
     );
-    container.setSize(innerWidth / 7, innerHeight / 7);
+    container.setSize(innerWidth / 10, innerHeight / 10);
+  }
+
+  changeTutorialStep(action, tutorialText) {
+    if (action == "next") {
+      if (this.currentTutorialStep < this.tutorialSteps.length - 1)
+        this.currentTutorialStep++;
+    } else {
+      if (this.currentTutorialStep > 0) this.currentTutorialStep--;
+    }
+    tutorialText.setText(this.getHelpText());
+    this.updateTutorialScene();
   }
 
   getHelpText() {
-    return this.tutorialText[this.currentTutorialStep];
+    return this.tutorialSteps[this.currentTutorialStep].text;
+  }
+
+  updateTutorialScene() {
+    if (this.currentTutorialStep == 0) {
+      this.drawNodes();
+      this.changeNodeValueTextVisible(false);
+    } else if (this.currentTutorialStep == 1) {
+      this.changeNodeValueTextVisible(true);
+    } else if (this.currentTutorialStep == 2) {
+      this.drawEdges();
+    } else if (this.currentTutorialStep == 3) {
+      this.setupNodeClick();
+    }
   }
 }
 
@@ -369,12 +409,20 @@ class Edge {
     this.nodeB.addNodeNeighbor(this.nodeA);
   }
 
-  getEdgeCoord() {
+  getEdgeLine() {
     return new Phaser.Geom.Line(
       this.nodeA.container.x,
       this.nodeA.container.y,
       this.nodeB.container.x,
       this.nodeB.container.y
     );
+  }
+
+  getEdgeCoordX() {
+    return (this.nodeA.container.x + this.nodeB.container.x) / 2;
+  }
+
+  getEdgeCoordY() {
+    return (this.nodeA.container.y + this.nodeB.container.y) / 2;
   }
 }
