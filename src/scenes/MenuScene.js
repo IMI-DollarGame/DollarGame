@@ -23,10 +23,14 @@ class MenuScene extends BaseScene {
   }
 
   createBG() {
+    // const backGround = this.add
+    //   .image(this.config.width / 2, this.config.height / 2, "clouds-bg")
+    //   .setOrigin(0.5, 0.5)
+    //   .setScale(1.8);
     const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "clouds-bg")
-      .setOrigin(0.5, 0.5)
-      .setScale(1.8);
+      .image(this.config.width / 2, this.config.height / 2, "collageMenu2")
+      .setOrigin(0.4, 0.5)
+      .setScale(1.0);
     backGround.x = backGround.displayWidth * 0.4;
   }
 }
