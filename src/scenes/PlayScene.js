@@ -156,6 +156,7 @@ class PlayScene extends BaseScene {
       if (!bestScore || this.steps > bestScore) {
         localStorage.setItem("bestScore", this.steps);
       }
+      sessionStorage.setItem("currentScore", this.steps)
       this.scene.start("EndGameScene", { message: "Level Completed" });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
