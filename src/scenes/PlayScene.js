@@ -66,7 +66,7 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 8, color: 0xffffff },
     });
   }
 
