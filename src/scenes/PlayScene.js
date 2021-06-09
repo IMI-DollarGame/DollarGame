@@ -23,6 +23,8 @@ class PlayScene extends BaseScene {
     this.nodes = data.nodes;
     this.edges = data.edges;
     this.maximumStepAllowed = data.maximumStepAllowed;
+    this.level = data.level;
+    this.difficulty = data.difficulty;
     this.tutorialMode = data.tutorialMode;
     this.tutorialSteps = data.tutorialSteps;
   }
@@ -191,7 +193,12 @@ class PlayScene extends BaseScene {
       if (!bestScore || this.steps > bestScore) {
         localStorage.setItem("bestScore", this.steps);
       }
-      this.scene.start("EndGameScene", { message: "Level Completed" });
+
+      this.addCompletedLevel(this.level, this.difficulty);
+
+      this.scene.start("EndGameScene", {
+        message: "Level Completed",
+      });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps. Game over!!",

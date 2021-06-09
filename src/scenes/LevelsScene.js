@@ -82,6 +82,8 @@ class LevelsScene extends BaseScene {
           edges: menuItem.edges,
           maximumStepAllowed: menuItem.steps,
           tutorialMode: false,
+          level: menuItem.text,
+          difficulty: this.difficulty,
         });
         this.playButtonSound();
     });
