@@ -27,13 +27,16 @@
       "text": "Every connected island will share a wealth point with the island you clicked on."
     },
     {
-      "text": "If every island has a wealth score of 0 or higher, you win the game. Try it!"
+      "text": "Try to win the game with as few moves as possible. If your steps run out, you loose."
     },
     {
-      "text": "If an island is too wealthy or poor, it will crumble and fall from the sky, so avoid wealth scores higher or lower than +7 or -7"
+      "text": "If you want to revoke a move, click on the undo button to the top right."
     },
     {
-      "text": "Try to win the game with as few moves as possible. Good luck!"
+      "text": "And in case you want to reset the level, press the restart button."
+    },
+    {
+      "text": "If every island has a wealth score of 0 or higher, you win the game. Try it yourself. Good luck!"
     }
   ]
 }
