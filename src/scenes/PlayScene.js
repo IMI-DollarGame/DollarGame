@@ -57,10 +57,15 @@ class PlayScene extends BaseScene {
   }
 
   createBG() {
+    // const backGround = this.add
+    //   .image(this.config.width / 2, this.config.height / 2, "play-bg")
+    //   .setOrigin(0.5, 0.5)
+    //   .setScale(1.8);
+    // backGround.x = backGround.displayWidth * 0.5;
     const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "play-bg")
+      .image(this.config.width / 2, this.config.height / 2, "blueSky")
       .setOrigin(0.5, 0.5)
-      .setScale(1.8);
+      .setScale(1.0);
     backGround.x = backGround.displayWidth * 0.5;
   }
 
@@ -156,7 +161,7 @@ class PlayScene extends BaseScene {
       if (!bestScore || this.steps > bestScore) {
         localStorage.setItem("bestScore", this.steps);
       }
-      sessionStorage.setItem("currentScore", this.steps)
+      sessionStorage.setItem("currentScore", this.steps);
       this.scene.start("EndGameScene", { message: "Level Completed" });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
