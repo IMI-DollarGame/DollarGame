@@ -6,7 +6,7 @@ class PlayScene extends BaseScene {
       ...config,
       canGoBack: true,
       addDevelopers: true,
-      hasSoundButton: true
+      hasSoundButton: true,
     });
     this.fontSize = 1;
     this.stepText = "Steps left: ";
@@ -33,8 +33,8 @@ class PlayScene extends BaseScene {
     this.displayRestartButton();
     this.displayUndoButton();
     this.drawGraph();
-    super.create();
     this.monitorValues();
+    super.create();
   }
 
   renewScene() {
@@ -54,7 +54,7 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff }
+      lineStyle: { width: 4, color: 0xffffff },
     });
   }
 
@@ -65,7 +65,7 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
@@ -81,7 +81,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: `${this.fontSize}vw`,
         fill: "#000",
-        fontStyle: "bold"
+        fontStyle: "bold",
       }
     );
 
@@ -96,14 +96,20 @@ class PlayScene extends BaseScene {
     this.nodesArray.push(node);
     this.setupNodeClick(node);
   }
-  /**-------------------------------------------- */
+
+  updateStep(state) {
+    if (state == "increase") {
+      if (this.steps < 30) this.steps++;
+    } else {
+      this.steps--;
+    }
+    this.stepsText.setText(this.stepText + this.steps);
+  }
 
   setupNodeClick(node) {
-    this.stepNumber = this.maximumStepAllowed;
     this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
     node.container.setInteractive().on("pointerdown", () => {
-      this.stepNumber--;
-      this.updateSteps();
+      this.updateStep("decrease");
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
       this.updateValues();
@@ -112,25 +118,31 @@ class PlayScene extends BaseScene {
         this.soundNode.play();
       }
 
-      this.monitorValues(this.stepNumber);
-      console.log(this.allValuesArray);
+      this.monitorValues();
       this.checkWinLoseCondition();
     });
   }
-  monitorValues(step) {
-    // this.currentValuesAndStep = [];
-    // for (const node of this.nodesArray) {
-    //   this.currentValuesAndStep.push([node.id, node.value * 1, step]);
-    // }
-
-    this.values = [];
-    this.currentValuesAndStep = {};
+  monitorValues() {
+    let currentValuesAndStep = [];
     for (const node of this.nodesArray) {
-      this.values.push(node);
-      this.currentValuesAndStep = { allValues: this.values, step: step };
+      currentValuesAndStep.push({ id: node.id, value: node.value * 1 });
     }
 
-    this.allValuesArray.push(this.currentValuesAndStep);
+    let currentObj = this.allValuesArray.findIndex(
+      (x) => x.step === this.steps
+    );
+
+    if (currentObj != -1) {
+      this.allValuesArray.splice(this.allValuesArray.indexOf(currentObj), {
+        allValue: currentValuesAndStep,
+        step: this.steps,
+      });
+    } else {
+      this.allValuesArray.push({
+        allValue: currentValuesAndStep,
+        step: this.steps,
+      });
+    }
   }
 
   addEdge(nodeIdA, nodeIdB) {
@@ -143,14 +155,14 @@ class PlayScene extends BaseScene {
   }
 
   updateValues() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(1).setText(element.value);
     });
   }
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -159,7 +171,7 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every(element => element.isPositiveValue())) {
+    if (this.nodesArray.every((element) => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
@@ -168,7 +180,7 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", { message: "Level Completed" });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!"
+        message: "You ran out of steps. Game over!!",
       });
     }
   }
@@ -196,7 +208,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: "30px",
         fill: "#000",
-        align: "center"
+        align: "center",
       }
     );
   }
@@ -216,11 +228,6 @@ class PlayScene extends BaseScene {
     }
   }
 
-  updateSteps() {
-    this.steps--;
-    this.stepsText.setText(this.stepText + this.steps);
-  }
-
   displayRestartButton() {
     const restartBtn = this.add
       .image(innerWidth * 0.8, this.defaultTopBtnHeight, "restart")
@@ -238,7 +245,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.resetValue();
     });
     this.updateValues();
@@ -255,21 +262,17 @@ class PlayScene extends BaseScene {
 
     undoBtn.on("pointerup", () => {
       this.playButtonSound();
-      this.steps++;
-      this.stepsText.setText(this.stepText + this.steps);
-      // if (this.steps >= this.maximumStepAllowed) {
-      //   return;
-      // } else {
-      //   this.stepsText.setText(this.stepText + this.steps);
-      // }
+      this.updateStep("increase");
+      this.undoNodeValue();
+      this.updateNodeImages();
+      this.updateValues();
+    });
+  }
 
-      for (let i = this.nodesArray.length - 1; i >= 0; i--) {
-        console.log(this.steps);
-      }
-
-      // this.nodesArray.forEach(element => {
-      //   element.container.getAt(1).setText(element.value);
-      // });
+  undoNodeValue() {
+    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach((element) => {
+      this.getNodeFromId(element.id).value = element.value;
     });
   }
 }
@@ -298,7 +301,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach(element => {
+    this.neighborNodes.forEach((element) => {
       element.increaseNodeValueBy1();
     });
   }
