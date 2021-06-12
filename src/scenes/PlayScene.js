@@ -9,13 +9,11 @@ class PlayScene extends BaseScene {
       hasSoundButton: true
     });
     this.fontSize = 1;
-    this.steps = 0;
     this.stepText = "Steps left: ";
     this.steps;
     this.stepsText;
     this.nodesArray = [];
     this.edgesArray = [];
-    this.currentValues = [];
     this.allValuesArray = [];
     this.graphics;
   }
@@ -37,13 +35,11 @@ class PlayScene extends BaseScene {
     this.drawGraph();
     super.create();
     this.monitorValues();
-    //console.log(this.allValuesArray);
   }
 
   renewScene() {
     this.nodesArray = [];
     this.edgesArray = [];
-    this.currentValues = [];
     this.allValuesArray = [];
     this.graphics;
   }
@@ -103,8 +99,10 @@ class PlayScene extends BaseScene {
   /**-------------------------------------------- */
 
   setupNodeClick(node) {
+    this.stepNumber = this.maximumStepAllowed;
     this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
     node.container.setInteractive().on("pointerdown", () => {
+      this.stepNumber--;
       this.updateSteps();
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
@@ -114,20 +112,25 @@ class PlayScene extends BaseScene {
         this.soundNode.play();
       }
 
-      this.monitorValues();
+      this.monitorValues(this.stepNumber);
       console.log(this.allValuesArray);
       this.checkWinLoseCondition();
     });
   }
-  monitorValues() {
-    // @Linh Look for output in Browser console.
+  monitorValues(step) {
+    // this.currentValuesAndStep = [];
+    // for (const node of this.nodesArray) {
+    //   this.currentValuesAndStep.push([node.id, node.value * 1, step]);
+    // }
+
+    this.values = [];
+    this.currentValuesAndStep = {};
     for (const node of this.nodesArray) {
-      //this.currentValues.push({ id: node.id, val: node.value * 1 });
-      this.currentValues.push([node.id, node.value * 1]);
-      // this.currentValues.push(node);
+      this.values.push(node);
+      this.currentValuesAndStep = { allValues: this.values, step: step };
     }
-    this.allValuesArray.push(this.currentValues);
-    this.currentValues = [];
+
+    this.allValuesArray.push(this.currentValuesAndStep);
   }
 
   addEdge(nodeIdA, nodeIdB) {
@@ -252,20 +255,21 @@ class PlayScene extends BaseScene {
 
     undoBtn.on("pointerup", () => {
       this.playButtonSound();
+      this.steps++;
+      this.stepsText.setText(this.stepText + this.steps);
+      // if (this.steps >= this.maximumStepAllowed) {
+      //   return;
+      // } else {
+      //   this.stepsText.setText(this.stepText + this.steps);
+      // }
 
-      // this.allValuesArray.forEach(element => {
-      //   console.log(element);
-
-      //   // for (const val of element) {
-      //   //   console.log(val[0]);
-      //   // }
-      // });
-      for (let i = this.allValuesArray.length - 1; i > 0; i--) {
-        const lastEl = this.allValuesArray[i];
-        // for (const v of lastEl) {
-        //   console.log(v);
-        // }
+      for (let i = this.nodesArray.length - 1; i >= 0; i--) {
+        console.log(this.steps);
       }
+
+      // this.nodesArray.forEach(element => {
+      //   element.container.getAt(1).setText(element.value);
+      // });
     });
   }
 }
