@@ -74,7 +74,6 @@ class PlayScene extends BaseScene {
   addGraphics() {
     this.graphics = this.add.graphics({
       lineStyle: { width: 8, color: 0xffffff },
-
     });
   }
 
@@ -119,7 +118,7 @@ class PlayScene extends BaseScene {
 
   updateStep(state) {
     if (state == "increase") {
-      if (this.steps < 30) this.steps++;
+      if (this.steps < this.maximumStepAllowed) this.steps++;
     } else {
       this.steps--;
     }
@@ -143,25 +142,28 @@ class PlayScene extends BaseScene {
     });
   }
   monitorValues() {
-    let currentValuesAndStep = [];
+    let currrentValues = [];
     for (const node of this.nodesArray) {
-      currentValuesAndStep.push({ id: node.id, value: node.value * 1 });
+      currrentValues.push({ id: node.id, value: node.value * 1 });
     }
 
-    let currentObj = this.allValuesArray.findIndex(
+    let currentValuesAndStep = {
+      allValue: currrentValues,
+      step: this.steps,
+    };
+
+    let currentObjIndex = this.allValuesArray.findIndex(
       (x) => x.step === this.steps
     );
 
-    if (currentObj != -1) {
-      this.allValuesArray.splice(this.allValuesArray.indexOf(currentObj), {
-        allValue: currentValuesAndStep,
-        step: this.steps,
-      });
+    if (currentObjIndex !== -1) {
+      this.allValuesArray.splice(
+        this.allValuesArray[currentObjIndex],
+        1,
+        currentValuesAndStep
+      );
     } else {
-      this.allValuesArray.push({
-        allValue: currentValuesAndStep,
-        step: this.steps,
-      });
+      this.allValuesArray.push(currentValuesAndStep);
     }
   }
 
@@ -284,7 +286,9 @@ class PlayScene extends BaseScene {
     undoBtn.on("pointerup", () => {
       this.playButtonSound();
       this.updateStep("increase");
-      this.undoNodeValue();
+      if (this.steps < this.maximumStepAllowed) {
+        this.undoNodeValue();
+      }
       this.updateNodeImages();
       this.updateValues();
     });
