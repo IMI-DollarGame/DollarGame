@@ -9,7 +9,6 @@ class PlayScene extends BaseScene {
       hasSoundButton: true,
     });
     this.fontSize = 1;
-    this.steps = 0;
     this.stepText = "Steps left: ";
     this.steps;
     this.stepsText;
@@ -62,6 +61,7 @@ class PlayScene extends BaseScene {
     this.nodesArray = [];
     this.edgesArray = [];
     this.graphics;
+    this.currentTutorialStep = 0;
   }
 
   createBG() {
@@ -114,7 +114,7 @@ class PlayScene extends BaseScene {
 
   createNodeValueText(value) {
     let nodeValueText = this.add.text(
-      -innerWidth / 20,
+      innerWidth / 20,
       -innerHeight / 20,
       value,
       {
@@ -339,6 +339,7 @@ class PlayScene extends BaseScene {
       if (this.currentTutorialStep > 0) this.currentTutorialStep--;
     }
     tutorialText.setText(this.getHelpText());
+    this.clearGraph();
     this.updateTutorialScene();
   }
 
@@ -351,12 +352,29 @@ class PlayScene extends BaseScene {
       this.drawNodes();
       this.changeNodeValueTextVisible(false);
     } else if (this.currentTutorialStep == 1) {
-      this.changeNodeValueTextVisible(true);
+      this.drawNodes();
     } else if (this.currentTutorialStep == 2) {
+      this.drawNodes();
       this.drawEdges();
     } else if (this.currentTutorialStep == 3) {
+      this.drawNodes();
+      this.drawEdges();
       this.setupNodeClick();
     }
+  }
+
+  clearGraph(){
+    this.nodesArray.forEach((element) => {
+      element.container.getAt(1).destroy();
+      this.destroyNodeImage(element.container.getAt(0));
+    });
+    this.nodesArray = [];
+    this.edgesArray = [];
+  }
+
+  destroyNodeImage(image){
+    image.destroy();
+    image = null;
   }
 }
 
