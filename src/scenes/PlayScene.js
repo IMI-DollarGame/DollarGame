@@ -4,7 +4,6 @@ class PlayScene extends BaseScene {
   constructor(config) {
     super("PlayScene", {
       ...config,
-      canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
     });
@@ -35,6 +34,21 @@ class PlayScene extends BaseScene {
     this.drawGraph();
     this.monitorValues();
     super.create();
+    this.createBackButton();
+  }
+
+  createBackButton() {
+    const backButton = this.add
+      .image(innerWidth / 20, innerHeight / 20, "arrow")
+      .setInteractive()
+      .setOrigin(0, 0);
+    this.scaleObject(backButton, 20);
+
+    backButton.on("pointerup", () => {
+      this.playButtonSound();
+      this.scene.stop();
+      this.scene.start("LevelsScene");
+    });
   }
 
   renewScene() {
@@ -45,16 +59,22 @@ class PlayScene extends BaseScene {
   }
 
   createBG() {
+    // const backGround = this.add
+    //   .image(this.config.width / 2, this.config.height / 2, "play-bg")
+    //   .setOrigin(0.5, 0.5)
+    //   .setScale(1.8);
+    // backGround.x = backGround.displayWidth * 0.5;
     const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "play-bg")
+      .image(this.config.width / 2, this.config.height / 2, "blueSky")
       .setOrigin(0.5, 0.5)
-      .setScale(1.8);
+      .setScale(1.0);
     backGround.x = backGround.displayWidth * 0.5;
   }
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 8, color: 0xffffff },
+
     });
   }
 
@@ -177,6 +197,7 @@ class PlayScene extends BaseScene {
       if (!bestScore || this.steps > bestScore) {
         localStorage.setItem("bestScore", this.steps);
       }
+      sessionStorage.setItem("currentScore", this.steps);
       this.scene.start("EndGameScene", { message: "Level Completed" });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
