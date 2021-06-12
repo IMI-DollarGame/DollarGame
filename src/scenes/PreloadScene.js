@@ -2,7 +2,7 @@ import Phaser from "phaser";
 
 class PreloadScene extends Phaser.Scene {
   constructor(config) {
-    super("PreloadScene", config);
+    super("PreloadScene");
   }
 
   preload() {
@@ -40,6 +40,14 @@ class PreloadScene extends Phaser.Scene {
 
 
     this.load.json("levels", "assets/jsonLevels/levels.json");
+
+    //fonts
+
+    this.loadFont("SquadaOne", "assets/fonts/SquadaOne-Regular.ttf");
+    this.loadFont("Montserrat-Regular", "assets/fonts/Montserrat-Regular.ttf");
+    this.loadFont("Pixel", "assets/fonts/Fipps-Regular.otf");
+    this.loadFont("Neon", "assets/fonts/Neon.ttf");
+
   }
 
   create() {
@@ -47,6 +55,15 @@ class PreloadScene extends Phaser.Scene {
     this.game.config.bgMusicPlaying = false;
     this.game.config.soundPlaying = true;
   }
-}
+
+  // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
+  loadFont(name, url) {
+    var newFont = new FontFace(name, `url(${url})`);
+    newFont.load().then(function (loaded) {
+        document.fonts.add(loaded);
+    }).catch(function (error) {
+        return error;
+    });
+}}
 
 export default PreloadScene;

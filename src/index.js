@@ -41,12 +41,18 @@ const config = {
     },
   },
   scale: {
-    mode: Phaser.Scale.ScaleModes.EXACT_FIT,
+    mode: Phaser.Scale.ScaleModes.WIDTH_CONTROLS_HEIGHT,
     autoCenter: Phaser.Scale.Center.CENTER_BOTH,
   },
 
   bgMusicPlaying: true,
   soundPlaying: true,
+
+  defaultFontOptions: {
+    fontSize: "40px",
+    fill: "#FFFFFF",
+    fontFamily: "Neon",
+  },
 
   //Basically what a user sees on the screen
   scene: initScenes(),
