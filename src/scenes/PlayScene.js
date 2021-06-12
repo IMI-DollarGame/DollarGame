@@ -8,12 +8,12 @@ class PlayScene extends BaseScene {
       hasSoundButton: true,
     });
     this.fontSize = 1;
-    this.steps = 0;
     this.stepText = "Steps left: ";
     this.steps;
     this.stepsText;
     this.nodesArray = [];
     this.edgesArray = [];
+    this.allValuesArray = [];
     this.graphics;
   }
 
@@ -32,6 +32,7 @@ class PlayScene extends BaseScene {
     this.displayRestartButton();
     this.displayUndoButton();
     this.drawGraph();
+    this.monitorValues();
     super.create();
     this.createBackButton();
   }
@@ -53,6 +54,7 @@ class PlayScene extends BaseScene {
   renewScene() {
     this.nodesArray = [];
     this.edgesArray = [];
+    this.allValuesArray = [];
     this.graphics;
   }
 
@@ -72,6 +74,7 @@ class PlayScene extends BaseScene {
   addGraphics() {
     this.graphics = this.add.graphics({
       lineStyle: { width: 8, color: 0xffffff },
+
     });
   }
 
@@ -109,15 +112,24 @@ class PlayScene extends BaseScene {
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
 
-    var node = new Node(id, value, container);
+    let node = new Node(id, value, container);
     this.nodesArray.push(node);
     this.setupNodeClick(node);
+  }
+
+  updateStep(state) {
+    if (state == "increase") {
+      if (this.steps < 30) this.steps++;
+    } else {
+      this.steps--;
+    }
+    this.stepsText.setText(this.stepText + this.steps);
   }
 
   setupNodeClick(node) {
     this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
     node.container.setInteractive().on("pointerdown", () => {
-      this.updateSteps();
+      this.updateStep("decrease");
       node.decreaseNodeValue();
       node.updateNeighborNodeValue();
       this.updateValues();
@@ -125,8 +137,32 @@ class PlayScene extends BaseScene {
       if (this.game.config.soundPlaying === true) {
         this.soundNode.play();
       }
+
+      this.monitorValues();
       this.checkWinLoseCondition();
     });
+  }
+  monitorValues() {
+    let currentValuesAndStep = [];
+    for (const node of this.nodesArray) {
+      currentValuesAndStep.push({ id: node.id, value: node.value * 1 });
+    }
+
+    let currentObj = this.allValuesArray.findIndex(
+      (x) => x.step === this.steps
+    );
+
+    if (currentObj != -1) {
+      this.allValuesArray.splice(this.allValuesArray.indexOf(currentObj), {
+        allValue: currentValuesAndStep,
+        step: this.steps,
+      });
+    } else {
+      this.allValuesArray.push({
+        allValue: currentValuesAndStep,
+        step: this.steps,
+      });
+    }
   }
 
   addEdge(nodeIdA, nodeIdB) {
@@ -145,7 +181,7 @@ class PlayScene extends BaseScene {
   }
 
   getNodeFromId(nodeId) {
-    var node;
+    let node;
     this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
@@ -171,7 +207,7 @@ class PlayScene extends BaseScene {
   }
 
   drawGraph() {
-    for (var i = 0; i < this.nodes.length; i++) {
+    for (let i = 0; i < this.nodes.length; i++) {
       this.addNode(
         this.nodes[i].id,
         this.nodes[i].value,
@@ -179,7 +215,7 @@ class PlayScene extends BaseScene {
         this.nodes[i].y
       );
     }
-    for (var i = 0; i < this.edges.length; i++) {
+    for (let i = 0; i < this.edges.length; i++) {
       this.addEdge(this.edges[i].nodeA, this.edges[i].nodeB);
     }
   }
@@ -211,11 +247,6 @@ class PlayScene extends BaseScene {
     } else {
       bestScoreText.setText(`Best Score: ${0}`);
     }
-  }
-
-  updateSteps() {
-    this.steps--;
-    this.stepsText.setText(this.stepText + this.steps);
   }
 
   displayRestartButton() {
@@ -252,6 +283,17 @@ class PlayScene extends BaseScene {
 
     undoBtn.on("pointerup", () => {
       this.playButtonSound();
+      this.updateStep("increase");
+      this.undoNodeValue();
+      this.updateNodeImages();
+      this.updateValues();
+    });
+  }
+
+  undoNodeValue() {
+    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach((element) => {
+      this.getNodeFromId(element.id).value = element.value;
     });
   }
 }
