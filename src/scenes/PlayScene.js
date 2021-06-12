@@ -78,9 +78,21 @@ class PlayScene extends BaseScene {
   }
 
   getNodeImage(value) {
-    if (value < 1) return "node1";
-    else if (value >= 1 && value < 4) return "node2";
-    else return "node3";
+    if (value < -6) return "node-7";
+    else if ((value == -6)) return "node-6";
+    else if ((value == -5)) return "node-5";
+    else if ((value == -4)) return "node-4";
+    else if ((value == -3)) return "node-3";
+    else if ((value == -2)) return "node-2";
+    else if ((value == -1)) return "node-1";
+    else if ((value == 0)) return "node0";
+    else if ((value == 1)) return "node1";
+    else if ((value == 2)) return "node2";
+    else if ((value == 3)) return "node3";
+    else if ((value == 4)) return "node3";
+    else if ((value == 5)) return "node3";
+    else if ((value == 6)) return "node3";
+    else if (value > 6) return "node3";
   }
 
   updateNodeImages() {

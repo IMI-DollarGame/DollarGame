@@ -30,14 +30,14 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("collageMenu3", "assets/backgrounds/collageMenu3.png");
 
     //node image
-    this.load.image("node3", "assets/playSceneAssets/floating_island-7.png");
-    this.load.image("node3", "assets/playSceneAssets/floating_island-6.png");
-    this.load.image("node3", "assets/playSceneAssets/floating_island-5.png");
-    this.load.image("node3", "assets/playSceneAssets/floating_island-4.png");
-    this.load.image("node3", "assets/playSceneAssets/floating_island-3.png");
-    this.load.image("node3", "assets/playSceneAssets/floating_island-2.png");
-    this.load.image("node3", "assets/playSceneAssets/floating_island-1.png");
-    this.load.image("node3", "assets/playSceneAssets/floating_island0.png");
+    this.load.image("node-7", "assets/playSceneAssets/floating_island-7.png");
+    this.load.image("node-6", "assets/playSceneAssets/floating_island-6.png");
+    this.load.image("node-5", "assets/playSceneAssets/floating_island-5.png");
+    this.load.image("node-4", "assets/playSceneAssets/floating_island-4.png");
+    this.load.image("node-3", "assets/playSceneAssets/floating_island-3.png");
+    this.load.image("node-2", "assets/playSceneAssets/floating_island-2.png");
+    this.load.image("node-1", "assets/playSceneAssets/floating_island-1.png");
+    this.load.image("node0", "assets/playSceneAssets/floating_island0.png");
     this.load.image("node1", "assets/playSceneAssets/floating_island1.png");
     this.load.image("node2", "assets/playSceneAssets/floating_island2.png");
     this.load.image("node3", "assets/playSceneAssets/floating_island3.png");
