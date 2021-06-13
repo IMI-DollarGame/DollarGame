@@ -50,7 +50,7 @@ class PlayScene extends BaseScene {
 
   createTutorialMode() {
     this.createTutorialButton();
-    this.updateTutorialScene();
+    this.drawTutorialGraph();
 
     //show island without value and edges
     //show value of island
@@ -133,15 +133,9 @@ class PlayScene extends BaseScene {
     });
   }
 
-  changeEdgeVisible(visibleState) {
-    this.edgesArray.forEach((element) => {
-      element.container.getAt(1).visible = visibleState;
-    });
-  }
-
   setupNodeClick() {
+    this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
     this.nodesArray.forEach((node) => {
-      this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
       node.container.setInteractive().on("pointerdown", () => {
         node.decreaseNodeValue();
         node.updateNeighborNodeValue();
@@ -155,6 +149,12 @@ class PlayScene extends BaseScene {
           this.checkWinLoseCondition();
         }
       });
+    });
+  }
+
+  setNodeInputState(state) {
+    this.nodesArray.forEach((node) => {
+      node.container.input.enabled = state;
     });
   }
 
@@ -339,7 +339,7 @@ class PlayScene extends BaseScene {
       if (this.currentTutorialStep > 0) this.currentTutorialStep--;
     }
     tutorialText.setText(this.getHelpText());
-    this.clearGraph();
+    //this.clearGraph();
     this.updateTutorialScene();
   }
 
@@ -347,23 +347,33 @@ class PlayScene extends BaseScene {
     return this.tutorialSteps[this.currentTutorialStep].text;
   }
 
-  updateTutorialScene() {
-    if (this.currentTutorialStep == 0) {
-      this.drawNodes();
-      this.changeNodeValueTextVisible(false);
-    } else if (this.currentTutorialStep == 1) {
-      this.drawNodes();
-    } else if (this.currentTutorialStep == 2) {
-      this.drawNodes();
-      this.drawEdges();
-    } else if (this.currentTutorialStep == 3) {
-      this.drawNodes();
-      this.drawEdges();
-      this.setupNodeClick();
-    }
+  drawTutorialGraph() {
+    this.drawNodes();
+    this.changeNodeValueTextVisible(false);
+    this.setupNodeClick();
+    this.setNodeInputState(false);
+    //this.addEdges();
+    //this.chageEdgeVisible(false);
   }
 
-  clearGraph(){
+  updateTutorialScene() {
+    if (this.currentTutorialStep == 0) {
+      this.changeNodeValueTextVisible(false);
+      
+      //this.chageEdgeVisible(false);
+    } else if (this.currentTutorialStep == 1) {
+      this.changeNodeValueTextVisible(true);
+      
+      //this.chageEdgeVisible(false);
+    } else if (this.currentTutorialStep == 2) {
+      this.drawEdges();
+      this.setNodeInputState(false);
+    } else if (this.currentTutorialStep == 3) {
+      this.setNodeInputState(true);
+    } else if (this.currentTutorialStep == 3)
+  }
+
+  clearGraph() {
     this.nodesArray.forEach((element) => {
       element.container.getAt(1).destroy();
       this.destroyNodeImage(element.container.getAt(0));
@@ -372,7 +382,7 @@ class PlayScene extends BaseScene {
     this.edgesArray = [];
   }
 
-  destroyNodeImage(image){
+  destroyNodeImage(image) {
     image.destroy();
     image = null;
   }

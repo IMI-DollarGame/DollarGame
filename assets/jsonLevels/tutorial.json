@@ -21,10 +21,10 @@
       "text": "Many islands are connected by travel routes, that enable you to spread your wealth."
     },
     {
-      "text": "Your goal is to populate as many islands as possible. You do so by clicking on the islands you want to populate. Click on the middle island!"
+      "text": "Your goal is to reach the livable condition for all the islands. Every connected island will share a wealth point with the island you clicked on. Try to click on an island!"
     },
     {
-      "text": "Every connected island will share a wealth point with the island you clicked on."
+      "text": "If the wealth point value of an island is negative, that means they currently need help from the neighbors. Send your help to that island"
     },
     {
       "text": "Try to win the game with as few moves as possible. If your steps run out, you loose."
