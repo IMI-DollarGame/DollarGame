@@ -8,9 +8,10 @@ class EndGameScene extends BaseScene {
       addDevelopers: true,
       hasSoundButton: true,
       hasTutorial: true,
-      allLvlsCompleted: false
     });
     this.fontSize = 2.3;
+    this.allLvlsCompleted = false;
+    this.item = { steps: 0, nodes: [], edges: [] };
   }
 
   create() {
@@ -48,8 +49,8 @@ class EndGameScene extends BaseScene {
         fill: "#F00",
         stroke: "#FF0",
         strokeThickness: 1,
-        wordWrap: { width: 800, useAdvancedWrap: true }
-      }
+        wordWrap: { width: 800, useAdvancedWrap: true },
+      },
     });
     this.checkScene();
   }
@@ -84,8 +85,8 @@ class EndGameScene extends BaseScene {
         fill: "#F00",
         stroke: "#FF0",
         strokeThickness: 1,
-        wordWrap: { width: 800, useAdvancedWrap: true }
-      }
+        wordWrap: { width: 800, useAdvancedWrap: true },
+      },
     });
   }
   createBestScoreText() {
@@ -103,8 +104,8 @@ class EndGameScene extends BaseScene {
         fill: "#F00",
         stroke: "#FF0",
         strokeThickness: 1,
-        wordWrap: { width: 800, useAdvancedWrap: true }
-      }
+        wordWrap: { width: 800, useAdvancedWrap: true },
+      },
     });
   }
   /*-----------CREATING BUTTONS -------------- */
@@ -132,6 +133,7 @@ class EndGameScene extends BaseScene {
       this.scene.start("PlayScene");
     });
   }
+
   createToNxtLvlBtn(per) {
     const nexttLvlBtn = this.add
       .image(innerWidth * per, innerHeight * 0.7, "nextLvlArrow")
@@ -141,27 +143,36 @@ class EndGameScene extends BaseScene {
 
     nexttLvlBtn.on("pointerup", () => {
       this.playButtonSound();
-      this.scene.start("LevelsScene");
+      
+      this.goToNextLvl();
+      console.log(this.item);
     });
   }
+
   goToNextLvl() {
+    this.checkNextLvl();
     this.obj = this.cache.json.get("levels");
     const allLevels = this.obj.scenario;
 
     for (var i = 0; i < allLevels.length; i++) {
       const level = allLevels[i];
-      if (level.difficulty === this.difficulty) {
-        const item = {
-          scene: "PlayScene",
-          text: "Level " + level.level,
-          steps: level.steps,
-          nodes: level.nodes,
-          edges: level.edges,
-          level: level.level
-        };
+
+      if (level.difficulty === this.difficulty && level.level === this.level) {
+        this.item.steps = level.steps;
+        this.item.nodes = level.nodes;
+        this.item.edges = level.edges;
       }
     }
+
+    this.scene.start("PlayScene", {
+      nodes: this.item.nodes,
+      edges: this.item.edges,
+      maximumStepAllowed: this.item.steps,
+      difficulty: this.difficulty,
+      level: this.level,
+    });
   }
+
   checkNextLvl() {
     this.obj = this.cache.json.get("levels");
     const allLevels = this.obj.scenario;
@@ -187,16 +198,18 @@ class EndGameScene extends BaseScene {
         this.level++;
       }
     } else if (this.difficulty === "normal") {
-      if (this.level === easyLlvs.length) {
+      if (this.level === normalLvls.length) {
         this.level = 1;
         this.difficulty = "hard";
       } else {
         this.level++;
       }
     } else if (this.difficulty === "hard") {
-      this.allLvlsCompleted = true;
-    } else {
-      this.level++;
+      if (this.level === hardLvls.length) {
+        this.allLvlsCompleted = true;
+      } else {
+        this.level++;
+      }
     }
   }
 

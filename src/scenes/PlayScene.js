@@ -5,7 +5,7 @@ class PlayScene extends BaseScene {
     super("PlayScene", {
       ...config,
       addDevelopers: true,
-      hasSoundButton: true
+      hasSoundButton: true,
     });
     this.fontSize = 1;
     this.stepText = "Steps left: ";
@@ -75,7 +75,7 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 8, color: 0xffffff }
+      lineStyle: { width: 8, color: 0xffffff },
     });
   }
 
@@ -98,7 +98,7 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
@@ -114,7 +114,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: `${this.fontSize}vw`,
         fill: "#000",
-        fontStyle: "bold"
+        fontStyle: "bold",
       }
     );
 
@@ -163,16 +163,16 @@ class PlayScene extends BaseScene {
 
     let currentValuesAndStep = {
       allValue: currrentValues,
-      step: this.steps
+      step: this.steps,
     };
 
     let currentObjIndex = this.allValuesArray.findIndex(
-      x => x.step === this.steps
+      (x) => x.step === this.steps
     );
 
     if (currentObjIndex !== -1) {
       this.allValuesArray.splice(
-        this.allValuesArray[currentObjIndex],
+        currentObjIndex,
         1,
         currentValuesAndStep
       );
@@ -191,14 +191,14 @@ class PlayScene extends BaseScene {
   }
 
   updateValues() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(1).setText(element.value);
     });
   }
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -207,7 +207,7 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every(element => element.isPositiveValue())) {
+    if (this.nodesArray.every((element) => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
@@ -217,11 +217,11 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
-        difficulty: this.difficulty
+        difficulty: this.difficulty,
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!"
+        message: "You ran out of steps. Game over!!",
       });
     }
   }
@@ -249,7 +249,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: "30px",
         fill: "#000",
-        align: "center"
+        align: "center",
       }
     );
   }
@@ -286,7 +286,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.resetValue();
     });
     this.updateValues();
@@ -304,17 +304,18 @@ class PlayScene extends BaseScene {
     undoBtn.on("pointerup", () => {
       this.playButtonSound();
       this.updateStep("increase");
-      if (this.steps < this.maximumStepAllowed) {
+      if (this.steps <= this.maximumStepAllowed) {
         this.undoNodeValue();
+        this.updateNodeImages();
+        this.updateValues();
       }
-      this.updateNodeImages();
-      this.updateValues();
+      
     });
   }
-
+  
   undoNodeValue() {
-    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
-    this.allValuesArray[index].allValue.forEach(element => {
+    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach((element) => {
       this.getNodeFromId(element.id).value = element.value;
     });
   }
@@ -344,7 +345,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach(element => {
+    this.neighborNodes.forEach((element) => {
       element.increaseNodeValueBy1();
     });
   }
