@@ -41,14 +41,12 @@ const config = {
     },
   },
   scale: {
-    mode: Phaser.Scale.ScaleModes.WIDTH_CONTROLS_HEIGHT,
+    mode: Phaser.Scale.ScaleModes.EXACT_FIT,
     autoCenter: Phaser.Scale.Center.CENTER_BOTH,
   },
 
   bgMusicPlaying: true,
   soundPlaying: true,
-
-
 
   //Basically what a user sees on the screen
   scene: initScenes(),
