@@ -5,7 +5,7 @@ class PlayScene extends BaseScene {
     super("PlayScene", {
       ...config,
       addDevelopers: true,
-      hasSoundButton: true,
+      hasSoundButton: true
     });
     this.fontSize = 1;
     this.stepText = "Steps left: ";
@@ -21,6 +21,8 @@ class PlayScene extends BaseScene {
     this.nodes = data.nodes;
     this.edges = data.edges;
     this.maximumStepAllowed = data.maximumStepAllowed;
+    this.level = data.level;
+    this.difficulty = data.difficulty;
   }
 
   create() {
@@ -73,30 +75,30 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 8, color: 0xffffff },
+      lineStyle: { width: 8, color: 0xffffff }
     });
   }
 
   getNodeImage(value) {
     if (value < -6) return "node-7";
-    else if ((value == -6)) return "node-6";
-    else if ((value == -5)) return "node-5";
-    else if ((value == -4)) return "node-4";
-    else if ((value == -3)) return "node-3";
-    else if ((value == -2)) return "node-2";
-    else if ((value == -1)) return "node-1";
-    else if ((value == 0)) return "node0";
-    else if ((value == 1)) return "node1";
-    else if ((value == 2)) return "node2";
-    else if ((value == 3)) return "node3";
-    else if ((value == 4)) return "node3";
-    else if ((value == 5)) return "node3";
-    else if ((value == 6)) return "node3";
+    else if (value == -6) return "node-6";
+    else if (value == -5) return "node-5";
+    else if (value == -4) return "node-4";
+    else if (value == -3) return "node-3";
+    else if (value == -2) return "node-2";
+    else if (value == -1) return "node-1";
+    else if (value == 0) return "node0";
+    else if (value == 1) return "node1";
+    else if (value == 2) return "node2";
+    else if (value == 3) return "node3";
+    else if (value == 4) return "node3";
+    else if (value == 5) return "node3";
+    else if (value == 6) return "node3";
     else if (value > 6) return "node3";
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
@@ -112,7 +114,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: `${this.fontSize}vw`,
         fill: "#000",
-        fontStyle: "bold",
+        fontStyle: "bold"
       }
     );
 
@@ -161,11 +163,11 @@ class PlayScene extends BaseScene {
 
     let currentValuesAndStep = {
       allValue: currrentValues,
-      step: this.steps,
+      step: this.steps
     };
 
     let currentObjIndex = this.allValuesArray.findIndex(
-      (x) => x.step === this.steps
+      x => x.step === this.steps
     );
 
     if (currentObjIndex !== -1) {
@@ -189,14 +191,14 @@ class PlayScene extends BaseScene {
   }
 
   updateValues() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(1).setText(element.value);
     });
   }
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -205,17 +207,21 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every((element) => element.isPositiveValue())) {
+    if (this.nodesArray.every(element => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
         localStorage.setItem("bestScore", this.steps);
       }
       sessionStorage.setItem("currentScore", this.steps);
-      this.scene.start("EndGameScene", { message: "Level Completed" });
+      this.scene.start("EndGameScene", {
+        message: "Level Completed",
+        level: this.level,
+        difficulty: this.difficulty
+      });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!",
+        message: "You ran out of steps. Game over!!"
       });
     }
   }
@@ -243,7 +249,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: "30px",
         fill: "#000",
-        align: "center",
+        align: "center"
       }
     );
   }
@@ -280,7 +286,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.resetValue();
     });
     this.updateValues();
@@ -307,8 +313,8 @@ class PlayScene extends BaseScene {
   }
 
   undoNodeValue() {
-    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
-    this.allValuesArray[index].allValue.forEach((element) => {
+    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach(element => {
       this.getNodeFromId(element.id).value = element.value;
     });
   }
@@ -338,7 +344,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach((element) => {
+    this.neighborNodes.forEach(element => {
       element.increaseNodeValueBy1();
     });
   }

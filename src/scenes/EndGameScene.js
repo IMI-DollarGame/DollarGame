@@ -7,7 +7,8 @@ class EndGameScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
-      hasTutorial: true
+      hasTutorial: true,
+      allLvlsCompleted: false
     });
     this.fontSize = 2.3;
   }
@@ -28,6 +29,8 @@ class EndGameScene extends BaseScene {
 
   init(data) {
     this.message = data.message;
+    this.level = data.level;
+    this.difficulty = data.difficulty;
   }
 
   createGOTxt() {
@@ -141,6 +144,62 @@ class EndGameScene extends BaseScene {
       this.scene.start("LevelsScene");
     });
   }
+  goToNextLvl() {
+    this.obj = this.cache.json.get("levels");
+    const allLevels = this.obj.scenario;
+
+    for (var i = 0; i < allLevels.length; i++) {
+      const level = allLevels[i];
+      if (level.difficulty === this.difficulty) {
+        const item = {
+          scene: "PlayScene",
+          text: "Level " + level.level,
+          steps: level.steps,
+          nodes: level.nodes,
+          edges: level.edges,
+          level: level.level
+        };
+      }
+    }
+  }
+  checkNextLvl() {
+    this.obj = this.cache.json.get("levels");
+    const allLevels = this.obj.scenario;
+    let easyLlvs = [];
+    let normalLvls = [];
+    let hardLvls = [];
+
+    for (let i = 0; i < allLevels.length; i++) {
+      if (allLevels[i].difficulty === "easy") {
+        easyLlvs.push(allLevels[i]);
+      } else if (allLevels[i].difficulty === "normal") {
+        normalLvls.push(allLevels[i]);
+      } else {
+        hardLvls.push(allLevels[i]);
+      }
+    }
+
+    if (this.difficulty === "easy") {
+      if (this.level === easyLlvs.length) {
+        this.level = 1;
+        this.difficulty = "normal";
+      } else {
+        this.level++;
+      }
+    } else if (this.difficulty === "normal") {
+      if (this.level === easyLlvs.length) {
+        this.level = 1;
+        this.difficulty = "hard";
+      } else {
+        this.level++;
+      }
+    } else if (this.difficulty === "hard") {
+      this.allLvlsCompleted = true;
+    } else {
+      this.level++;
+    }
+  }
+
   /*-------------- SCALING BUTTONS AND SOUND ------------- */
   scaleObject(obj, wPer) {
     obj.displayWidth = this.game.config.width / wPer;
