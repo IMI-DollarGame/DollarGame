@@ -7,11 +7,14 @@ class BaseScene extends Phaser.Scene {
     this.screenCenter = [config.width / 2, config.height / 3];
     this.fontSize = 40;
     this.lineHeight = 80;
+    this.defaultTopBtnHeight = innerHeight / 20;
+    this.bgMusic;
 
   }
 
   create() {
     this.creatingAllButtons();
+    this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
   }
 
   createMenu(menu, setupMenuEvents) {

@@ -39,14 +39,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: this.message,
       origin: { x: 0.5, y: 0.5 },
-      style: {
-        fontFamily: "Indie Flower, cursive",
-        fontSize: `${this.fontSize}vw`,
-        fill: "#F00",
-        stroke: "#FF0",
-        strokeThickness: 1,
-        wordWrap: { width: 800, useAdvancedWrap: true }
-      }
+      style: this.game.config.defaultFontOptions
     });
     this.checkScene();
   }
@@ -75,14 +68,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Your current score: ${currentScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: {
-        fontFamily: "Indie Flower, cursive",
-        fontSize: `${1.8}vw`,
-        fill: "#F00",
-        stroke: "#FF0",
-        strokeThickness: 1,
-        wordWrap: { width: 800, useAdvancedWrap: true }
-      }
+      style: this.game.config.defaultFontOptions
     });
   }
   createBestScoreText() {
@@ -94,14 +80,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Best score: ${bestScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: {
-        fontFamily: "Indie Flower, cursive",
-        fontSize: `${1.8}vw`,
-        fill: "#F00",
-        stroke: "#FF0",
-        strokeThickness: 1,
-        wordWrap: { width: 800, useAdvancedWrap: true }
-      }
+      style: this.game.config.defaultFontOptions
     });
   }
   /*-----------CREATING BUTTONS -------------- */
