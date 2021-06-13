@@ -139,6 +139,7 @@ class PlayScene extends BaseScene {
       [nodeImage, nodeValueText]
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
+    container.setDepth(1);
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
@@ -263,15 +264,18 @@ class PlayScene extends BaseScene {
 
     if (nodeBX > nodeAX) {
       distanceBetweenX = nodeBX - nodeAX;
-      numberOfRocks = Math.round(distanceBetweenX / 80);
+      numberOfRocks = Math.round(distanceBetweenX / (this.config.width * 0.04));
       getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
       deltaX = distanceBetweenX / numberOfRocks;
-      console.log(deltaX);
     } else {
       distanceBetweenX = nodeAX - nodeBX;
-      numberOfRocks = Math.round(distanceBetweenX / 80);
+      numberOfRocks = Math.round(distanceBetweenX / (this.config.width * 0.04));
       getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
       deltaX = distanceBetweenX / numberOfRocks;
+    }
+
+    if (nodeBX == nodeAX) {
+      deltaX = 0;
     }
 
     if (nodeBY == nodeAY) {
@@ -283,14 +287,7 @@ class PlayScene extends BaseScene {
       deltaY = distanceBetweenY / numberOfRocks;
     }
 
-    if (nodeBX > nodeAX) {
-      getXcoord += 40;
-    } else {
-      getXcoord -= 100;
-      getYcoord += 40;
-    }
-
-    for (let i = 1; i < numberOfRocks - 1; i++) {
+    for (let i = 1; i < numberOfRocks; i++) {
       let randomRock = Math.floor(Math.random() * (9 - 1) + 1);
       if (randomRock === prevRandom) {
         while (randomRock === prevRandom) {
@@ -298,14 +295,16 @@ class PlayScene extends BaseScene {
         }
       }
 
-      this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
-      if (nodeBX < nodeAX) {
+      if (nodeBX < nodeAX && nodeBY > nodeAY) {
         getXcoord -= deltaX;
         getYcoord += deltaY;
       } else {
         getXcoord += deltaX;
         getYcoord += deltaY;
       }
+
+      this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+
       prevRandom = randomRock;
     }
 
