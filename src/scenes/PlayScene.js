@@ -4,7 +4,6 @@ class PlayScene extends BaseScene {
   constructor(config) {
     super("PlayScene", {
       ...config,
-      canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
     });
@@ -14,6 +13,7 @@ class PlayScene extends BaseScene {
     this.stepsText;
     this.nodesArray = [];
     this.edgesArray = [];
+    this.allValuesArray = [];
     this.graphics;
     this.currentTutorialStep = 0;
     this.bestScoreText;
@@ -27,6 +27,8 @@ class PlayScene extends BaseScene {
     this.maximumStepAllowed = data.maximumStepAllowed;
     this.tutorialMode = data.tutorialMode;
     this.tutorialSteps = data.tutorialSteps;
+    this.level = data.level;
+    this.difficulty = data.difficulty;
   }
 
   create() {
@@ -38,12 +40,15 @@ class PlayScene extends BaseScene {
     this.displayRestartButton();
     this.displayUndoButton();
     this.drawGraph();
+    this.monitorValues();
     if (this.tutorialMode === true) {
       this.createTutorialButton();
       this.turnOnTutorialMode();
     }
     super.create();
+    this.createBackButton();
   }
+
 
   turnOnTutorialMode() {
     this.setNodeValueTextVisible(false);
@@ -55,18 +60,38 @@ class PlayScene extends BaseScene {
     //this.chageEdgeVisible(false);
   }
 
+  createBackButton() {
+    const backButton = this.add
+      .image(innerWidth / 20, innerHeight / 20, "arrow")
+      .setInteractive()
+      .setOrigin(0, 0);
+    this.scaleObject(backButton, 20);
+
+    backButton.on("pointerup", () => {
+      this.playButtonSound();
+      this.scene.stop();
+      this.scene.start("LevelsScene");
+    });
+  }
+
   renewScene() {
     this.nodesArray = [];
     this.edgesArray = [];
+    this.allValuesArray = [];
     this.graphics;
     this.currentTutorialStep = 0;
   }
 
   createBG() {
+    // const backGround = this.add
+    //   .image(this.config.width / 2, this.config.height / 2, "play-bg")
+    //   .setOrigin(0.5, 0.5)
+    //   .setScale(1.8);
+    // backGround.x = backGround.displayWidth * 0.5;
     const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "play-bg")
+      .image(this.config.width / 2, this.config.height / 2, "blueSky")
       .setOrigin(0.5, 0.5)
-      .setScale(1.8);
+      .setScale(1.0);
     backGround.x = backGround.displayWidth * 0.5;
   }
 
@@ -77,9 +102,21 @@ class PlayScene extends BaseScene {
   }
 
   getNodeImage(value) {
-    if (value < 1) return "node1";
-    else if (value >= 1 && value < 4) return "node2";
-    else return "node3";
+    if (value < -6) return "node-7";
+    else if (value == -6) return "node-6";
+    else if (value == -5) return "node-5";
+    else if (value == -4) return "node-4";
+    else if (value == -3) return "node-3";
+    else if (value == -2) return "node-2";
+    else if (value == -1) return "node-1";
+    else if (value == 0) return "node0";
+    else if (value == 1) return "node1";
+    else if (value == 2) return "node2";
+    else if (value == 3) return "node3";
+    else if (value == 4) return "node3";
+    else if (value == 5) return "node3";
+    else if (value == 6) return "node3";
+    else if (value > 6) return "node3";
   }
 
   updateNodeImages() {
@@ -131,23 +168,55 @@ class PlayScene extends BaseScene {
     });
   }
 
-  setupNodeClick() {
+  updateStep(state) {
+    if (state == "increase") {
+      if (this.steps < this.maximumStepAllowed) this.steps++;
+    } else {
+      this.steps--;
+    }
+    this.stepsText.setText(this.stepText + this.steps);
+  }
+
+  setupNodeClick(node) {
     this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
-    this.nodesArray.forEach((node) => {
-      node.container.setInteractive().on("pointerdown", () => {
-        node.decreaseNodeValue();
-        node.updateNeighborNodeValue();
-        this.updateValues();
-        this.updateNodeImages();
-        if (this.game.config.soundPlaying === true) {
-          this.soundNode.play();
-        }
-        if (!this.tutorialMode) {
-          this.updateSteps();
-          this.checkWinLoseCondition();
-        }
-      });
+    node.container.setInteractive().on("pointerdown", () => {
+      this.updateStep("decrease");
+      node.decreaseNodeValue();
+      node.updateNeighborNodeValue();
+      this.updateValues();
+      this.updateNodeImages();
+      if (this.game.config.soundPlaying === true) {
+        this.soundNode.play();
+      }
+      this.monitorValues();
+      this.checkWinLoseCondition();
     });
+  }
+    
+  monitorValues() {
+    let currrentValues = [];
+    for (const node of this.nodesArray) {
+      currrentValues.push({ id: node.id, value: node.value * 1 });
+    }
+
+    let currentValuesAndStep = {
+      allValue: currrentValues,
+      step: this.steps,
+    };
+
+    let currentObjIndex = this.allValuesArray.findIndex(
+      (x) => x.step === this.steps
+    );
+
+    if (currentObjIndex !== -1) {
+      this.allValuesArray.splice(
+        currentObjIndex,
+        1,
+        currentValuesAndStep
+      );
+    } else {
+      this.allValuesArray.push(currentValuesAndStep);
+    }
   }
 
   setNodeInputState(state) {
@@ -191,7 +260,7 @@ class PlayScene extends BaseScene {
   }
 
   getNodeFromId(nodeId) {
-    var node;
+    let node;
     this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
@@ -207,9 +276,11 @@ class PlayScene extends BaseScene {
       if (!bestScore || this.steps > bestScore) {
         localStorage.setItem("bestScore", this.steps);
       }
-
+      sessionStorage.setItem("currentScore", this.steps);
       this.scene.start("EndGameScene", {
         message: "Level Completed",
+        level: this.level,
+        difficulty: this.difficulty,
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
@@ -270,11 +341,6 @@ class PlayScene extends BaseScene {
     }
   }
 
-  updateSteps() {
-    this.steps--;
-    this.stepsText.setText(this.stepText + this.steps);
-  }
-
   displayRestartButton() {
     this.restartBtn = this.add
       .image(innerWidth * 0.8, this.defaultTopBtnHeight, "restart")
@@ -309,6 +375,20 @@ class PlayScene extends BaseScene {
 
     this.undoBtn.on("pointerup", () => {
       this.playButtonSound();
+      this.updateStep("increase");
+      if (this.steps <= this.maximumStepAllowed) {
+        this.undoNodeValue();
+        this.updateNodeImages();
+        this.updateValues();
+      }
+      
+    });
+  }
+  
+  undoNodeValue() {
+    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach((element) => {
+      this.getNodeFromId(element.id).value = element.value;
     });
   }
 
