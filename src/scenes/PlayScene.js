@@ -5,7 +5,7 @@ class PlayScene extends BaseScene {
     super("PlayScene", {
       ...config,
       addDevelopers: true,
-      hasSoundButton: true,
+      hasSoundButton: true
     });
     this.fontSize = 1;
     this.stepText = "Steps left: ";
@@ -100,7 +100,7 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 4, color: 0xffffff }
     });
   }
 
@@ -123,7 +123,7 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
@@ -158,7 +158,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: `${this.fontSize}vw`,
         fill: "#000",
-        fontStyle: "bold",
+        fontStyle: "bold"
       }
     );
 
@@ -166,7 +166,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeValueTextVisible(state) {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(1).visible = state;
     });
   }
@@ -181,7 +181,7 @@ class PlayScene extends BaseScene {
   }
 
   setupNodeClick() {
-    this.nodesArray.forEach((node) => {
+    this.nodesArray.forEach(node => {
       this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
       node.container.setInteractive().on("pointerdown", () => {
         this.updateStep("decrease");
@@ -206,11 +206,11 @@ class PlayScene extends BaseScene {
 
     let currentValuesAndStep = {
       allValue: currrentValues,
-      step: this.steps,
+      step: this.steps
     };
 
     let currentObjIndex = this.allValuesArray.findIndex(
-      (x) => x.step === this.steps
+      x => x.step === this.steps
     );
 
     if (currentObjIndex !== -1) {
@@ -221,7 +221,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeInputState(state) {
-    this.nodesArray.forEach((node) => {
+    this.nodesArray.forEach(node => {
       node.container.input.enabled = state;
     });
   }
@@ -255,14 +255,14 @@ class PlayScene extends BaseScene {
   }
 
   updateValues() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(1).setText(element.value);
     });
   }
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -271,7 +271,7 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every((element) => element.isPositiveValue())) {
+    if (this.nodesArray.every(element => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
@@ -281,11 +281,11 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
-        difficulty: this.difficulty,
+        difficulty: this.difficulty
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!",
+        message: "You ran out of steps. Game over!!"
       });
     }
   }
@@ -315,27 +315,24 @@ class PlayScene extends BaseScene {
 
   setMaxSteps() {
     this.steps = this.maximumStepAllowed;
-    this.stepsText = this.add.text(
-      innerWidth / 2,
-      innerHeight / 20,
-      this.stepText + this.steps,
-      {
+    this.stepsText = this.add
+      .text(innerWidth / 2, innerHeight / 20, this.stepText + this.steps, {
         fontSize: "30px",
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: "Montserrat-Regular",
         fill: "#000",
-        align: "center",
-      }
-    );
+        align: "center"
+      })
+      .setOrigin(0.5);
   }
 
   displayBestScore() {
     const bestScore = localStorage.getItem("bestScore");
-    this.bestScoreText = this.add.text(
-      innerWidth / 2,
-      innerHeight / 10,
-      `Best Score: ${0}`,
-        {fill: "#3b3b3b", fontFamily: 'Montserrat-Regular'}
-    );
+    this.bestScoreText = this.add
+      .text(innerWidth / 2, innerHeight / 10, `Best Score: ${0}`, {
+        fill: "#3b3b3b",
+        fontFamily: "Montserrat-Regular"
+      })
+      .setOrigin(0.5);
 
     if (bestScore) {
       this.bestScoreText.setText(`Best Score: ${bestScore}`);
@@ -361,7 +358,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.resetValue();
     });
     this.updateValues();
@@ -388,8 +385,8 @@ class PlayScene extends BaseScene {
   }
 
   undoNodeValue() {
-    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
-    this.allValuesArray[index].allValue.forEach((element) => {
+    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach(element => {
       this.getNodeFromId(element.id).value = element.value;
     });
   }
@@ -398,7 +395,7 @@ class PlayScene extends BaseScene {
     const tutorialText = this.add.text(-150, -50, this.getHelpText(), {
       fontFamily: "Indie Flower, cursive",
       fontSize: 20,
-      wordWrap: { width: 350, useAdvancedWrap: true },
+      wordWrap: { width: 350, useAdvancedWrap: true }
     });
 
     const nextButton = this.add
@@ -515,7 +512,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach((element) => {
+    this.neighborNodes.forEach(element => {
       element.increaseNodeValueBy1();
     });
   }
