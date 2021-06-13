@@ -21,6 +21,8 @@ class PlayScene extends BaseScene {
     this.nodes = data.nodes;
     this.edges = data.edges;
     this.maximumStepAllowed = data.maximumStepAllowed;
+    this.level = data.level;
+    this.difficulty = data.difficulty;
   }
 
   create() {
@@ -79,19 +81,19 @@ class PlayScene extends BaseScene {
 
   getNodeImage(value) {
     if (value < -6) return "node-7";
-    else if ((value == -6)) return "node-6";
-    else if ((value == -5)) return "node-5";
-    else if ((value == -4)) return "node-4";
-    else if ((value == -3)) return "node-3";
-    else if ((value == -2)) return "node-2";
-    else if ((value == -1)) return "node-1";
-    else if ((value == 0)) return "node0";
-    else if ((value == 1)) return "node1";
-    else if ((value == 2)) return "node2";
-    else if ((value == 3)) return "node3";
-    else if ((value == 4)) return "node3";
-    else if ((value == 5)) return "node3";
-    else if ((value == 6)) return "node3";
+    else if (value == -6) return "node-6";
+    else if (value == -5) return "node-5";
+    else if (value == -4) return "node-4";
+    else if (value == -3) return "node-3";
+    else if (value == -2) return "node-2";
+    else if (value == -1) return "node-1";
+    else if (value == 0) return "node0";
+    else if (value == 1) return "node1";
+    else if (value == 2) return "node2";
+    else if (value == 3) return "node3";
+    else if (value == 4) return "node3";
+    else if (value == 5) return "node3";
+    else if (value == 6) return "node3";
     else if (value > 6) return "node3";
   }
 
@@ -170,7 +172,7 @@ class PlayScene extends BaseScene {
 
     if (currentObjIndex !== -1) {
       this.allValuesArray.splice(
-        this.allValuesArray[currentObjIndex],
+        currentObjIndex,
         1,
         currentValuesAndStep
       );
@@ -212,7 +214,11 @@ class PlayScene extends BaseScene {
         localStorage.setItem("bestScore", this.steps);
       }
       sessionStorage.setItem("currentScore", this.steps);
-      this.scene.start("EndGameScene", { message: "Level Completed" });
+      this.scene.start("EndGameScene", {
+        message: "Level Completed",
+        level: this.level,
+        difficulty: this.difficulty,
+      });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps. Game over!!",
@@ -298,14 +304,15 @@ class PlayScene extends BaseScene {
     undoBtn.on("pointerup", () => {
       this.playButtonSound();
       this.updateStep("increase");
-      if (this.steps < this.maximumStepAllowed) {
+      if (this.steps <= this.maximumStepAllowed) {
         this.undoNodeValue();
+        this.updateNodeImages();
+        this.updateValues();
       }
-      this.updateNodeImages();
-      this.updateValues();
+      
     });
   }
-
+  
   undoNodeValue() {
     var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
     this.allValuesArray[index].allValue.forEach((element) => {
