@@ -16,6 +16,9 @@ class PlayScene extends BaseScene {
     this.edgesArray = [];
     this.graphics;
     this.currentTutorialStep = 0;
+    this.bestScoreText;
+    this.undoBtn;
+    this.restartBtn;
   }
 
   init(data) {
@@ -32,29 +35,26 @@ class PlayScene extends BaseScene {
     this.renewScene();
     this.createBG();
     this.addGraphics();
-    if (this.tutorialMode === true) {
-      this.createTutorialMode();
-    } else {
-      this.createPlayMode();
-    }
-    super.create();
-  }
-
-  createPlayMode() {
     this.setMaxSteps();
     this.displayBestScore();
     this.displayRestartButton();
     this.displayUndoButton();
     this.drawGraph();
+    if (this.tutorialMode === true) {
+      this.createTutorialButton();
+      this.turnOnTutorialMode();
+    }
+    super.create();
   }
 
-  createTutorialMode() {
-    this.createTutorialButton();
-    this.drawTutorialGraph();
-
-    //show island without value and edges
-    //show value of island
-    //show edge
+  turnOnTutorialMode() {
+    this.setNodeValueTextVisible(false);
+    this.setNodeInputState(false);
+    this.setBestscoreTextVisible(false);
+    this.setStepTextVisible(false);
+    this.setUndoButtonVisible(false);
+    this.setRestartButtonVisible(false);
+    //this.chageEdgeVisible(false);
   }
 
   renewScene() {
@@ -127,9 +127,9 @@ class PlayScene extends BaseScene {
     return nodeValueText;
   }
 
-  changeNodeValueTextVisible(visibleState) {
+  setNodeValueTextVisible(state) {
     this.nodesArray.forEach((element) => {
-      element.container.getAt(1).visible = visibleState;
+      element.container.getAt(1).visible = state;
     });
   }
 
@@ -156,6 +156,22 @@ class PlayScene extends BaseScene {
     this.nodesArray.forEach((node) => {
       node.container.input.enabled = state;
     });
+  }
+
+  setBestscoreTextVisible(state) {
+    this.bestScoreText.visible = state;
+  }
+
+  setStepTextVisible(state) {
+    this.stepsText.visible = state;
+  }
+
+  setUndoButtonVisible(state) {
+    this.undoBtn.visible = state;
+  }
+
+  setRestartButtonVisible(state) {
+    this.restartBtn.visible = state;
   }
 
   addEdge(nodeIdA, nodeIdB) {
@@ -245,16 +261,16 @@ class PlayScene extends BaseScene {
 
   displayBestScore() {
     const bestScore = localStorage.getItem("bestScore");
-    const bestScoreText = this.add.text(
+    this.bestScoreText = this.add.text(
       innerWidth / 2,
       innerHeight / 10,
       `Best Score: ${0}`
     );
 
     if (bestScore) {
-      bestScoreText.setText(`Best Score: ${bestScore}`);
+      this.bestScoreText.setText(`Best Score: ${bestScore}`);
     } else {
-      bestScoreText.setText(`Best Score: ${0}`);
+      this.bestScoreText.setText(`Best Score: ${0}`);
     }
   }
 
@@ -264,14 +280,14 @@ class PlayScene extends BaseScene {
   }
 
   displayRestartButton() {
-    const restartBtn = this.add
+    this.restartBtn = this.add
       .image(innerWidth * 0.8, this.defaultTopBtnHeight, "restart")
       .setOrigin(1, 0)
       .setInteractive();
 
-    this.scaleObject(restartBtn, 20);
+    this.scaleObject(this.restartBtn, 20);
 
-    restartBtn.on("pointerup", () => {
+    this.restartBtn.on("pointerup", () => {
       this.playButtonSound();
       this.steps = this.maximumStepAllowed;
       this.stepsText.setText(this.stepText + this.steps);
@@ -288,14 +304,14 @@ class PlayScene extends BaseScene {
   }
 
   displayUndoButton() {
-    const undoBtn = this.add
+    this.undoBtn = this.add
       .image(innerWidth * 0.7, this.defaultTopBtnHeight, "undo")
       .setOrigin(0, 0)
       .setInteractive();
 
-    this.scaleObject(undoBtn, 20);
+    this.scaleObject(this.undoBtn, 20);
 
-    undoBtn.on("pointerup", () => {
+    this.undoBtn.on("pointerup", () => {
       this.playButtonSound();
     });
   }
@@ -347,30 +363,49 @@ class PlayScene extends BaseScene {
     return this.tutorialSteps[this.currentTutorialStep].text;
   }
 
-  drawTutorialGraph() {
-    this.drawNodes();
-    this.changeNodeValueTextVisible(false);
-    this.setupNodeClick();
-    this.setNodeInputState(false);
-    //this.addEdges();
-    //this.chageEdgeVisible(false);
-  }
-
   updateTutorialScene() {
+    //show islands
     if (this.currentTutorialStep == 0) {
-      this.changeNodeValueTextVisible(false);
-      
+      this.setNodeValueTextVisible(false);
       //this.chageEdgeVisible(false);
-    } else if (this.currentTutorialStep == 1) {
-      this.changeNodeValueTextVisible(true);
-      
+    }
+    //show island values
+    else if (this.currentTutorialStep == 1) {
+      this.setNodeValueTextVisible(true);
       //this.chageEdgeVisible(false);
-    } else if (this.currentTutorialStep == 2) {
+    }
+    //show edges
+    else if (this.currentTutorialStep == 2) {
       this.drawEdges();
       this.setNodeInputState(false);
-    } else if (this.currentTutorialStep == 3) {
+    }
+    //make nodes clickable
+    else if (this.currentTutorialStep == 3) {
       this.setNodeInputState(true);
-    } else if (this.currentTutorialStep == 3)
+    }
+    //make nodes clickable
+    else if (this.currentTutorialStep == 4) {
+      this.setStepTextVisible(false);
+    }
+    //show steps
+    else if (this.currentTutorialStep == 5) {
+      this.setStepTextVisible(true);
+      this.setUndoButtonVisible(false);
+    }
+    //undo btn
+    else if (this.currentTutorialStep == 6) {
+      this.setUndoButtonVisible(true);
+      this.setRestartButtonVisible(false);
+    }
+    //restart btn
+    else if (this.currentTutorialStep == 7) {
+      this.setRestartButtonVisible(true);
+      this.setBestscoreTextVisible(false);
+    }
+    //win condition
+    else if (this.currentTutorialStep == 8) {
+      this.setBestscoreTextVisible(true);
+    }
   }
 
   clearGraph() {
