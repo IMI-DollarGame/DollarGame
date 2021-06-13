@@ -41,6 +41,44 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("node1", "assets/playSceneAssets/floating_island1.png");
     this.load.image("node2", "assets/playSceneAssets/floating_island2.png");
     this.load.image("node3", "assets/playSceneAssets/floating_island3.png");
+    this.load.image("node4", "assets/playSceneAssets/floating_island4.png");
+    this.load.image("node5", "assets/playSceneAssets/floating_island5.png");
+    this.load.image("node6", "assets/playSceneAssets/floating_island6.png");
+    this.load.image("node7", "assets/playSceneAssets/floating_island7.png");
+
+    //bridge image
+    this.load.image(
+      "rock-1",
+      "assets/playSceneAssets/bridge/floating-rock1.png"
+    );
+    this.load.image(
+      "rock-2",
+      "assets/playSceneAssets/bridge/floating-rock2.png"
+    );
+    this.load.image(
+      "rock-3",
+      "assets/playSceneAssets/bridge/floating-rock3.png"
+    );
+    this.load.image(
+      "rock-4",
+      "assets/playSceneAssets/bridge/floating-rock4.png"
+    );
+    this.load.image(
+      "rock-5",
+      "assets/playSceneAssets/bridge/floating-rock5.png"
+    );
+    this.load.image(
+      "rock-6",
+      "assets/playSceneAssets/bridge/floating-rock6.png"
+    );
+    this.load.image(
+      "rock-7",
+      "assets/playSceneAssets/bridge/floating-rock7.png"
+    );
+    this.load.image(
+      "rock-8",
+      "assets/playSceneAssets/bridge/floating-rock8.png"
+    );
 
     //music
     this.load.audio("music", ["assets/sounds/Cipher2.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844

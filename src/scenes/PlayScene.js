@@ -79,20 +79,20 @@ class PlayScene extends BaseScene {
 
   getNodeImage(value) {
     if (value < -6) return "node-7";
-    else if ((value == -6)) return "node-6";
-    else if ((value == -5)) return "node-5";
-    else if ((value == -4)) return "node-4";
-    else if ((value == -3)) return "node-3";
-    else if ((value == -2)) return "node-2";
-    else if ((value == -1)) return "node-1";
-    else if ((value == 0)) return "node0";
-    else if ((value == 1)) return "node1";
-    else if ((value == 2)) return "node2";
-    else if ((value == 3)) return "node3";
-    else if ((value == 4)) return "node3";
-    else if ((value == 5)) return "node3";
-    else if ((value == 6)) return "node3";
-    else if (value > 6) return "node3";
+    else if (value == -6) return "node-6";
+    else if (value == -5) return "node-5";
+    else if (value == -4) return "node-4";
+    else if (value == -3) return "node-3";
+    else if (value == -2) return "node-2";
+    else if (value == -1) return "node-1";
+    else if (value == 0) return "node0";
+    else if (value == 1) return "node1";
+    else if (value == 2) return "node2";
+    else if (value == 3) return "node3";
+    else if (value == 4) return "node4";
+    else if (value == 5) return "node5";
+    else if (value == 6) return "node6";
+    else if (value > 6) return "node7";
   }
 
   updateNodeImages() {
@@ -153,6 +153,7 @@ class PlayScene extends BaseScene {
       this.checkWinLoseCondition();
     });
   }
+
   monitorValues() {
     let currrentValues = [];
     for (const node of this.nodesArray) {
@@ -184,7 +185,69 @@ class PlayScene extends BaseScene {
       this.getNodeFromId(nodeIdA),
       this.getNodeFromId(nodeIdB)
     );
-    this.graphics.strokeLineShape(edge.getEdgeCoord());
+
+    let nodeBX = edge.nodeB.container.x;
+    let nodeBY = edge.nodeB.container.y;
+    let nodeAX = edge.nodeA.container.x;
+    let nodeAY = edge.nodeA.container.y;
+    let getXcoord;
+    let getYcoord;
+    let deltaX;
+    let deltaY;
+    let distanceBetweenX;
+    let distanceBetweenY;
+    let numberOfRocks;
+    let prevRandom = 0;
+
+    if (nodeBX > nodeAX) {
+      distanceBetweenX = nodeBX - nodeAX;
+      numberOfRocks = Math.round(distanceBetweenX / 50);
+      getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
+      deltaX = distanceBetweenX / numberOfRocks;
+      console.log(deltaX);
+    } else {
+      distanceBetweenX = nodeAX - nodeBX;
+      numberOfRocks = Math.round(distanceBetweenX / 50);
+      getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
+      deltaX = distanceBetweenX / numberOfRocks;
+      console.log("HELLO");
+    }
+
+    if (nodeBY == nodeAY) {
+      getYcoord = nodeBY;
+      deltaY = 0;
+    } else {
+      getYcoord = nodeAY + (nodeBY - nodeAY) / numberOfRocks;
+      distanceBetweenY = nodeBY - nodeAY;
+      deltaY = distanceBetweenY / numberOfRocks;
+    }
+
+    if (nodeBX > nodeAX) {
+      getXcoord += 40;
+    } else {
+      getXcoord -= 100;
+      getYcoord += 40;
+    }
+
+    for (let i = 1; i < numberOfRocks - 1; i++) {
+      let randomRock = Math.floor(Math.random() * (9 - 1) + 1);
+      if (randomRock === prevRandom) {
+        while (randomRock === prevRandom) {
+          randomRock = Math.floor(Math.random() * (9 - 1) + 1);
+        }
+      }
+
+      this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+      if (nodeBX < nodeAX) {
+        getXcoord -= deltaX;
+        getYcoord += deltaY;
+      } else {
+        getXcoord += deltaX;
+        getYcoord += deltaY;
+      }
+      prevRandom = randomRock;
+    }
+
     this.edgesArray.push(edge);
   }
 
@@ -370,12 +433,13 @@ class Edge {
     this.nodeB.addNodeNeighbor(this.nodeA);
   }
 
-  getEdgeCoord() {
-    return new Phaser.Geom.Line(
-      this.nodeA.container.x,
-      this.nodeA.container.y,
-      this.nodeB.container.x,
-      this.nodeB.container.y
-    );
-  }
+  //no need for this function anymore
+  // getEdgeCoord() {
+  //   return new Phaser.Geom.Line(
+  //     this.nodeA.container.x,
+  //     this.nodeA.container.y,
+  //     this.nodeB.container.x,
+  //     this.nodeB.container.y
+  //   );
+  // }
 }
