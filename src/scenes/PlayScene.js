@@ -25,8 +25,6 @@ class PlayScene extends BaseScene {
     this.nodes = data.nodes;
     this.edges = data.edges;
     this.maximumStepAllowed = data.maximumStepAllowed;
-    this.level = data.level;
-    this.difficulty = data.difficulty;
     this.tutorialMode = data.tutorialMode;
     this.tutorialSteps = data.tutorialSteps;
   }
@@ -210,8 +208,6 @@ class PlayScene extends BaseScene {
         localStorage.setItem("bestScore", this.steps);
       }
 
-      this.addCompletedLevel(this.level, this.difficulty);
-
       this.scene.start("EndGameScene", {
         message: "Level Completed",
       });
@@ -355,7 +351,6 @@ class PlayScene extends BaseScene {
       if (this.currentTutorialStep > 0) this.currentTutorialStep--;
     }
     tutorialText.setText(this.getHelpText());
-    //this.clearGraph();
     this.updateTutorialScene();
   }
 
@@ -406,15 +401,6 @@ class PlayScene extends BaseScene {
     else if (this.currentTutorialStep == 8) {
       this.setBestscoreTextVisible(true);
     }
-  }
-
-  clearGraph() {
-    this.nodesArray.forEach((element) => {
-      element.container.getAt(1).destroy();
-      this.destroyNodeImage(element.container.getAt(0));
-    });
-    this.nodesArray = [];
-    this.edgesArray = [];
   }
 
   destroyNodeImage(image) {
@@ -486,13 +472,5 @@ class Edge {
       this.nodeB.container.x,
       this.nodeB.container.y
     );
-  }
-
-  getEdgeCoordX() {
-    return (this.nodeA.container.x + this.nodeB.container.x) / 2;
-  }
-
-  getEdgeCoordY() {
-    return (this.nodeA.container.y + this.nodeB.container.y) / 2;
   }
 }

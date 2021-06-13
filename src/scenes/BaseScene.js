@@ -176,17 +176,5 @@ class BaseScene extends Phaser.Scene {
       this.soundMenu.play();
     }
   }
-
-  addCompletedLevel(level, difficulty) {
-    if (
-      this.completedLevel.findIndex(
-        (x) => x.level === level && x.difficulty === difficulty
-      ) === -1
-    ) {
-      this.completedLevel.push({ level, difficulty });
-    }
-
-    console.log(this.completedLevel);
-  }
 }
 export default BaseScene;

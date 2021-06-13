@@ -22,14 +22,12 @@ class DifficultyScene extends BaseScene {
       stroke: "#FF0",
       strokeThickness: 1,
     };
-    this.completedLevel = super.completedLevel;
   }
 
   create() {
     this.createBG();
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
-    console.log(this.completedLevel);
   }
 
   createBG() {
