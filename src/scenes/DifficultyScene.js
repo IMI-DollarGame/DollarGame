@@ -17,7 +17,7 @@ class DifficultyScene extends BaseScene {
     ];
     this.fontOptions = {
       fontSize: `${this.fontSize}vw`,
-      fill: "#F00",
+      fill: "#ffffff",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
       strokeThickness: 1,
@@ -47,7 +47,7 @@ class DifficultyScene extends BaseScene {
     });
 
     textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#f00" });
+      textGO.setStyle({ fill: "#ffffff" });
     });
 
     textGO.on("pointerup", () => {

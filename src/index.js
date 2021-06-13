@@ -48,11 +48,7 @@ const config = {
   bgMusicPlaying: true,
   soundPlaying: true,
 
-  defaultFontOptions: {
-    fontSize: "40px",
-    fill: "#FFFFFF",
-    fontFamily: "Neon",
-  },
+
 
   //Basically what a user sees on the screen
   scene: initScenes(),

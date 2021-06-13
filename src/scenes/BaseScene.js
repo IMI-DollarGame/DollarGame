@@ -1,32 +1,28 @@
 import Phaser from "phaser";
-import { EventEmitter } from "events";
 
 class BaseScene extends Phaser.Scene {
   constructor(key, config) {
     super(key);
     this.config = config;
     this.screenCenter = [config.width / 2, config.height / 3];
-    this.lineHeight = config.height / 12.5;
-    this.defaultTopBtnHeight = innerHeight / 20;
-    this.bgMusic;
+    this.fontSize = 40;
+    this.lineHeight = 80;
+
   }
 
   create() {
     this.creatingAllButtons();
-    this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
   }
 
   createMenu(menu, setupMenuEvents) {
-    let defaultFont = this.config.defaultFontOptions
-    console.log(defaultFont)
     let lastMenuPositionY = 0;
-    menu.forEach(menuItem => {
+    menu.forEach((menuItem) => {
       const menuPosition = [
         this.screenCenter[0],
-        this.screenCenter[1] + lastMenuPositionY
+        this.screenCenter[1] + lastMenuPositionY,
       ];
       menuItem.textGO = this.add
-        .text(menuPosition[0], menuPosition[1], menuItem.text, defaultFont)
+        .text(...menuPosition, menuItem.text, this.game.config.defaultFontOptions)
         .setOrigin(0.5, 1);
       lastMenuPositionY += this.lineHeight;
       setupMenuEvents(menuItem);
@@ -126,7 +122,23 @@ class BaseScene extends Phaser.Scene {
     });
   }
 
+  setupMenuEvents(menuItem) {
+    const textGO = menuItem.textGO;
+    textGO.setInteractive();
 
+    textGO.on("pointerover", () => {
+      textGO.setStyle({ fill: "#ff0" });
+    });
+
+    textGO.on("pointerout", () => {
+      textGO.setStyle({ fill: "#fff" });
+    });
+
+    textGO.on("pointerup", () => {
+      menuItem.scene && this.scene.start(menuItem.scene);
+      this.playButtonSound();
+    });
+  }
 
   creatingAllButtons() {
     if (this.config.canGoBack) {

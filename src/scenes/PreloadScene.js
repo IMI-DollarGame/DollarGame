@@ -53,7 +53,12 @@ class PreloadScene extends Phaser.Scene {
   create() {
     this.scene.start("MenuScene");
     this.game.config.bgMusicPlaying = false;
-    this.game.config.soundPlaying = true;
+
+    this.game.config.defaultFontOptions = {
+      fontSize: "40px",
+      fill: "#FFFFFF",
+      fontFamily: "Neon",
+    }
   }
 
   // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
