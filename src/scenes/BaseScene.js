@@ -11,6 +11,7 @@ class BaseScene extends Phaser.Scene {
     this.defaultTopBtnHeight = innerHeight / 20;
     this.bgMusic;
 
+    this.completedLevel = [];
   }
 
   create() {
@@ -47,11 +48,9 @@ class BaseScene extends Phaser.Scene {
   }
 
   displaySoundButton() {
-    if (!this.game.config.bgMusicPlaying) {
-      this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
-    } else {
-      this.bgMusic = this.bgMusic;
-    }
+
+    this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
+
     this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
 
     const musicOn = this.add
@@ -98,14 +97,26 @@ class BaseScene extends Phaser.Scene {
       this.game.config.bgMusicPlaying = false;
       musicOff.visible = !this.game.config.bgMusicPlaying;
       musicOn.visible = this.game.config.bgMusicPlaying;
-      this.bgMusic.stop();
+      this.game.sound.stopAll();
     });
 
     musicOff.on("pointerdown", () => {
-      this.game.config.bgMusicPlaying = true;
-      musicOff.visible = !this.game.config.bgMusicPlaying;
-      musicOn.visible = this.game.config.bgMusicPlaying;
-      this.bgMusic.play();
+      if (!this.sound.locked) {
+		    // already unlocked so play
+        this.game.config.bgMusicPlaying = true;
+        musicOff.visible = !this.game.config.bgMusicPlaying;
+        musicOn.visible = this.game.config.bgMusicPlaying;
+		    this.bgMusic.play();
+	    }
+	    else {
+		    // wait for 'unlocked' to fire and then play
+		    this.bgMusic.once(Phaser.Sound.Events.UNLOCKED, () => {
+        this.game.config.bgMusicPlaying = true;
+        musicOff.visible = !this.game.config.bgMusicPlaying;
+        musicOn.visible = this.game.config.bgMusicPlaying;
+			  this.bgMusic.play();
+        });
+	    }
     });
   }
 

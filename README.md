@@ -9,4 +9,4 @@ inside of src folder we have scenes folder : there you find all Scenes , which w
 pls put your code there 
 
 Our game on Heroku:
-https://graphlands-htw-fb4.herokuapp.com/
+https://graphlands.herokuapp.com/

@@ -5,7 +5,7 @@ class LevelsScene extends BaseScene {
     super("LevelsScene", {
       ...config,
       addDevelopers: true,
-      hasSoundButton: true,
+      hasSoundButton: true
     });
     this.fontSize = 2.3;
     this.lineHeight = config.height / 12.5;
@@ -15,7 +15,7 @@ class LevelsScene extends BaseScene {
       fill: "#ffffff",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
-      strokeThickness: 1,
+      strokeThickness: 1
     };
   }
 
@@ -56,13 +56,14 @@ class LevelsScene extends BaseScene {
       if (level.difficulty === this.difficulty) {
         const item = {
           scene: "PlayScene",
-          text: level.level,
+          text: "Level " + level.level,
           steps: level.steps,
           nodes: level.nodes,
           edges: level.edges,
+          level: level.level
         };
 
-        if (menu.findIndex((x) => x.text === item.text) === -1) {
+        if (menu.findIndex(x => x.text === item.text) === -1) {
           menu.push(item);
         }
       }
@@ -95,6 +96,9 @@ class LevelsScene extends BaseScene {
           nodes: menuItem.nodes,
           edges: menuItem.edges,
           maximumStepAllowed: menuItem.steps,
+          tutorialMode: false,
+          level: menuItem.text,
+          difficulty: this.difficulty,
         });
       this.playButtonSound();
     });
