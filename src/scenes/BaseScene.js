@@ -13,10 +13,11 @@ class BaseScene extends Phaser.Scene {
       fill: "#F00",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
-      strokeThickness: 1
+      strokeThickness: 1,
     };
     this.defaultTopBtnHeight = innerHeight / 20;
     this.bgMusic;
+    this.completedLevel = [];
   }
 
   create() {
@@ -26,10 +27,10 @@ class BaseScene extends Phaser.Scene {
 
   createMenu(menu, setupMenuEvents) {
     let lastMenuPositionY = 0;
-    menu.forEach(menuItem => {
+    menu.forEach((menuItem) => {
       const menuPosition = [
         this.screenCenter[0],
-        this.screenCenter[1] + lastMenuPositionY
+        this.screenCenter[1] + lastMenuPositionY,
       ];
       menuItem.textGO = this.add
         .text(...menuPosition, menuItem.text, this.fontOptions)
@@ -129,8 +130,8 @@ class BaseScene extends Phaser.Scene {
         fill: "#F00",
         fontFamily: "Indie Flower, cursive",
         stroke: "#FF0",
-        strokeThickness: 1
-      }
+        strokeThickness: 1,
+      },
     });
   }
 

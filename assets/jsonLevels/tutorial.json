@@ -1,0 +1,42 @@
+{
+  "steps": 30,
+  "nodes": [
+    { "id": "A", "value": "3", "x": 0.228, "y": 0.4 },
+    { "id": "B", "value": "-1", "x": 0.7, "y": 0.4 },
+    { "id": "C", "value": "2", "x": 0.5, "y": 0.65 },
+    { "id": "E", "value": "-2", "x": 0.7, "y": 0.85 }
+  ],
+  "edges": [
+    { "nodeA": "A", "nodeB": "B" },
+    { "nodeA": "A", "nodeB": "C" },
+    { "nodeA": "B", "nodeB": "C" },
+    { "nodeA": "C", "nodeB": "E" }
+  ],
+  "tutorialSteps": [
+    { "text": "These are your islands." },
+    {
+      "text": "Each island has a certain number assigned to it representing its wealth and population."
+    },
+    {
+      "text": "Many islands are connected by travel routes, that enable you to spread your wealth."
+    },
+    {
+      "text": "Your goal is to reach the livable condition for all the islands. Every connected island will share a wealth point with the island you clicked on. Try to click on an island!"
+    },
+    {
+      "text": "If the wealth point value of an island is negative, that means they currently need help from the neighbors. Send your help to that island"
+    },
+    {
+      "text": "Try to win the game with as few moves as possible. If your steps run out, you loose."
+    },
+    {
+      "text": "If you want to revoke a move, click on the undo button to the top right."
+    },
+    {
+      "text": "And in case you want to reset the level, press the restart button."
+    },
+    {
+      "text": "If every island has a wealth score of 0 or higher, you win the game. Try it yourself. Good luck!"
+    }
+  ]
+}
