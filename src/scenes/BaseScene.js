@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { EventEmitter } from "events";
 
 class BaseScene extends Phaser.Scene {
   constructor(key, config) {
