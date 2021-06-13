@@ -21,6 +21,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("restartLvl", "assets/buttons/restartCurrentLvl.png");
     this.load.image("previous", "assets/buttons/previousArrow.png");
     this.load.image("next", "assets/buttons/nextArrow.png");
+    this.load.image("level", "assets/buttons/level_tile.png");
+
 
     //backgrounds
     this.load.image("clouds-bg", "assets/backgrounds/clouds-cyan.png");
