@@ -12,7 +12,7 @@ class LevelsScene extends BaseScene {
     this.menu = [];
     this.fontOptions = {
       fontSize: `${this.fontSize}vw`,
-      fill: "#F00",
+      fill: "#ffffff",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
       strokeThickness: 1
@@ -87,7 +87,7 @@ class LevelsScene extends BaseScene {
     });
 
     textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#f00" });
+      textGO.setStyle({ fill: "#fffafa" });
     });
 
     textGO.on("pointerup", () => {

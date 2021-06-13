@@ -33,6 +33,8 @@ class MenuScene extends BaseScene {
       .setScale(1.0);
     backGround.x = backGround.displayWidth * 0.4;
   }
+
+
 }
 
 export default MenuScene;

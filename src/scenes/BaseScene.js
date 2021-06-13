@@ -6,17 +6,11 @@ class BaseScene extends Phaser.Scene {
     super(key);
     this.config = config;
     this.screenCenter = [config.width / 2, config.height / 3];
-    this.fontSize = 2.3;
-    this.lineHeight = config.height / 12.5;
-    this.fontOptions = {
-      fontSize: `${this.fontSize}vw`,
-      fill: "#F00",
-      fontFamily: "Indie Flower, cursive",
-      stroke: "#FF0",
-      strokeThickness: 1,
-    };
+    this.fontSize = 40;
+    this.lineHeight = 80;
     this.defaultTopBtnHeight = innerHeight / 20;
     this.bgMusic;
+
     this.completedLevel = [];
   }
 
@@ -33,7 +27,7 @@ class BaseScene extends Phaser.Scene {
         this.screenCenter[1] + lastMenuPositionY,
       ];
       menuItem.textGO = this.add
-        .text(...menuPosition, menuItem.text, this.fontOptions)
+        .text(...menuPosition, menuItem.text, this.game.config.defaultFontOptions)
         .setOrigin(0.5, 1);
       lastMenuPositionY += this.lineHeight;
       setupMenuEvents(menuItem);
@@ -136,11 +130,9 @@ class BaseScene extends Phaser.Scene {
       text: "Created by the group of enthusiasts",
       origin: { x: 0.5, y: 0.5 },
       style: {
-        fontSize: `${1.5}vw`,
-        fill: "#F00",
-        fontFamily: "Indie Flower, cursive",
-        stroke: "#FF0",
-        strokeThickness: 1,
+        fontSize: "15px",
+        fill: "#000",
+        fontFamily: 'Montserrat-Regular',
       },
     });
   }
@@ -154,7 +146,7 @@ class BaseScene extends Phaser.Scene {
     });
 
     textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#f00" });
+      textGO.setStyle({ fill: "#fff" });
     });
 
     textGO.on("pointerup", () => {

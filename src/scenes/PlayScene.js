@@ -321,6 +321,7 @@ class PlayScene extends BaseScene {
       this.stepText + this.steps,
       {
         fontSize: "30px",
+        fontFamily: 'Montserrat-Regular',
         fill: "#000",
         align: "center",
       }
@@ -332,7 +333,8 @@ class PlayScene extends BaseScene {
     this.bestScoreText = this.add.text(
       innerWidth / 2,
       innerHeight / 10,
-      `Best Score: ${0}`
+      `Best Score: ${0}`,
+        {fill: "#3b3b3b", fontFamily: 'Montserrat-Regular'}
     );
 
     if (bestScore) {
