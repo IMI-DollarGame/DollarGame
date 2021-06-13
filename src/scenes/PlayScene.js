@@ -49,7 +49,6 @@ class PlayScene extends BaseScene {
     this.createBackButton();
   }
 
-
   turnOnTutorialMode() {
     this.setNodeValueTextVisible(false);
     this.setNodeInputState(false);
@@ -70,7 +69,11 @@ class PlayScene extends BaseScene {
     backButton.on("pointerup", () => {
       this.playButtonSound();
       this.scene.stop();
-      this.scene.start("LevelsScene");
+      if (this.tutorialMode === true) {
+        this.scene.start("MenuScene");
+      } else {
+        this.scene.start("LevelsScene");
+      }
     });
   }
 
@@ -177,22 +180,24 @@ class PlayScene extends BaseScene {
     this.stepsText.setText(this.stepText + this.steps);
   }
 
-  setupNodeClick(node) {
-    this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
-    node.container.setInteractive().on("pointerdown", () => {
-      this.updateStep("decrease");
-      node.decreaseNodeValue();
-      node.updateNeighborNodeValue();
-      this.updateValues();
-      this.updateNodeImages();
-      if (this.game.config.soundPlaying === true) {
-        this.soundNode.play();
-      }
-      this.monitorValues();
-      this.checkWinLoseCondition();
+  setupNodeClick() {
+    this.nodesArray.forEach((node) => {
+      this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
+      node.container.setInteractive().on("pointerdown", () => {
+        this.updateStep("decrease");
+        node.decreaseNodeValue();
+        node.updateNeighborNodeValue();
+        this.updateValues();
+        this.updateNodeImages();
+        if (this.game.config.soundPlaying === true) {
+          this.soundNode.play();
+        }
+        this.monitorValues();
+        this.checkWinLoseCondition();
+      });
     });
   }
-    
+
   monitorValues() {
     let currrentValues = [];
     for (const node of this.nodesArray) {
@@ -209,11 +214,7 @@ class PlayScene extends BaseScene {
     );
 
     if (currentObjIndex !== -1) {
-      this.allValuesArray.splice(
-        currentObjIndex,
-        1,
-        currentValuesAndStep
-      );
+      this.allValuesArray.splice(currentObjIndex, 1, currentValuesAndStep);
     } else {
       this.allValuesArray.push(currentValuesAndStep);
     }
@@ -381,10 +382,9 @@ class PlayScene extends BaseScene {
         this.updateNodeImages();
         this.updateValues();
       }
-      
     });
   }
-  
+
   undoNodeValue() {
     var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
     this.allValuesArray[index].allValue.forEach((element) => {
