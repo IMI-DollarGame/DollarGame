@@ -11,7 +11,6 @@ class EndGameScene extends BaseScene {
     });
     this.fontSize = 2.3;
     this.allLvlsCompleted = false;
-    this.item = { steps: 0, nodes: [], edges: [] };
   }
 
   create() {
@@ -143,46 +142,45 @@ class EndGameScene extends BaseScene {
 
     nexttLvlBtn.on("pointerup", () => {
       this.playButtonSound();
-      
+
       this.goToNextLvl();
-      console.log(this.item);
     });
   }
 
   goToNextLvl() {
-    this.checkNextLvl();
     this.obj = this.cache.json.get("levels");
     const allLevels = this.obj.scenario;
-
+    this.checkNextLvl(allLevels);
+    let toImportSteps, toImportNodes, toImportEdges;
     for (var i = 0; i < allLevels.length; i++) {
       const level = allLevels[i];
-
       if (level.difficulty === this.difficulty && level.level === this.level) {
-        this.item.steps = level.steps;
-        this.item.nodes = level.nodes;
-        this.item.edges = level.edges;
+        toImportSteps = level.steps;
+        toImportNodes = level.nodes;
+        toImportEdges = level.edges;
       }
     }
-
-    this.scene.start("PlayScene", {
-      nodes: this.item.nodes,
-      edges: this.item.edges,
-      maximumStepAllowed: this.item.steps,
-      difficulty: this.difficulty,
-      level: this.level,
-    });
+    if (this.allLvlsCompleted) {
+      this.scene.start("MenuScene");
+    } else {
+      this.scene.start("PlayScene", {
+        nodes: toImportNodes,
+        edges: toImportEdges,
+        maximumStepAllowed: toImportSteps,
+        difficulty: this.difficulty,
+        level: this.level,
+      });
+    }
   }
 
-  checkNextLvl() {
-    this.obj = this.cache.json.get("levels");
-    const allLevels = this.obj.scenario;
-    let easyLlvs = [];
+  checkNextLvl(allLevels) {
+    let easyLvls = [];
     let normalLvls = [];
     let hardLvls = [];
 
     for (let i = 0; i < allLevels.length; i++) {
       if (allLevels[i].difficulty === "easy") {
-        easyLlvs.push(allLevels[i]);
+        easyLvls.push(allLevels[i]);
       } else if (allLevels[i].difficulty === "normal") {
         normalLvls.push(allLevels[i]);
       } else {
@@ -191,7 +189,7 @@ class EndGameScene extends BaseScene {
     }
 
     if (this.difficulty === "easy") {
-      if (this.level === easyLlvs.length) {
+      if (this.level === easyLvls.length) {
         this.level = 1;
         this.difficulty = "normal";
       } else {
