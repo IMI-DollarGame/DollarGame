@@ -19,6 +19,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("all-levels-arrow", "assets/buttons/backToLvls.png");
     this.load.image("nextLvlArrow", "assets/buttons/nextLvlArrow.png");
     this.load.image("restartLvl", "assets/buttons/restartCurrentLvl.png");
+    this.load.image("previous", "assets/buttons/previousArrow.png");
+    this.load.image("next", "assets/buttons/nextArrow.png");
 
     //backgrounds
     this.load.image("clouds-bg", "assets/backgrounds/clouds-cyan.png");
@@ -88,13 +90,37 @@ class PreloadScene extends Phaser.Scene {
     this.load.audio("soundNode", ["assets/sounds/lowRandom.mp3"]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
     this.load.json("levels", "assets/jsonLevels/levels.json");
+    this.load.json("tutorial", "assets/jsonLevels/tutorial.json");
+
+
+    //fonts
+
+    this.loadFont("SquadaOne", "assets/fonts/SquadaOne-Regular.ttf");
+    this.loadFont("Montserrat-Regular", "assets/fonts/Montserrat-Regular.ttf");
+    this.loadFont("Pixel", "assets/fonts/Fipps-Regular.otf");
+    this.loadFont("Neon", "assets/fonts/Neon.ttf");
+
   }
 
   create() {
     this.scene.start("MenuScene");
     this.game.config.bgMusicPlaying = false;
-    this.game.config.soundPlaying = true;
+
+    this.game.config.defaultFontOptions = {
+      fontSize: "40px",
+      fill: "#FFFFFF",
+      fontFamily: "Neon",
+    }
   }
-}
+
+  // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
+  loadFont(name, url) {
+    var newFont = new FontFace(name, `url(${url})`);
+    newFont.load().then(function (loaded) {
+        document.fonts.add(loaded);
+    }).catch(function (error) {
+        return error;
+    });
+}}
 
 export default PreloadScene;
