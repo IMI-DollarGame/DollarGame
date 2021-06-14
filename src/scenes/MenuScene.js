@@ -14,9 +14,6 @@ class MenuScene extends BaseScene {
       { scene: "ScoreScene", text: "Score" },
       { scene: "TutorialScene", text: "Tutorial" }
     ];
-    //Version 1
-    //this.backgroud;
-    //Version2
   }
 
   create() {
