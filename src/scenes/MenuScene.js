@@ -97,7 +97,7 @@ class MenuScene extends BaseScene {
 
     if (
       island.getBounds().bottom < -30 ||
-      island.getBounds().top > this.config.height + 30 ||
+      //   island.getBounds().top > this.config.height + 30 ||
       island.getBounds().left > this.config.width + 30 ||
       island.getBounds().right < -30
     ) {
@@ -111,7 +111,7 @@ class MenuScene extends BaseScene {
       this.config.width * 0.9
     );
     // let randomYPos = Phaser.Math.Between(0, this.config.height * 0.1);
-    island.y = this.config.height;
+    island.y = this.config.height + 55;
     island.x = randomXPos;
   }
   animateAllIslands() {
