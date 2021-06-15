@@ -24,46 +24,64 @@ class MenuScene extends BaseScene {
   }
 
   createFloatingIslands() {
-    this.island1 = this.add.image(
+    this.NegIsland7 = this.add.image(
+      this.config.width * 0.3,
+      this.config.height * 0.2,
+      "node-7"
+    );
+    this.NegIsland5 = this.add.image(
       this.config.width * 0.2,
-      this.config.height * 0.4,
-      "node1"
+      this.config.height * 0.9,
+      "node-5"
+    );
+    this.NegIsland2 = this.add.image(
+      this.config.width * 0.5,
+      this.config.height * 0.2,
+      "node-2"
+    );
+    this.NegIsland1 = this.add.image(
+      this.config.width * 0.8,
+      this.config.height * 0.3,
+      "node-1"
+    );
+    this.island1 = this.add.image(
+      this.config.width * 0.1,
+      this.config.height * 0.1,
+      "node0"
     );
     this.island2 = this.add.image(
-      this.config.width * 0.3,
-      this.config.height * 0.6,
-      "node2"
+      this.config.width * 0.1,
+      this.config.height * 0.55,
+      "node1"
     );
     this.island3 = this.add.image(
       this.config.width * 0.4,
-      this.config.height * 0.7,
-      "node-1"
+      this.config.height * 0.55,
+      "node2"
     );
     this.island4 = this.add.image(
       this.config.width * 0.5,
       this.config.height * 0.9,
-      "node-4"
-    );
-    this.island5 = this.add.image(
-      this.config.width * 0.6,
-      this.config.height * 0.9,
-      "node-5"
-    );
-    this.island6 = this.add.image(
-      this.config.width * 0.6,
-      this.config.height * 0.5,
-      "node-7"
-    );
-    this.island7 = this.add.image(
-      this.config.width * 0.7,
-      this.config.height * 0.5,
-      "node0"
-    );
-    this.island8 = this.add.image(
-      this.config.width * 0.8,
-      this.config.height * 0.7,
       "node3"
     );
+
+    this.island5 = this.add.image(
+      this.config.width * 0.6,
+      this.config.height * 0.5,
+      "node5"
+    );
+
+    this.island7 = this.add.image(
+      this.config.width * 0.8,
+      this.config.height * 0.7,
+      "node7"
+    );
+
+    // this.testLogo = this.add.image(
+    //   this.config.width * 0.5,
+    //   this.config.height * 0.5,
+    //   "node7"
+    // );
   }
 
   createBG() {
@@ -78,10 +96,10 @@ class MenuScene extends BaseScene {
     island.y -= speedY;
 
     if (
-      island.getBounds().bottom < -40 ||
-      island.getBounds().top > this.config.height + 40 ||
-      island.getBounds().left > this.config.width + 40 ||
-      island.getBounds().right < -40
+      island.getBounds().bottom < -30 ||
+      island.getBounds().top > this.config.height + 30 ||
+      island.getBounds().left > this.config.width + 30 ||
+      island.getBounds().right < -30
     ) {
       this.resetIslandPos(island);
     }
@@ -102,10 +120,12 @@ class MenuScene extends BaseScene {
     this.moveIsland(this.island2, -0.22, 0.8);
     this.moveIsland(this.island3, 0.25, 0.5);
     this.moveIsland(this.island4, -0.05, 0.7);
-    this.moveIsland(this.island5, 0.06, 0.5);
-    this.moveIsland(this.island6, -0.06, 0.7);
+    this.moveIsland(this.island5, -0.06, 0.7);
     this.moveIsland(this.island7, 0.09, 0.5);
-    this.moveIsland(this.island8, -0.09, 0.4);
+    this.moveIsland(this.NegIsland1, -0.09, 0.6);
+    this.moveIsland(this.NegIsland2, 0.092, 0.55);
+    this.moveIsland(this.NegIsland5, -0.095, 0.8);
+    this.moveIsland(this.NegIsland7, 0.098, 0.65);
   }
   update() {
     this.animateAllIslands();
