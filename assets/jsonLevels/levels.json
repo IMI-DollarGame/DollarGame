@@ -39,14 +39,14 @@
       "nodes": [
         { "id": "A", "value": "-4", "x": 0.228, "y": 0.35 },
         { "id": "B", "value": "2", "x": 0.7, "y": 0.35 },
-        { "id": "C", "value": "5", "x": 0.7, "y": 0.6 },
+        { "id": "C", "value": "5", "x": 0.7, "y": 0.7 },
         { "id": "D", "value": "-1", "x": 0.228, "y": 0.75 }
       ],
       "edges": [
         { "nodeA": "A", "nodeB": "B" },
         { "nodeA": "C", "nodeB": "D" },
-        { "nodeA": "C", "nodeB": "B" },
-        { "nodeA": "D", "nodeB": "A" },
+        { "nodeA": "B", "nodeB": "C" },
+        { "nodeA": "A", "nodeB": "D" },
         { "nodeA": "D", "nodeB": "B" }
       ]
     },
@@ -83,7 +83,7 @@
       "edges": [
         { "nodeA": "A", "nodeB": "C" },
         { "nodeA": "A", "nodeB": "E" },
-        { "nodeA": "B", "nodeB": "C" },
+        { "nodeA": "C", "nodeB": "B" },
         { "nodeA": "D", "nodeB": "C" },
         { "nodeA": "D", "nodeB": "E" }
       ]
@@ -94,11 +94,11 @@
       "steps": 30,
       "nodes": [
         { "id": "A", "value": "-2", "x": 0.228, "y": 0.35 },
-        { "id": "B", "value": "-2", "x": 0.65, "y": 0.35 },
-        { "id": "C", "value": "-2", "x": 0.55, "y": 0.6 },
-        { "id": "D", "value": "10", "x": 0.37, "y": 0.78 },
-        { "id": "E", "value": "-4", "x": 0.8, "y": 0.65 },
-        { "id": "F", "value": "3", "x": 0.228, "y": 0.55 }
+        { "id": "B", "value": "-2", "x": 0.7, "y": 0.35 },
+        { "id": "C", "value": "-2", "x": 0.52, "y": 0.6 },
+        { "id": "D", "value": "10", "x": 0.37, "y": 0.75 },
+        { "id": "E", "value": "-4", "x": 0.7, "y": 0.75 },
+        { "id": "F", "value": "3", "x": 0.228, "y": 0.56 }
       ],
       "edges": [
         { "nodeA": "A", "nodeB": "B" },
@@ -133,18 +133,18 @@
       "steps": 33,
       "nodes": [
         { "id": "A", "value": "2", "x": 0.228, "y": 0.35 },
-        { "id": "B", "value": "-1", "x": 0.82, "y": 0.35 },
+        { "id": "B", "value": "-1", "x": 0.8, "y": 0.35 },
         { "id": "C", "value": "1", "x": 0.5, "y": 0.35 },
         { "id": "D", "value": "2", "x": 0.228, "y": 0.75 },
         { "id": "E", "value": "3", "x": 0.7, "y": 0.75 },
-        { "id": "F", "value": "-2", "x": 0.228, "y": 0.52 },
-        { "id": "G", "value": "-2", "x": 0.7, "y": 0.52 }
+        { "id": "F", "value": "-2", "x": 0.228, "y": 0.56 },
+        { "id": "G", "value": "-2", "x": 0.65, "y": 0.52 }
       ],
       "edges": [
         { "nodeA": "A", "nodeB": "G" },
         { "nodeA": "G", "nodeB": "E" },
-        { "nodeA": "E", "nodeB": "D" },
-        { "nodeA": "E", "nodeB": "B" },
+        { "nodeA": "D", "nodeB": "E" },
+        { "nodeA": "B", "nodeB": "E" },
         { "nodeA": "A", "nodeB": "F" },
         { "nodeA": "C", "nodeB": "F" }
       ]
@@ -166,9 +166,9 @@
         { "nodeA": "A", "nodeB": "F" },
         { "nodeA": "B", "nodeB": "C" },
         { "nodeA": "C", "nodeB": "D" },
-        { "nodeA": "D", "nodeB": "E" },
+        { "nodeA": "E", "nodeB": "D" },
         { "nodeA": "C", "nodeB": "E" },
-        { "nodeA": "E", "nodeB": "F" }
+        { "nodeA": "F", "nodeB": "E" }
       ]
     }
   ]

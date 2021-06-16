@@ -49,6 +49,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("node7", "assets/playSceneAssets/floating_island7.png");
 
     //bridge image
+    this.load.image("bridge", "assets/playSceneAssets/bridge/bridge.png");
     this.load.image(
       "rock-1",
       "assets/playSceneAssets/bridge/floating-rock1.png"
@@ -77,10 +78,6 @@ class PreloadScene extends Phaser.Scene {
       "rock-7",
       "assets/playSceneAssets/bridge/floating-rock7.png"
     );
-    this.load.image(
-      "rock-8",
-      "assets/playSceneAssets/bridge/floating-rock8.png"
-    );
 
     //music
     this.load.audio("music", ["assets/sounds/Cipher2.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
@@ -92,14 +89,12 @@ class PreloadScene extends Phaser.Scene {
     this.load.json("levels", "assets/jsonLevels/levels.json");
     this.load.json("tutorial", "assets/jsonLevels/tutorial.json");
 
-
     //fonts
 
     this.loadFont("SquadaOne", "assets/fonts/SquadaOne-Regular.ttf");
     this.loadFont("Montserrat-Regular", "assets/fonts/Montserrat-Regular.ttf");
     this.loadFont("Pixel", "assets/fonts/Fipps-Regular.otf");
     this.loadFont("Neon", "assets/fonts/Neon.ttf");
-
   }
 
   create() {
@@ -110,17 +105,21 @@ class PreloadScene extends Phaser.Scene {
       fontSize: "40px",
       fill: "#FFFFFF",
       fontFamily: "Neon",
-    }
+    };
   }
 
   // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
   loadFont(name, url) {
     var newFont = new FontFace(name, `url(${url})`);
-    newFont.load().then(function (loaded) {
+    newFont
+      .load()
+      .then(function (loaded) {
         document.fonts.add(loaded);
-    }).catch(function (error) {
+      })
+      .catch(function (error) {
         return error;
-    });
-}}
+      });
+  }
+}
 
 export default PreloadScene;

@@ -138,6 +138,7 @@ class PlayScene extends BaseScene {
       this.config.height * coordY,
       [nodeImage, nodeValueText]
     );
+
     container.setSize(innerWidth / 10, innerHeight / 10);
     container.setDepth(1);
 
@@ -262,20 +263,45 @@ class PlayScene extends BaseScene {
     let numberOfRocks;
     let prevRandom = 0;
 
-    if (nodeBX > nodeAX) {
-      distanceBetweenX = nodeBX - nodeAX;
-      numberOfRocks = Math.round(distanceBetweenX / (this.config.width * 0.04));
-      getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
-      deltaX = distanceBetweenX / numberOfRocks;
-    } else {
-      distanceBetweenX = nodeAX - nodeBX;
-      numberOfRocks = Math.round(distanceBetweenX / (this.config.width * 0.04));
-      getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
-      deltaX = distanceBetweenX / numberOfRocks;
-    }
-
     if (nodeBX == nodeAX) {
+      getXcoord = nodeAX;
       deltaX = 0;
+      distanceBetweenY = nodeBY - nodeAY;
+      numberOfRocks = Math.round(distanceBetweenY / (this.config.width * 0.04));
+    } else if (nodeBX > nodeAX) {
+      if (nodeBX - nodeAX < 200) {
+        distanceBetweenY = nodeBY - nodeAY;
+        numberOfRocks = Math.round(
+          distanceBetweenY / (this.config.width * 0.04)
+        );
+        getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
+        distanceBetweenX = nodeBX - nodeAX;
+        deltaX = distanceBetweenX / numberOfRocks;
+      } else {
+        distanceBetweenX = nodeBX - nodeAX;
+        numberOfRocks = Math.round(
+          distanceBetweenX / (this.config.width * 0.04)
+        );
+        getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
+        deltaX = distanceBetweenX / numberOfRocks;
+      }
+    } else {
+      if (nodeAX - nodeBX < 200) {
+        distanceBetweenY = nodeBY - nodeAY;
+        numberOfRocks = Math.round(
+          distanceBetweenY / (this.config.width * 0.04)
+        );
+        getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
+        distanceBetweenX = nodeAX - nodeBX;
+        deltaX = distanceBetweenX / numberOfRocks;
+      } else {
+        distanceBetweenX = nodeAX - nodeBX;
+        numberOfRocks = Math.round(
+          distanceBetweenX / (this.config.width * 0.04)
+        );
+        getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
+        deltaX = distanceBetweenX / numberOfRocks;
+      }
     }
 
     if (nodeBY == nodeAY) {
@@ -287,27 +313,34 @@ class PlayScene extends BaseScene {
       deltaY = distanceBetweenY / numberOfRocks;
     }
 
-    for (let i = 1; i < numberOfRocks; i++) {
-      let randomRock = Math.floor(Math.random() * (9 - 1) + 1);
+    for (let i = 1; i < numberOfRocks - 1; i++) {
+      let randomRock = Math.floor(Math.random() * (8 - 1) + 1);
       if (randomRock === prevRandom) {
         while (randomRock === prevRandom) {
-          randomRock = Math.floor(Math.random() * (9 - 1) + 1);
+          randomRock = Math.floor(Math.random() * (8 - 1) + 1);
         }
       }
 
       if (nodeBX < nodeAX && nodeBY > nodeAY) {
-        getXcoord -= deltaX;
-        getYcoord += deltaY;
+        if (i == 1) {
+          getXcoord -= deltaX * 2;
+          getYcoord += deltaY;
+        } else {
+          getXcoord -= deltaX;
+          getYcoord += deltaY;
+        }
       } else {
-        getXcoord += deltaX;
-        getYcoord += deltaY;
+        if (i == 1) {
+          getXcoord += deltaX * 0.4;
+          getYcoord += deltaY * 0.5;
+        } else {
+          getXcoord += deltaX;
+          getYcoord += deltaY;
+        }
       }
-
       this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
-
       prevRandom = randomRock;
     }
-
     this.edgesArray.push(edge);
   }
 
@@ -600,14 +633,4 @@ class Edge {
     this.nodeA.addNodeNeighbor(this.nodeB);
     this.nodeB.addNodeNeighbor(this.nodeA);
   }
-
-  //no need for this function anymore
-  // getEdgeCoord() {
-  //   return new Phaser.Geom.Line(
-  //     this.nodeA.container.x,
-  //     this.nodeA.container.y,
-  //     this.nodeB.container.x,
-  //     this.nodeB.container.y
-  //   );
-  // }
 }
