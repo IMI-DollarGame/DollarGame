@@ -72,7 +72,7 @@ class PlayScene extends BaseScene {
       if (this.tutorialMode === true) {
         this.scene.start("MenuScene");
       } else {
-        this.scene.start("LevelsScene");
+        this.scene.start("LevelsScene", { difficulty: this.difficulty });
       }
     });
   }
