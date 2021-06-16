@@ -94,8 +94,8 @@ class PlayScene extends BaseScene {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "blueSky")
       .setOrigin(0.5, 0.5)
-      .setScale(1.0);
-    backGround.x = backGround.displayWidth * 0.5;
+      .setScale(2);
+    // backGround.x = backGround.displayWidth * 0.5;
   }
 
   addGraphics() {
@@ -116,10 +116,10 @@ class PlayScene extends BaseScene {
     else if (value == 1) return "node1";
     else if (value == 2) return "node2";
     else if (value == 3) return "node3";
-    else if (value == 4) return "node3";
-    else if (value == 5) return "node3";
-    else if (value == 6) return "node3";
-    else if (value > 6) return "node3";
+    else if (value == 4) return "node4";
+    else if (value == 5) return "node5";
+    else if (value == 6) return "node6";
+    else if (value > 6) return "node7";
   }
 
   updateNodeImages() {

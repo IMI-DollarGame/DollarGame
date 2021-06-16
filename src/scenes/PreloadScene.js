@@ -43,17 +43,20 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("node1", "assets/playSceneAssets/floating_island1.png");
     this.load.image("node2", "assets/playSceneAssets/floating_island2.png");
     this.load.image("node3", "assets/playSceneAssets/floating_island3.png");
+    this.load.image("node4", "assets/playSceneAssets/floating_island4.png");
+    this.load.image("node5", "assets/playSceneAssets/floating_island5.png");
+    this.load.image("node6", "assets/playSceneAssets/floating_island6.png");
+    this.load.image("node7", "assets/playSceneAssets/floating_island7.png");
 
     //music
     this.load.audio("music", ["assets/sounds/Cipher2.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
     this.load.audio("soundMenu", [
-      "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3",
+      "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"
     ]); //source: https://www.fesliyanstudios.com/
     this.load.audio("soundNode", ["assets/sounds/lowRandom.mp3"]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
     this.load.json("levels", "assets/jsonLevels/levels.json");
     this.load.json("tutorial", "assets/jsonLevels/tutorial.json");
-
 
     //fonts
 
@@ -61,7 +64,6 @@ class PreloadScene extends Phaser.Scene {
     this.loadFont("Montserrat-Regular", "assets/fonts/Montserrat-Regular.ttf");
     this.loadFont("Pixel", "assets/fonts/Fipps-Regular.otf");
     this.loadFont("Neon", "assets/fonts/Neon.ttf");
-
   }
 
   create() {
@@ -71,18 +73,22 @@ class PreloadScene extends Phaser.Scene {
     this.game.config.defaultFontOptions = {
       fontSize: "40px",
       fill: "#FFFFFF",
-      fontFamily: "Neon",
-    }
+      fontFamily: "Neon"
+    };
   }
 
   // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
   loadFont(name, url) {
     var newFont = new FontFace(name, `url(${url})`);
-    newFont.load().then(function (loaded) {
+    newFont
+      .load()
+      .then(function(loaded) {
         document.fonts.add(loaded);
-    }).catch(function (error) {
+      })
+      .catch(function(error) {
         return error;
-    });
-}}
+      });
+  }
+}
 
 export default PreloadScene;
