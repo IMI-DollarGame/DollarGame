@@ -94,8 +94,8 @@ class PlayScene extends BaseScene {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "blueSky")
       .setOrigin(0.5, 0.5)
-      .setScale(1.0);
-    backGround.x = backGround.displayWidth * 0.5;
+      .setScale(2);
+    // backGround.x = backGround.displayWidth * 0.5;
   }
 
   addGraphics() {
