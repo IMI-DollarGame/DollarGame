@@ -59,17 +59,17 @@ class MenuScene extends BaseScene {
       this.config.height * 0.55,
       "node2"
     );
-    this.island4 = this.add.image(
-      this.config.width * 0.5,
-      this.config.height * 0.9,
-      "node3"
-    );
+    // this.island4 = this.add.image(
+    //   this.config.width * 0.5,
+    //   this.config.height * 0.9,
+    //   "node3"
+    // );
 
-    this.island5 = this.add.image(
-      this.config.width * 0.6,
-      this.config.height * 0.5,
-      "node5"
-    );
+    // this.island5 = this.add.image(
+    //   this.config.width * 0.6,
+    //   this.config.height * 0.5,
+    //   "node5"
+    // );
 
     this.island7 = this.add.image(
       this.config.width * 0.8,
@@ -119,8 +119,8 @@ class MenuScene extends BaseScene {
     this.moveIsland(this.island1, 0.2, 0.3);
     this.moveIsland(this.island2, -0.22, 0.6);
     this.moveIsland(this.island3, 0.25, 0.3);
-    this.moveIsland(this.island4, -0.05, 0.5);
-    this.moveIsland(this.island5, -0.06, 0.5);
+    // this.moveIsland(this.island4, -0.05, 0.5);
+    // this.moveIsland(this.island5, -0.06, 0.5);
     this.moveIsland(this.island7, 0.09, 0.3);
     this.moveIsland(this.NegIsland1, -0.09, 0.4);
     this.moveIsland(this.NegIsland2, 0.092, 0.4);
