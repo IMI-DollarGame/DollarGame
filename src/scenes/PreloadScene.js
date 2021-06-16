@@ -32,13 +32,42 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("collageMenu3", "assets/backgrounds/collageMenu3.png");
 
     //node image
-    this.load.image("node-7", "assets/playSceneAssets/floating_island-7.png");
-    this.load.image("node-6", "assets/playSceneAssets/floating_island-6.png");
-    this.load.image("node-5", "assets/playSceneAssets/floating_island-5.png");
-    this.load.image("node-4", "assets/playSceneAssets/floating_island-4.png");
-    this.load.image("node-3", "assets/playSceneAssets/floating_island-3.png");
-    this.load.image("node-2", "assets/playSceneAssets/floating_island-2.png");
-    this.load.image("node-1", "assets/playSceneAssets/floating_island-1.png");
+
+    this.load.image(
+      "node-7",
+      "assets/playSceneAssets/floating_island-7_cropped.png"
+    );
+    //this.load.image("node-7", "assets/playSceneAssets/floating_island-7.png");
+    this.load.image(
+      "node-6",
+      "assets/playSceneAssets/floating_island-6_cropped.png"
+    );
+    // this.load.image("node-6", "assets/playSceneAssets/floating_island-6.png");
+    this.load.image(
+      "node-5",
+      "assets/playSceneAssets/floating_island-5_cropped.png"
+    );
+    //this.load.image("node-5", "assets/playSceneAssets/floating_island-5.png");
+    this.load.image(
+      "node-4",
+      "assets/playSceneAssets/floating_island-4_cropped.png"
+    );
+    //this.load.image("node-4", "assets/playSceneAssets/floating_island-4.png");
+    this.load.image(
+      "node-3",
+      "assets/playSceneAssets/floating_island-3_cropped.png"
+    );
+    //this.load.image("node-3", "assets/playSceneAssets/floating_island-3.png");
+    this.load.image(
+      "node-2",
+      "assets/playSceneAssets/floating_island-2_cropped.png"
+    );
+    //this.load.image("node-2", "assets/playSceneAssets/floating_island-2.png");
+    this.load.image(
+      "node-1",
+      "assets/playSceneAssets/floating_island-1_cropped.png"
+    );
+    //this.load.image("node-1", "assets/playSceneAssets/floating_island-1.png");
     this.load.image("node0", "assets/playSceneAssets/floating_island0.png");
     this.load.image("node1", "assets/playSceneAssets/floating_island1.png");
     this.load.image("node2", "assets/playSceneAssets/floating_island2.png");
@@ -98,7 +127,8 @@ class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("MenuScene");
+    //this.scene.start("MenuScene");
+    this.startScene();
     this.game.config.bgMusicPlaying = false;
 
     this.game.config.defaultFontOptions = {
@@ -106,6 +136,23 @@ class PreloadScene extends Phaser.Scene {
       fill: "#FFFFFF",
       fontFamily: "Neon",
     };
+  }
+
+  startScene() {
+    const currentScene = JSON.parse(sessionStorage.getItem("currentScene"));
+    console.log(currentScene);
+    if (currentScene) {
+      this.scene.start("PlayScene", {
+        nodes: currentScene.nodes,
+        edges: currentScene.edges,
+        maximumStepAllowed: currentScene.maximumStepAllowed,
+        tutorialMode: false,
+        level: currentScene.level,
+        difficulty: currentScene.difficulty,
+      });
+    } else {
+      this.scene.start("MenuScene");
+    }
   }
 
   // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3

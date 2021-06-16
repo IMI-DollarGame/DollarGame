@@ -1,18 +1,17 @@
 import BaseScene from "./BaseScene";
-import { brotliCompress } from "zlib";
 
 class MenuScene extends BaseScene {
   constructor(config) {
     super("MenuScene", {
       ...config,
       addDevelopers: true,
-      hasSoundButton: true
+      hasSoundButton: true,
     });
 
     this.menu = [
       { scene: "DifficultyScene", text: "Play" },
       { scene: "ScoreScene", text: "Score" },
-      { scene: "TutorialScene", text: "Tutorial" }
+      { scene: "TutorialScene", text: "Tutorial" },
     ];
   }
 
@@ -33,8 +32,6 @@ class MenuScene extends BaseScene {
       .setScale(1.0);
     backGround.x = backGround.displayWidth * 0.4;
   }
-
-
 }
 
 export default MenuScene;
