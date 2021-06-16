@@ -128,6 +128,69 @@
       ]
     },
     {
+      "level": 8,
+      "difficulty": "easy",
+      "steps": 30,
+      "nodes": [
+        { "id": "A", "value": "5", "x": 0.228, "y": 0.75 },
+        { "id": "B", "value": "-2", "x": 0.35, "y": 0.5 },
+        { "id": "C", "value": "-2", "x": 0.5, "y": 0.75 },
+        { "id": "D", "value": "-3", "x": 0.7, "y": 0.5 },
+        { "id": "E", "value": "3", "x": 0.6, "y": 0.35 }
+      ],
+      "edges": [
+        { "nodeA": "A", "nodeB": "B" },
+        { "nodeA": "B", "nodeB": "C" },
+        { "nodeA": "B", "nodeB": "D" },
+        { "nodeA": "C", "nodeB": "D" },
+        { "nodeA": "D", "nodeB": "E" }
+      ]
+    },
+    {
+      "level": 9,
+      "difficulty": "easy",
+      "steps": 15,
+      "nodes": [
+        { "id": "A", "value": "-1", "x": 0.4, "y": 0.35 },
+        { "id": "B", "value": "2", "x": 0.6, "y": 0.35 },
+        { "id": "C", "value": "-2", "x": 0.4, "y": 0.5 },
+        { "id": "D", "value": "3", "x": 0.6, "y": 0.5 },
+        { "id": "E", "value": "1", "x": 0.4, "y": 0.75 },
+        { "id": "F", "value": "-1", "x": 0.6, "y": 0.75 }
+      ],
+      "edges": [
+        { "nodeA": "A", "nodeB": "B" },
+        { "nodeA": "A", "nodeB": "C" },
+        { "nodeA": "B", "nodeB": "C" },
+        { "nodeA": "C", "nodeB": "D" },
+        { "nodeA": "C", "nodeB": "E" },
+        { "nodeA": "E", "nodeB": "D" },
+        { "nodeA": "E", "nodeB": "F" }
+      ]
+    },
+    {
+      "level": 10,
+      "difficulty": "easy",
+      "steps": 15,
+      "nodes": [
+        { "id": "A", "value": "7", "x": 0.5, "y": 0.5 },
+        { "id": "B", "value": "2", "x": 0.35, "y": 0.5 },
+        { "id": "C", "value": "1", "x": 0.5, "y": 0.35 },
+        { "id": "D", "value": "-2", "x": 0.75, "y": 0.5 },
+        { "id": "E", "value": "-3", "x": 0.75, "y": 0.75 },
+        { "id": "F", "value": "-2", "x": 0.35, "y": 0.75 }
+      ],
+      "edges": [
+        { "nodeA": "A", "nodeB": "B" },
+        { "nodeA": "B", "nodeB": "C" },
+        { "nodeA": "C", "nodeB": "D" },
+        { "nodeA": "D", "nodeB": "E" },
+        { "nodeA": "E", "nodeB": "F" },
+        { "nodeA": "F", "nodeB": "B" }
+      ]
+    },
+
+    {
       "level": 1,
       "difficulty": "normal",
       "steps": 33,
