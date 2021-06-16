@@ -77,18 +77,18 @@ class MenuScene extends BaseScene {
       "node7"
     );
 
-    // this.testLogo = this.add.image(
-    //   this.config.width * 0.5,
-    //   this.config.height * 0.5,
-    //   "node7"
-    // );
+    this.testLogo = this.add.image(
+      this.config.width * 0.5,
+      this.config.height * 0.5,
+      "node7"
+    );
   }
 
   createBG() {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "blueSky")
       .setOrigin(0.5, 0.5)
-      .setScale(2);
+      .setScale(1.9);
   }
 
   moveIsland(island, speedX, speedY) {
@@ -111,21 +111,21 @@ class MenuScene extends BaseScene {
       this.config.width * 0.9
     );
     // let randomYPos = Phaser.Math.Between(0, this.config.height * 0.1);
-    island.y = this.config.height + 55;
+    island.y = this.config.height + 150;
     island.x = randomXPos;
   }
   animateAllIslands() {
     //Speed x++ , y--
-    this.moveIsland(this.island1, 0.2, 0.5);
-    this.moveIsland(this.island2, -0.22, 0.8);
-    this.moveIsland(this.island3, 0.25, 0.5);
-    this.moveIsland(this.island4, -0.05, 0.7);
-    this.moveIsland(this.island5, -0.06, 0.7);
-    this.moveIsland(this.island7, 0.09, 0.5);
-    this.moveIsland(this.NegIsland1, -0.09, 0.6);
-    this.moveIsland(this.NegIsland2, 0.092, 0.55);
-    this.moveIsland(this.NegIsland5, -0.095, 0.8);
-    this.moveIsland(this.NegIsland7, 0.098, 0.65);
+    this.moveIsland(this.island1, 0.2, 0.3);
+    this.moveIsland(this.island2, -0.22, 0.6);
+    this.moveIsland(this.island3, 0.25, 0.3);
+    this.moveIsland(this.island4, -0.05, 0.5);
+    this.moveIsland(this.island5, -0.06, 0.5);
+    this.moveIsland(this.island7, 0.09, 0.3);
+    this.moveIsland(this.NegIsland1, -0.09, 0.4);
+    this.moveIsland(this.NegIsland2, 0.092, 0.4);
+    this.moveIsland(this.NegIsland5, -0.095, 0.6);
+    this.moveIsland(this.NegIsland7, 0.098, 0.5);
   }
   update() {
     this.animateAllIslands();
