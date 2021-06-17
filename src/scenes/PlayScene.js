@@ -64,7 +64,7 @@ class PlayScene extends BaseScene {
       .image(innerWidth / 20, innerHeight / 20, "arrow")
       .setInteractive()
       .setOrigin(0, 0);
-    this.scaleObject(backButton, 20);
+    this.scaleObject(backButton, 25);
 
     backButton.on("pointerup", () => {
       this.playButtonSound();
@@ -87,14 +87,24 @@ class PlayScene extends BaseScene {
 
   createBG() {
     // const backGround = this.add
-    //   .image(this.config.width / 2, this.config.height / 2, "play-bg")
+    //   .image(this.config.width / 2, this.config.height / 2, "blueSky")
     //   .setOrigin(0.5, 0.5)
-    //   .setScale(1.8);
-    // backGround.x = backGround.displayWidth * 0.5;
+    //   .setScale(2);
+    let bgPic = "";
+    if (this.difficulty === "easy") {
+      bgPic = "sky-easy";
+    } else if (this.difficulty === "normal") {
+      bgPic = "sky-medium";
+    } else if (this.difficulty === "hard") {
+      bgPic = "sky-hard";
+    } else {
+      bgPic = "blueSky";
+    }
+
     const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "blueSky")
-      .setOrigin(0.5, 0.5)
-      .setScale(2);
+      .image(this.config.width / 2, this.config.height / 2, bgPic)
+      .setOrigin(0.5, 0.5);
+    // .setScale(2);
     // backGround.x = backGround.displayWidth * 0.5;
   }
 
@@ -347,7 +357,7 @@ class PlayScene extends BaseScene {
       .setOrigin(1, 0)
       .setInteractive();
 
-    this.scaleObject(this.restartBtn, 20);
+    this.scaleObject(this.restartBtn, 30);
 
     this.restartBtn.on("pointerup", () => {
       this.playButtonSound();
@@ -371,7 +381,7 @@ class PlayScene extends BaseScene {
       .setOrigin(0, 0)
       .setInteractive();
 
-    this.scaleObject(this.undoBtn, 20);
+    this.scaleObject(this.undoBtn, 30);
 
     this.undoBtn.on("pointerup", () => {
       this.playButtonSound();
