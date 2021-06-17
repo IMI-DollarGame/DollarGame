@@ -26,7 +26,9 @@ const Scenes = [
   PlayScene,
   EndGameScene
 ];
+
 const createScene = Scene => new Scene(SHARED_CONFIG);
+
 const initScenes = () => Scenes.map(createScene);
 
 const config = {
