@@ -10,7 +10,7 @@ class BaseScene extends Phaser.Scene {
     this.lineHeight = 80;
     this.defaultTopBtnHeight = innerHeight / 20;
     this.bgMusic;
-
+    this.quote = "Come and Join us to build the greatest Graphlands !!! \n http://graphlands.herokuapp.com/";
     this.completedLevel = [];
   }
 
@@ -102,39 +102,79 @@ class BaseScene extends Phaser.Scene {
 
     musicOff.on("pointerdown", () => {
       if (!this.sound.locked) {
-		    // already unlocked so play
+        // already unlocked so play
         this.game.config.bgMusicPlaying = true;
         musicOff.visible = !this.game.config.bgMusicPlaying;
         musicOn.visible = this.game.config.bgMusicPlaying;
-		    this.bgMusic.play();
-	    }
-	    else {
-		    // wait for 'unlocked' to fire and then play
-		    this.bgMusic.once(Phaser.Sound.Events.UNLOCKED, () => {
-        this.game.config.bgMusicPlaying = true;
-        musicOff.visible = !this.game.config.bgMusicPlaying;
-        musicOn.visible = this.game.config.bgMusicPlaying;
-			  this.bgMusic.play();
+        this.bgMusic.play();
+      }
+      else {
+        // wait for 'unlocked' to fire and then play
+        this.bgMusic.once(Phaser.Sound.Events.UNLOCKED, () => {
+          this.game.config.bgMusicPlaying = true;
+          musicOff.visible = !this.game.config.bgMusicPlaying;
+          musicOn.visible = this.game.config.bgMusicPlaying;
+          this.bgMusic.play();
         });
-	    }
+      }
     });
   }
 
   createDevelopersTxt() {
     const xPos = this.config.width / 2;
-    const yPos = this.config.height * 0.95;
+    const yPos = this.config.height * 0.9;
 
-    this.make.text({
-      x: xPos,
-      y: yPos,
-      text: "Created by the group of enthusiasts",
-      origin: { x: 0.5, y: 0.5 },
-      style: {
+    const footerText = this.add.text(
+      0,
+      0,
+      "Developed by a group of enthusiasts \n International Media and Computing \n HTW-Berlin",
+      {
         fontSize: "15px",
-        fill: "#000",
-        fontFamily: 'Montserrat-Regular',
-      },
+        fill: "#000000",
+        fontFamily: "Indie Flower, cursive",
+        stroke: "#FFF",
+        strokeThickness: 1,
+        align: "center",
+      }
+    );
+    footerText.setOrigin(0.5);
+
+    var twitterBtn = this.add.image(-50, 50, 'twitterLogo').setInteractive();
+    this.scaleObject(twitterBtn, 45);
+
+    twitterBtn.on('pointerup', () => {
+      this.openExternalLink("https://twitter.com/intent/tweet?text=" + encodeURIComponent(this.quote));
     });
+
+    var facebookBtn = this.add.image(50, 50, 'facebookLogo').setInteractive();
+    this.scaleObject(facebookBtn, 45);
+
+    facebookBtn.on('pointerup', () => {
+      this.openExternalLink("https://www.facebook.com/sharer/sharer.php?u=graphlands.herokuapp.com&quote=" + encodeURIComponent(this.quote));
+    });
+
+    var githubBtn = this.add.image(0, 50, 'githubLogo').setInteractive();
+    this.scaleObject(githubBtn, 45);
+
+    githubBtn.on('pointerup', () => {
+      this.openExternalLink("https://github.com/IMI-DollarGame/DollarGame");
+    });
+
+    const container = this.add.container(
+      xPos, yPos,
+      [twitterBtn, facebookBtn, githubBtn, footerText]
+    );
+    container.setSize(innerWidth / 10, innerHeight / 10);
+  }
+
+  openExternalLink(url){
+    var s = window.open(url, '_blank');
+    if (s && s.focus) {
+      s.focus();
+    }
+    else if (!s) {
+      window.location.href = url;
+    }
   }
 
   setupMenuEvents(menuItem) {
