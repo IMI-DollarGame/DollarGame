@@ -41,6 +41,7 @@ class PlayScene extends BaseScene {
     this.displayUndoButton();
     this.drawGraph();
     this.monitorValues();
+    this.displayLevelInfo();
     if (this.tutorialMode === true) {
       this.createTutorialButton();
       this.turnOnTutorialMode();
@@ -316,7 +317,7 @@ class PlayScene extends BaseScene {
   setMaxSteps() {
     this.steps = this.maximumStepAllowed;
     this.stepsText = this.add
-      .text(innerWidth / 2, innerHeight / 20, this.stepText + this.steps, {
+      .text(innerWidth / 2, innerHeight / 12, this.stepText + this.steps, {
         fontSize: "30px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
@@ -328,7 +329,7 @@ class PlayScene extends BaseScene {
   displayBestScore() {
     const bestScore = localStorage.getItem("bestScore");
     this.bestScoreText = this.add
-      .text(innerWidth / 2, innerHeight / 10, `Best Score: ${0}`, {
+      .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
         fill: "#3b3b3b",
         fontFamily: "Montserrat-Regular"
       })
@@ -485,6 +486,21 @@ class PlayScene extends BaseScene {
   destroyNodeImage(image) {
     image.destroy();
     image = null;
+  }
+
+  displayLevelInfo(){
+    const levelInfo = this.add.text(innerWidth / 2, innerHeight / 20, 
+      "Level " + this.level + " - " + this.difficulty, 
+      {
+        //fontSize: "22px",
+        fontFamily: "Montserrat-Regular",
+        fill: "#000",
+        align: "center"
+      })
+      .setOrigin(0.5);
+    if (this.tutorialMode === true) {
+      levelInfo.setText("Tutorial");
+    }
   }
 }
 
