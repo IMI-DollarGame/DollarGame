@@ -59,17 +59,17 @@ class MenuScene extends BaseScene {
       this.config.height * 0.55,
       "node2"
     );
-    // this.island4 = this.add.image(
-    //   this.config.width * 0.5,
-    //   this.config.height * 0.9,
-    //   "node3"
-    // );
+    this.island4 = this.add.image(
+      this.config.width * 0.5,
+      this.config.height * 0.9,
+      "node3"
+    );
 
-    // this.island5 = this.add.image(
-    //   this.config.width * 0.6,
-    //   this.config.height * 0.5,
-    //   "node5"
-    // );
+    this.island5 = this.add.image(
+      this.config.width * 0.6,
+      this.config.height * 0.5,
+      "node5"
+    );
 
     this.island7 = this.add.image(
       this.config.width * 0.8,
@@ -77,11 +77,9 @@ class MenuScene extends BaseScene {
       "node7"
     );
 
-    this.testLogo = this.add.image(
-      this.config.width * 0.5,
-      this.config.height * 0.5,
-      "node7"
-    );
+    this.testLogo = this.add
+      .image(this.config.width * 0.5, this.config.height * 0.5, "node7")
+      .setScale(1.3);
   }
 
   createBG() {
@@ -90,11 +88,15 @@ class MenuScene extends BaseScene {
       .setOrigin(0.5, 0.5)
       .setScale(1.9);
   }
-
-  moveIsland(island, speedX, speedY) {
+  scaleObject(obj, wPer) {
+    obj.displayWidth = this.game.config.width / wPer;
+    let hPer = (innerHeight / innerWidth) * wPer;
+    obj.displayHeight = this.game.config.height / hPer;
+  }
+  moveIsland(island, speedX, speedY, scalePer) {
+    this.scaleObject(island, scalePer);
     island.x += speedX;
     island.y -= speedY;
-
     if (
       island.getBounds().bottom < -30 ||
       //   island.getBounds().top > this.config.height + 30 ||
@@ -116,16 +118,16 @@ class MenuScene extends BaseScene {
   }
   animateAllIslands() {
     //Speed x++ , y--
-    this.moveIsland(this.island1, 0.2, 0.3);
-    this.moveIsland(this.island2, -0.22, 0.6);
-    this.moveIsland(this.island3, 0.25, 0.3);
-    // this.moveIsland(this.island4, -0.05, 0.5);
-    // this.moveIsland(this.island5, -0.06, 0.5);
-    this.moveIsland(this.island7, 0.09, 0.3);
-    this.moveIsland(this.NegIsland1, -0.09, 0.4);
-    this.moveIsland(this.NegIsland2, 0.092, 0.4);
-    this.moveIsland(this.NegIsland5, -0.095, 0.6);
-    this.moveIsland(this.NegIsland7, 0.098, 0.5);
+    this.moveIsland(this.island1, 0.2, 0.3, 12);
+    this.moveIsland(this.island2, -0.22, 0.6, 12);
+    this.moveIsland(this.island3, 0.25, 0.3, 12);
+    this.moveIsland(this.island4, -0.05, 0.5, 12);
+    this.moveIsland(this.island5, -0.06, 0.5, 12);
+    this.moveIsland(this.island7, 0.09, 0.3, 12);
+    this.moveIsland(this.NegIsland1, -0.09, 0.4, 12);
+    this.moveIsland(this.NegIsland2, 0.092, 0.4, 12);
+    this.moveIsland(this.NegIsland5, -0.095, 0.6, 12);
+    this.moveIsland(this.NegIsland7, 0.098, 0.5, 12);
   }
   update() {
     this.animateAllIslands();

@@ -23,13 +23,13 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("next", "assets/buttons/nextArrow.png");
 
     //backgrounds
-    this.load.image("clouds-bg", "assets/backgrounds/clouds-cyan.png");
-    this.load.image("cyan-bg", "assets/backgrounds/bg-cyan.png");
+    this.load.image("game-over", "assets/backgrounds/game-over.png");
+    this.load.image("game-won", "assets/backgrounds/game-won.png");
     this.load.image("play-bg", "assets/backgrounds/clouds-light.png");
-    this.load.image("settings-bg", "assets/backgrounds/bg-brown.png");
     this.load.image("blueSky", "assets/backgrounds/blueSky.jpg");
-    this.load.image("collageMenu2", "assets/backgrounds/collageMenu2.png");
-    this.load.image("collageMenu3", "assets/backgrounds/collageMenu3.png");
+    this.load.image("sky-easy", "assets/backgrounds/sky-easy.png");
+    this.load.image("sky-medium", "assets/backgrounds/sky-medium.png");
+    this.load.image("sky-hard", "assets/backgrounds/sky-hard.png");
 
     //node image
 
@@ -128,6 +128,7 @@ class PreloadScene extends Phaser.Scene {
 
   create() {
     this.scene.start("MenuScene");
+    // this.scene.start("DifficultyScene");
     this.game.config.bgMusicPlaying = false;
 
     this.game.config.defaultFontOptions = {
