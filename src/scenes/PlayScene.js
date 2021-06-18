@@ -5,7 +5,7 @@ class PlayScene extends BaseScene {
     super("PlayScene", {
       ...config,
       addDevelopers: true,
-      hasSoundButton: true
+      hasSoundButton: true,
     });
     this.fontSize = 1;
     this.stepText = "Steps left: ";
@@ -41,7 +41,6 @@ class PlayScene extends BaseScene {
     this.displayUndoButton();
     this.drawGraph();
     this.monitorValues();
-    this.displayLevelInfo();
     if (this.tutorialMode === true) {
       this.createTutorialButton();
       this.turnOnTutorialMode();
@@ -73,7 +72,7 @@ class PlayScene extends BaseScene {
       if (this.tutorialMode === true) {
         this.scene.start("MenuScene");
       } else {
-        this.scene.start("LevelsScene");
+        this.scene.start("LevelsScene", { difficulty: this.difficulty });
       }
     });
   }
@@ -95,13 +94,13 @@ class PlayScene extends BaseScene {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "blueSky")
       .setOrigin(0.5, 0.5)
-      .setScale(2);
-    // backGround.x = backGround.displayWidth * 0.5;
+      .setScale(1.0);
+    backGround.x = backGround.displayWidth * 0.5;
   }
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff }
+      lineStyle: { width: 4, color: 0xffffff },
     });
   }
 
@@ -124,7 +123,7 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
@@ -139,7 +138,9 @@ class PlayScene extends BaseScene {
       this.config.height * coordY,
       [nodeImage, nodeValueText]
     );
+
     container.setSize(innerWidth / 10, innerHeight / 10);
+    container.setDepth(1);
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
@@ -159,7 +160,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: `${this.fontSize}vw`,
         fill: "#000",
-        fontStyle: "bold"
+        fontStyle: "bold",
       }
     );
 
@@ -167,7 +168,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeValueTextVisible(state) {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(1).visible = state;
     });
   }
@@ -182,7 +183,7 @@ class PlayScene extends BaseScene {
   }
 
   setupNodeClick() {
-    this.nodesArray.forEach(node => {
+    this.nodesArray.forEach((node) => {
       this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
       node.container.setInteractive().on("pointerdown", () => {
         this.updateStep("decrease");
@@ -207,11 +208,11 @@ class PlayScene extends BaseScene {
 
     let currentValuesAndStep = {
       allValue: currrentValues,
-      step: this.steps
+      step: this.steps,
     };
 
     let currentObjIndex = this.allValuesArray.findIndex(
-      x => x.step === this.steps
+      (x) => x.step === this.steps
     );
 
     if (currentObjIndex !== -1) {
@@ -222,7 +223,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeInputState(state) {
-    this.nodesArray.forEach(node => {
+    this.nodesArray.forEach((node) => {
       node.container.input.enabled = state;
     });
   }
@@ -248,22 +249,110 @@ class PlayScene extends BaseScene {
       this.getNodeFromId(nodeIdA),
       this.getNodeFromId(nodeIdB)
     );
-    this.graphics.strokeLineShape(edge.getEdgeLine());
 
-    //let edgeImage = this.add.image(edge.getEdgeCoordX(),edge.getEdgeCoordY(), "bridge");
+    let nodeBX = edge.nodeB.container.x;
+    let nodeBY = edge.nodeB.container.y;
+    let nodeAX = edge.nodeA.container.x;
+    let nodeAY = edge.nodeA.container.y;
+    let getXcoord;
+    let getYcoord;
+    let deltaX;
+    let deltaY;
+    let distanceBetweenX;
+    let distanceBetweenY;
+    let numberOfRocks;
+    let prevRandom = 0;
 
+    if (nodeBX == nodeAX) {
+      getXcoord = nodeAX;
+      deltaX = 0;
+      distanceBetweenY = nodeBY - nodeAY;
+      numberOfRocks = Math.round(distanceBetweenY / (this.config.width * 0.04));
+    } else if (nodeBX > nodeAX) {
+      if (nodeBX - nodeAX < 200) {
+        distanceBetweenY = nodeBY - nodeAY;
+        numberOfRocks = Math.round(
+          distanceBetweenY / (this.config.width * 0.04)
+        );
+        getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
+        distanceBetweenX = nodeBX - nodeAX;
+        deltaX = distanceBetweenX / numberOfRocks;
+      } else {
+        distanceBetweenX = nodeBX - nodeAX;
+        numberOfRocks = Math.round(
+          distanceBetweenX / (this.config.width * 0.04)
+        );
+        getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
+        deltaX = distanceBetweenX / numberOfRocks;
+      }
+    } else {
+      if (nodeAX - nodeBX < 200) {
+        distanceBetweenY = nodeBY - nodeAY;
+        numberOfRocks = Math.round(
+          distanceBetweenY / (this.config.width * 0.04)
+        );
+        getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
+        distanceBetweenX = nodeAX - nodeBX;
+        deltaX = distanceBetweenX / numberOfRocks;
+      } else {
+        distanceBetweenX = nodeAX - nodeBX;
+        numberOfRocks = Math.round(
+          distanceBetweenX / (this.config.width * 0.04)
+        );
+        getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
+        deltaX = distanceBetweenX / numberOfRocks;
+      }
+    }
+
+    if (nodeBY == nodeAY) {
+      getYcoord = nodeBY;
+      deltaY = 0;
+    } else {
+      getYcoord = nodeAY + (nodeBY - nodeAY) / numberOfRocks;
+      distanceBetweenY = nodeBY - nodeAY;
+      deltaY = distanceBetweenY / numberOfRocks;
+    }
+
+    for (let i = 1; i < numberOfRocks - 1; i++) {
+      let randomRock = Math.floor(Math.random() * (8 - 1) + 1);
+      if (randomRock === prevRandom) {
+        while (randomRock === prevRandom) {
+          randomRock = Math.floor(Math.random() * (8 - 1) + 1);
+        }
+      }
+
+      if (nodeBX < nodeAX && nodeBY > nodeAY) {
+        if (i == 1) {
+          getXcoord -= deltaX * 2;
+          getYcoord += deltaY;
+        } else {
+          getXcoord -= deltaX;
+          getYcoord += deltaY;
+        }
+      } else {
+        if (i == 1) {
+          getXcoord += deltaX * 0.4;
+          getYcoord += deltaY * 0.5;
+        } else {
+          getXcoord += deltaX;
+          getYcoord += deltaY;
+        }
+      }
+      this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+      prevRandom = randomRock;
+    }
     this.edgesArray.push(edge);
   }
 
   updateValues() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.container.getAt(1).setText(element.value);
     });
   }
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -272,7 +361,7 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every(element => element.isPositiveValue())) {
+    if (this.nodesArray.every((element) => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
@@ -282,11 +371,11 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
-        difficulty: this.difficulty
+        difficulty: this.difficulty,
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!"
+        message: "You ran out of steps. Game over!!",
       });
     }
   }
@@ -317,11 +406,11 @@ class PlayScene extends BaseScene {
   setMaxSteps() {
     this.steps = this.maximumStepAllowed;
     this.stepsText = this.add
-      .text(innerWidth / 2, innerHeight / 12, this.stepText + this.steps, {
+      .text(innerWidth / 2, innerHeight / 20, this.stepText + this.steps, {
         fontSize: "30px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
-        align: "center"
+        align: "center",
       })
       .setOrigin(0.5);
   }
@@ -329,9 +418,9 @@ class PlayScene extends BaseScene {
   displayBestScore() {
     const bestScore = localStorage.getItem("bestScore");
     this.bestScoreText = this.add
-      .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
+      .text(innerWidth / 2, innerHeight / 10, `Best Score: ${0}`, {
         fill: "#3b3b3b",
-        fontFamily: "Montserrat-Regular"
+        fontFamily: "Montserrat-Regular",
       })
       .setOrigin(0.5);
 
@@ -359,7 +448,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.resetValue();
     });
     this.updateValues();
@@ -386,8 +475,8 @@ class PlayScene extends BaseScene {
   }
 
   undoNodeValue() {
-    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
-    this.allValuesArray[index].allValue.forEach(element => {
+    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach((element) => {
       this.getNodeFromId(element.id).value = element.value;
     });
   }
@@ -396,7 +485,7 @@ class PlayScene extends BaseScene {
     const tutorialText = this.add.text(-150, -50, this.getHelpText(), {
       fontFamily: "Indie Flower, cursive",
       fontSize: 20,
-      wordWrap: { width: 350, useAdvancedWrap: true }
+      wordWrap: { width: 350, useAdvancedWrap: true },
     });
 
     const nextButton = this.add
@@ -487,21 +576,6 @@ class PlayScene extends BaseScene {
     image.destroy();
     image = null;
   }
-
-  displayLevelInfo(){
-    const levelInfo = this.add.text(innerWidth / 2, innerHeight / 20, 
-      "Level " + this.level + " - " + this.difficulty, 
-      {
-        //fontSize: "22px",
-        fontFamily: "Montserrat-Regular",
-        fill: "#000",
-        align: "center"
-      })
-      .setOrigin(0.5);
-    if (this.tutorialMode === true) {
-      levelInfo.setText("Tutorial");
-    }
-  }
 }
 
 export default PlayScene;
@@ -528,7 +602,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach(element => {
+    this.neighborNodes.forEach((element) => {
       element.increaseNodeValueBy1();
     });
   }
@@ -558,14 +632,5 @@ class Edge {
   init() {
     this.nodeA.addNodeNeighbor(this.nodeB);
     this.nodeB.addNodeNeighbor(this.nodeA);
-  }
-
-  getEdgeLine() {
-    return new Phaser.Geom.Line(
-      this.nodeA.container.x,
-      this.nodeA.container.y,
-      this.nodeB.container.x,
-      this.nodeB.container.y
-    );
   }
 }
