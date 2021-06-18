@@ -99,6 +99,7 @@ class PlayScene extends BaseScene {
       bgPic = "sky-hard";
     } else {
       bgPic = "blueSky";
+      //This was the problem
     }
 
     const backGround = this.add
