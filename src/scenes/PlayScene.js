@@ -95,8 +95,8 @@ class PlayScene extends BaseScene {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "blueSky")
       .setOrigin(0.5, 0.5)
-      .setScale(1.0);
-    backGround.x = backGround.displayWidth * 0.5;
+      .setScale(2);
+    // backGround.x = backGround.displayWidth * 0.5;
   }
 
   addGraphics() {
@@ -407,7 +407,7 @@ class PlayScene extends BaseScene {
   setMaxSteps() {
     this.steps = this.maximumStepAllowed;
     this.stepsText = this.add
-      .text(innerWidth / 2, innerHeight / 20, this.stepText + this.steps, {
+      .text(innerWidth / 2, innerHeight / 12, this.stepText + this.steps, {
         fontSize: "30px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
@@ -419,7 +419,7 @@ class PlayScene extends BaseScene {
   displayBestScore() {
     const bestScore = localStorage.getItem("bestScore");
     this.bestScoreText = this.add
-      .text(innerWidth / 2, innerHeight / 10, `Best Score: ${0}`, {
+      .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
         fill: "#3b3b3b",
         fontFamily: "Montserrat-Regular",
       })
