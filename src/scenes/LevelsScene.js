@@ -100,21 +100,11 @@ class LevelsScene extends BaseScene {
           level: menuItem.level,
           difficulty: this.difficulty,
         });
-      sessionStorage.setItem(
-        "currentScene",
-        JSON.stringify({
-          nodes: menuItem.nodes,
-          edges: menuItem.edges,
-          maximumStepAllowed: menuItem.steps,
-          tutorialMode: false,
-          level: menuItem.level,
-          difficulty: this.difficulty,
-        })
-      );
+        
       this.playButtonSound();
     });
   }
-  
+
 }
 
 export default LevelsScene;

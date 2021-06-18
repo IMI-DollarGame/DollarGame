@@ -127,8 +127,7 @@ class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    //this.scene.start("MenuScene");
-    this.startScene();
+    this.scene.start("MenuScene");
     this.game.config.bgMusicPlaying = false;
 
     this.game.config.defaultFontOptions = {
@@ -136,23 +135,6 @@ class PreloadScene extends Phaser.Scene {
       fill: "#FFFFFF",
       fontFamily: "Neon",
     };
-  }
-
-  startScene() {
-    const currentScene = JSON.parse(sessionStorage.getItem("currentScene"));
-    console.log(currentScene);
-    if (currentScene) {
-      this.scene.start("PlayScene", {
-        nodes: currentScene.nodes,
-        edges: currentScene.edges,
-        maximumStepAllowed: currentScene.maximumStepAllowed,
-        tutorialMode: false,
-        level: currentScene.level,
-        difficulty: currentScene.difficulty,
-      });
-    } else {
-      this.scene.start("MenuScene");
-    }
   }
 
   // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
