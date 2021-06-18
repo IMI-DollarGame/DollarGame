@@ -41,6 +41,7 @@ class PlayScene extends BaseScene {
     this.displayUndoButton();
     this.drawGraph();
     this.monitorValues();
+    this.displayLevelInfo();
     if (this.tutorialMode === true) {
       this.createTutorialButton();
       this.turnOnTutorialMode();
@@ -575,6 +576,25 @@ class PlayScene extends BaseScene {
   destroyNodeImage(image) {
     image.destroy();
     image = null;
+  }
+
+  displayLevelInfo() {
+    const levelInfo = this.add
+      .text(
+        innerWidth / 2,
+        innerHeight / 20,
+        "Level " + this.level + " - " + this.difficulty,
+        {
+          //fontSize: "22px",
+          fontFamily: "Montserrat-Regular",
+          fill: "#000",
+          align: "center",
+        }
+      )
+      .setOrigin(0.5);
+    if (this.tutorialMode === true) {
+      levelInfo.setText("Tutorial");
+    }
   }
 }
 
