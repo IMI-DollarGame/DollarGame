@@ -5,7 +5,7 @@ class LevelsScene extends BaseScene {
     super("LevelsScene", {
       ...config,
       addDevelopers: true,
-      hasSoundButton: true
+      hasSoundButton: true,
     });
     this.fontSize = 2.3;
     this.lineHeight = config.height / 12.5;
@@ -15,7 +15,7 @@ class LevelsScene extends BaseScene {
       fill: "#ffffff",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
-      strokeThickness: 1
+      strokeThickness: 1,
     };
   }
 
@@ -60,10 +60,10 @@ class LevelsScene extends BaseScene {
           steps: level.steps,
           nodes: level.nodes,
           edges: level.edges,
-          level: level.level
+          level: level.level,
         };
 
-        if (menu.findIndex(x => x.text === item.text) === -1) {
+        if (menu.findIndex((x) => x.text === item.text) === -1) {
           menu.push(item);
         }
       }
@@ -101,9 +101,11 @@ class LevelsScene extends BaseScene {
           level: menuItem.level,
           difficulty: this.difficulty
         });
+        
       this.playButtonSound();
     });
   }
+
   createFloatingIslands(per) {
     this.NegIsland7 = this.add.image(
       this.config.width * 0.3,
@@ -168,6 +170,7 @@ class LevelsScene extends BaseScene {
     this.scaleObject(this.island5, per);
     this.scaleObject(this.island7, per);
   }
+  
   scaleObject(obj, wPer) {
     obj.displayWidth = this.game.config.width / wPer;
     let hPer = (innerHeight / innerWidth) * wPer;
