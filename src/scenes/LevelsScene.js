@@ -99,7 +99,7 @@ class LevelsScene extends BaseScene {
           tutorialMode: false,
           level: menuItem.level,
           difficulty: this.difficulty,
-        });
+        });        
       this.playButtonSound();
     });
   }
