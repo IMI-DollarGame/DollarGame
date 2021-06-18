@@ -5,7 +5,6 @@ import TutorialScene from "./scenes/TutorialScene";
 import ScoreScene from "./scenes/ScoreScene";
 import LevelsScene from "./scenes/LevelsScene";
 import PlayScene from "./scenes/PlayScene";
-import WinScene from "./scenes/WinScene";
 import EndGameScene from "./scenes/EndGameScene";
 import DifficultyScene from "./scenes/DifficultyScene";
 
@@ -14,7 +13,7 @@ const HEIGHT = innerHeight;
 
 const SHARED_CONFIG = {
   width: WIDTH,
-  height: HEIGHT,
+  height: HEIGHT
 };
 
 const Scenes = [
@@ -25,11 +24,11 @@ const Scenes = [
   ScoreScene,
   TutorialScene,
   PlayScene,
-  WinScene,
-  EndGameScene,
+  EndGameScene
 ];
 
-const createScene = (Scene) => new Scene(SHARED_CONFIG);
+const createScene = Scene => new Scene(SHARED_CONFIG);
+
 const initScenes = () => Scenes.map(createScene);
 
 const config = {
@@ -38,19 +37,19 @@ const config = {
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
-    },
+      debug: true
+    }
   },
   scale: {
     mode: Phaser.Scale.ScaleModes.EXACT_FIT,
-    autoCenter: Phaser.Scale.Center.CENTER_BOTH,
+    autoCenter: Phaser.Scale.Center.CENTER_BOTH
   },
 
   bgMusicPlaying: true,
   soundPlaying: true,
 
   //Basically what a user sees on the screen
-  scene: initScenes(),
+  scene: initScenes()
 };
 
 new Phaser.Game(config);

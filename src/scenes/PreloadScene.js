@@ -111,7 +111,7 @@ class PreloadScene extends Phaser.Scene {
     //music
     this.load.audio("music", ["assets/sounds/Cipher2.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
     this.load.audio("soundMenu", [
-      "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3",
+      "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"
     ]); //source: https://www.fesliyanstudios.com/
     this.load.audio("soundNode", ["assets/sounds/lowRandom.mp3"]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
@@ -142,10 +142,11 @@ class PreloadScene extends Phaser.Scene {
     var newFont = new FontFace(name, `url(${url})`);
     newFont
       .load()
-      .then(function (loaded) {
+
+      .then(function(loaded) {
         document.fonts.add(loaded);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         return error;
       });
   }
