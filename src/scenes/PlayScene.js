@@ -207,9 +207,45 @@ class PlayScene extends BaseScene {
           this.soundNode.play();
         }
         this.monitorValues();
+        this.animateEdge(node);
         this.checkWinLoseCondition();
       });
     });
+  }
+
+  animateEdge(node){
+    node.neighborNodes.forEach((neighbor) => {
+      // get currentEdge
+      let currentEdge;
+      this.edgesArray.forEach((edge) => {
+        if((edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) || 
+            (edge.nodeA.id === neighbor.id && edge.nodeB.id === node.id)){
+              currentEdge = edge;
+            }
+      });
+
+      let rocksArray = currentEdge.rocks;
+      // animate from left to right
+      if(node.id === currentEdge.nodeA.id){
+        let i = 1;
+        rocksArray.forEach((rock) => {
+          this.time.delayedCall(100*(i-1),() => {rock.y += 10;},rock);
+          this.time.delayedCall(100*i,() => {rock.y -= 10;},rock);
+          i++;
+          
+        });
+      } 
+      // animate from right to left
+      else {
+        let i = 1;
+        for(let j = rocksArray.length-1; j > -1; j--){
+          this.time.delayedCall(100*(i-1),() => {rocksArray[j].y += 10;},rocksArray[j]);
+          this.time.delayedCall(100*i,() => {rocksArray[j].y -= 10;},rocksArray[j]);
+          i++;
+        }
+      }
+    });
+
   }
 
   monitorValues() {
@@ -257,15 +293,14 @@ class PlayScene extends BaseScene {
   }
 
   addEdge(nodeIdA, nodeIdB) {
-    let edge = new Edge(
-      this.getNodeFromId(nodeIdA),
-      this.getNodeFromId(nodeIdB)
-    );
+    let nodeA = this.getNodeFromId(nodeIdA);
+    let nodeB = this.getNodeFromId(nodeIdB);
 
-    let nodeBX = edge.nodeB.container.x;
-    let nodeBY = edge.nodeB.container.y;
-    let nodeAX = edge.nodeA.container.x;
-    let nodeAY = edge.nodeA.container.y;
+    let nodeBX = nodeB.container.x;
+    let nodeBY = nodeB.container.y;
+    let nodeAX = nodeA.container.x;
+    let nodeAY = nodeA.container.y;
+
     let getXcoord;
     let getYcoord;
     let deltaX;
@@ -274,6 +309,7 @@ class PlayScene extends BaseScene {
     let distanceBetweenY;
     let numberOfRocks;
     let prevRandom = 0;
+    let rocks = [];
 
     if (nodeBX == nodeAX) {
       getXcoord = nodeAX;
@@ -350,9 +386,15 @@ class PlayScene extends BaseScene {
           getYcoord += deltaY;
         }
       }
-      this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+      let rock = this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+      rocks.push(rock);
       prevRandom = randomRock;
     }
+    let edge = new Edge(
+      nodeA,
+      nodeB,
+      rocks
+    );
     this.edgesArray.push(edge);
   }
 
@@ -654,9 +696,10 @@ class Node {
 }
 
 class Edge {
-  constructor(nodeA, nodeB) {
+  constructor(nodeA, nodeB, rocks) {
     this.nodeA = nodeA;
     this.nodeB = nodeB;
+    this.rocks = rocks;
     this.init();
   }
 
