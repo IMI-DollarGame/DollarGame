@@ -6,7 +6,6 @@ class DifficultyScene extends BaseScene {
       ...config,
       bGWithIslands: true,
       canGoBack: true,
-      addDevelopers: true,
       hasSoundButton: true
     });
     this.fontSize = 2.3;

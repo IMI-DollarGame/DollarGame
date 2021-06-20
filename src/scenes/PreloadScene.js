@@ -24,6 +24,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("twitterLogo", "assets/buttons/Twitter-Logo.png");
     this.load.image("facebookLogo", "assets/buttons/Facebook-Logo.png");
     this.load.image("githubLogo", "assets/buttons/GitHub-Logo.png");
+    this.load.image("pointer", "assets/buttons/pointer.png");
+
 
     //backgrounds
     this.load.image("game-over", "assets/backgrounds/game-over.png");
@@ -33,6 +35,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("sky-easy", "assets/backgrounds/sky-easy.png");
     this.load.image("sky-medium", "assets/backgrounds/sky-medium.png");
     this.load.image("sky-hard", "assets/backgrounds/sky-hard.png");
+    this.load.image("tutorial-border", "assets/backgrounds/tutorial-txt-border.png");
+    //https://pngtree.com/so/border-clipart
 
     //animation
     this.load.spritesheet('smoke', 'assets/spriteSheets/smoke.png',{frameWidth:37, frameHeight: 45});
@@ -40,47 +44,49 @@ class PreloadScene extends Phaser.Scene {
     //node image
     this.load.image(
       "node-7",
-      "assets/playSceneAssets/floating_island-7_cropped.png"
+      "assets/playSceneAssets/islands/floating_island-7_cropped.png"
     );
     //this.load.image("node-7", "assets/playSceneAssets/floating_island-7.png");
     this.load.image(
       "node-6",
-      "assets/playSceneAssets/floating_island-6_cropped.png"
+      "assets/playSceneAssets/islands/floating_island-6_cropped.png"
     );
     // this.load.image("node-6", "assets/playSceneAssets/floating_island-6.png");
     this.load.image(
       "node-5",
-      "assets/playSceneAssets/floating_island-5_cropped.png"
+      "assets/playSceneAssets/islands/floating_island-5_cropped.png"
     );
     //this.load.image("node-5", "assets/playSceneAssets/floating_island-5.png");
     this.load.image(
       "node-4",
-      "assets/playSceneAssets/floating_island-4_cropped.png"
+      "assets/playSceneAssets/islands/floating_island-4_cropped.png"
     );
     //this.load.image("node-4", "assets/playSceneAssets/floating_island-4.png");
     this.load.image(
       "node-3",
-      "assets/playSceneAssets/floating_island-3_cropped.png"
+      "assets/playSceneAssets/islands/floating_island-3_cropped.png"
     );
     //this.load.image("node-3", "assets/playSceneAssets/floating_island-3.png");
     this.load.image(
       "node-2",
-      "assets/playSceneAssets/floating_island-2_cropped.png"
+      "assets/playSceneAssets/islands/floating_island-2_cropped.png"
     );
     //this.load.image("node-2", "assets/playSceneAssets/floating_island-2.png");
     this.load.image(
       "node-1",
-      "assets/playSceneAssets/floating_island-1_cropped.png"
+      "assets/playSceneAssets/islands/floating_island-1_cropped.png"
     );
     //this.load.image("node-1", "assets/playSceneAssets/floating_island-1.png");
-    this.load.image("node0", "assets/playSceneAssets/floating_island0.png");
-    this.load.image("node1", "assets/playSceneAssets/floating_island1.png");
-    this.load.image("node2", "assets/playSceneAssets/floating_island2.png");
-    this.load.image("node3", "assets/playSceneAssets/floating_island3.png");
-    this.load.image("node4", "assets/playSceneAssets/floating_island4.png");
-    this.load.image("node5", "assets/playSceneAssets/floating_island5.png");
-    this.load.image("node6", "assets/playSceneAssets/floating_island6.png");
-    this.load.image("node7", "assets/playSceneAssets/floating_island7.png");
+    this.load.image("node0", "assets/playSceneAssets/islands/floating_island0.png");
+    this.load.image("node1", "assets/playSceneAssets/islands/floating_island1.png");
+    this.load.image("node2", "assets/playSceneAssets/islands/floating_island2.png");
+    this.load.image("node3", "assets/playSceneAssets/islands/floating_island3.png");
+    this.load.image("node4", "assets/playSceneAssets/islands/floating_island4.png");
+    this.load.image("node5", "assets/playSceneAssets/islands/floating_island5.png");
+    this.load.image("node6", "assets/playSceneAssets/islands/floating_island6.png");
+    this.load.image("node7", "assets/playSceneAssets/islands/floating_island7.png");
+    this.load.image("islandBg", "assets/playSceneAssets/islandBg.png");
+    this.load.image("valueBg", "assets/playSceneAssets/valueBg.png");
 
     //bridge image
     //this.load.image("bridge", "assets/playSceneAssets/bridge/bridge.png");
