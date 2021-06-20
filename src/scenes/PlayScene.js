@@ -447,12 +447,13 @@ class PlayScene extends BaseScene {
 
   checkWinLoseCondition() {
     if (this.nodesArray.every((element) => element.isPositiveValue())) {
-      const bestScoreText = localStorage.getItem("bestScore");
+      const bestScoreText = localStorage.getItem("levelbestscore" + this.level);
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
-        localStorage.setItem("bestScore", this.steps);
+        localStorage.setItem("levelbestscore" + this.level, this.steps);
       }
       sessionStorage.setItem("currentScore", this.steps);
+      localStorage.setItem("level" + this.level, "completed")
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
