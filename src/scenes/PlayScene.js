@@ -202,6 +202,10 @@ class PlayScene extends BaseScene {
         node.decreaseNodeValue();
         node.updateNeighborNodeValue();
         this.updateValues();
+        this.playSmokeAnimation(node.container.x, node.container.y, 'smoke');
+        node.getNeighborNodes().forEach((neighborNode) => {
+          this.playSmokeAnimation(neighborNode.container.x, neighborNode.container.y, 'smoke');
+        });
         this.updateNodeImages();
         if (this.game.config.soundPlaying === true) {
           this.soundNode.play();
@@ -242,7 +246,21 @@ class PlayScene extends BaseScene {
         }
       }
     });
+  }
 
+  playSmokeAnimation(x, y, animation) {
+    const smoke = this.add.sprite(x,y,animation,0);
+    this.scaleObject(smoke, 2);
+    smoke.depth = 100;
+    this.anims.create({
+      key: 'transform',
+      frameRate:8,
+      frames: this.anims.generateFrameNames(animation, {start: 1, end: 5})
+    });
+    smoke.play('transform');
+    smoke.once('animationcomplete', () => {
+      smoke.destroy()
+    })
   }
 
   monitorValues() {
@@ -697,6 +715,10 @@ class Node {
 
   increaseNodeValueBy1() {
     this.value++;
+  }
+
+  getNeighborNodes(){
+    return this.neighborNodes;
   }
 
   updateNeighborNodeValue() {

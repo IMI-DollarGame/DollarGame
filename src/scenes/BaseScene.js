@@ -10,13 +10,22 @@ class BaseScene extends Phaser.Scene {
     this.lineHeight = 80;
     this.defaultTopBtnHeight = innerHeight / 20;
     this.bgMusic;
-
+    this.quote = "Come and Join us to build the greatest Graphlands !!! \n http://graphlands.herokuapp.com/";
     this.completedLevel = [];
   }
 
   create() {
-    this.creatingAllButtons();
+    this.creatingAllButtonsAndBG();
     this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
+  }
+
+  createBGWithIslands() {
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, "blueSky")
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
+    backGround.x = backGround.displayWidth * 0.2;
+    this.createFloatingIslands(18);
   }
 
   createMenu(menu, setupMenuEvents) {
@@ -110,7 +119,8 @@ class BaseScene extends Phaser.Scene {
         musicOff.visible = !this.game.config.bgMusicPlaying;
         musicOn.visible = this.game.config.bgMusicPlaying;
         this.bgMusic.play();
-      } else {
+      } 
+      else {
         // wait for 'unlocked' to fire and then play
         this.bgMusic.once(Phaser.Sound.Events.UNLOCKED, () => {
           this.game.config.bgMusicPlaying = true;
@@ -124,19 +134,56 @@ class BaseScene extends Phaser.Scene {
 
   createDevelopersTxt() {
     const xPos = this.config.width / 2;
-    const yPos = this.config.height * 0.95;
+    const yPos = this.config.height * 0.9;
 
-    this.make.text({
-      x: xPos,
-      y: yPos,
-      text: "Created by the group of enthusiasts",
-      origin: { x: 0.5, y: 0.5 },
-      style: {
+    const footerText = this.add.text(
+      0,
+      0,
+      "International Media and Computing \n HTW-Berlin",
+      {
         fontSize: "15px",
+        fontFamily: "Montserrat-Regular",
         fill: "#000",
-        fontFamily: "Montserrat-Regular"
+        align: "center",
       }
+    );
+    footerText.setOrigin(0.5);
+
+    var twitterBtn = this.add.image(-50, 50, 'twitterLogo').setInteractive();
+    this.scaleObject(twitterBtn, 45);
+
+    twitterBtn.on('pointerup', () => {
+      this.openExternalLink("https://twitter.com/intent/tweet?text=" + encodeURIComponent(this.quote));
     });
+
+    var facebookBtn = this.add.image(50, 50, 'facebookLogo').setInteractive();
+    this.scaleObject(facebookBtn, 45);
+
+    facebookBtn.on('pointerup', () => {
+      this.openExternalLink("https://www.facebook.com/sharer/sharer.php?u=graphlands.herokuapp.com&quote=" + encodeURIComponent(this.quote));
+    });
+
+    var githubBtn = this.add.image(0, 50, 'githubLogo').setInteractive();
+    this.scaleObject(githubBtn, 45);
+
+    githubBtn.on('pointerup', () => {
+      this.openExternalLink("https://github.com/IMI-DollarGame/DollarGame");
+    });
+
+    const container = this.add.container(
+      xPos, yPos,
+      [twitterBtn, facebookBtn, githubBtn, footerText]
+    );
+  }
+
+  openExternalLink(url){
+    var s = window.open(url, '_blank');
+    if (s && s.focus) {
+      s.focus();
+    }
+    else if (!s) {
+      window.location.href = url;
+    }
   }
 
   setupMenuEvents(menuItem) {
@@ -157,7 +204,12 @@ class BaseScene extends Phaser.Scene {
     });
   }
 
-  creatingAllButtons() {
+  creatingAllButtonsAndBG() {
+    //Creating BG with Islands
+    //ORDER MATTERS
+    if (this.config.bGWithIslands) {
+      this.createBGWithIslands();
+    }
     if (this.config.canGoBack) {
       this.createBackButton();
     }
@@ -169,16 +221,81 @@ class BaseScene extends Phaser.Scene {
     }
   }
 
-  scaleObject(obj, wPer) {
-    obj.displayWidth = this.game.config.width / wPer;
-    let hPer = (innerHeight / innerWidth) * wPer;
-    obj.displayHeight = this.game.config.height / hPer;
-  }
-
   playButtonSound() {
     if (this.game.config.soundPlaying === true) {
       this.soundMenu.play();
     }
+  }
+
+  createFloatingIslands(per) {
+    this.NegIsland7 = this.add.image(
+      this.config.width * 0.3,
+      this.config.height * 0.2,
+      "node-7"
+    );
+    this.NegIsland5 = this.add.image(
+      this.config.width * 0.2,
+      this.config.height * 0.9,
+      "node-5"
+    );
+    this.NegIsland2 = this.add.image(
+      this.config.width * 0.5,
+      this.config.height * 0.2,
+      "node-2"
+    );
+    this.NegIsland1 = this.add.image(
+      this.config.width * 0.8,
+      this.config.height * 0.3,
+      "node-1"
+    );
+    this.island1 = this.add.image(
+      this.config.width * 0.1,
+      this.config.height * 0.1,
+      "node0"
+    );
+    this.island2 = this.add.image(
+      this.config.width * 0.1,
+      this.config.height * 0.55,
+      "node1"
+    );
+    this.island3 = this.add.image(
+      this.config.width * 0.4,
+      this.config.height * 0.55,
+      "node2"
+    );
+    this.island4 = this.add.image(
+      this.config.width * 0.5,
+      this.config.height * 0.9,
+      "node3"
+    );
+
+    this.island5 = this.add.image(
+      this.config.width * 0.6,
+      this.config.height * 0.5,
+      "node5"
+    );
+
+    this.island7 = this.add.image(
+      this.config.width * 0.8,
+      this.config.height * 0.7,
+      "node7"
+    );
+    this.scaleObject(this.NegIsland7, per);
+    this.scaleObject(this.NegIsland5, per);
+    this.scaleObject(this.NegIsland2, per);
+    this.scaleObject(this.NegIsland1, per);
+    this.scaleObject(this.island1, per);
+    this.scaleObject(this.island2, per);
+    this.scaleObject(this.island3, per);
+    this.scaleObject(this.island4, per);
+    this.scaleObject(this.island5, per);
+    this.scaleObject(this.island7, per);
+  }
+
+  scaleObject(obj, wPer) {
+    obj.displayWidth = this.game.config.width / wPer;
+    let hPer = (innerHeight / innerWidth) * wPer;
+    obj.displayHeight = this.game.config.height / hPer;
   }
 }
 export default BaseScene;

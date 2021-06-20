@@ -21,6 +21,9 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("restartLvl", "assets/buttons/restartCurrentLvl.png");
     this.load.image("previous", "assets/buttons/previousArrow.png");
     this.load.image("next", "assets/buttons/nextArrow.png");
+    this.load.image("twitterLogo", "assets/buttons/Twitter-Logo.png");
+    this.load.image("facebookLogo", "assets/buttons/Facebook-Logo.png");
+    this.load.image("githubLogo", "assets/buttons/GitHub-Logo.png");
 
     //backgrounds
     this.load.image("game-over", "assets/backgrounds/game-over.png");
@@ -31,8 +34,10 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("sky-medium", "assets/backgrounds/sky-medium.png");
     this.load.image("sky-hard", "assets/backgrounds/sky-hard.png");
 
-    //node image
+    //animation
+    this.load.spritesheet('smoke', 'assets/spriteSheets/smoke.png',{frameWidth:37, frameHeight: 45});
 
+    //node image
     this.load.image(
       "node-7",
       "assets/playSceneAssets/floating_island-7_cropped.png"
@@ -78,7 +83,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("node7", "assets/playSceneAssets/floating_island7.png");
 
     //bridge image
-    this.load.image("bridge", "assets/playSceneAssets/bridge/bridge.png");
+    //this.load.image("bridge", "assets/playSceneAssets/bridge/bridge.png");
     this.load.image(
       "rock-1",
       "assets/playSceneAssets/bridge/floating-rock1.png"
