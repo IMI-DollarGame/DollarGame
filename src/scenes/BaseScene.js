@@ -127,13 +127,11 @@ class BaseScene extends Phaser.Scene {
     const footerText = this.add.text(
       0,
       0,
-      "Developed by a group of enthusiasts \n International Media and Computing \n HTW-Berlin",
+      "International Media and Computing \n HTW-Berlin",
       {
         fontSize: "15px",
-        fill: "#000000",
-        fontFamily: "Indie Flower, cursive",
-        stroke: "#FFF",
-        strokeThickness: 1,
+        fontFamily: "Montserrat-Regular",
+        fill: "#000",
         align: "center",
       }
     );
@@ -164,7 +162,6 @@ class BaseScene extends Phaser.Scene {
       xPos, yPos,
       [twitterBtn, facebookBtn, githubBtn, footerText]
     );
-    container.setSize(innerWidth / 10, innerHeight / 10);
   }
 
   openExternalLink(url){
