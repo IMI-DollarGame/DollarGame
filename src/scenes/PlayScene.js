@@ -283,7 +283,7 @@ class PlayScene extends BaseScene {
 
   chageEdgeVisible(state) {
     this.edgesArray.forEach((element) => {
-      element.edgeImage.forEach((e) => {
+      element.rocks.forEach((e) => {
         e.visible = state;
       })
 
@@ -291,15 +291,14 @@ class PlayScene extends BaseScene {
   }
 
   addEdge(nodeIdA, nodeIdB) {
-    let edge = new Edge(
-      this.getNodeFromId(nodeIdA),
-      this.getNodeFromId(nodeIdB)
-    );
+    let nodeA = this.getNodeFromId(nodeIdA);
+    let nodeB = this.getNodeFromId(nodeIdB);
 
-    let nodeBX = edge.nodeB.container.x;
-    let nodeBY = edge.nodeB.container.y;
-    let nodeAX = edge.nodeA.container.x;
-    let nodeAY = edge.nodeA.container.y;
+    let nodeBX = nodeB.container.x;
+    let nodeBY = nodeB.container.y;
+    let nodeAX = nodeA.container.x;
+    let nodeAY = nodeA.container.y;
+
     let getXcoord;
     let getYcoord;
     let deltaX;
@@ -308,6 +307,7 @@ class PlayScene extends BaseScene {
     let distanceBetweenY;
     let numberOfRocks;
     let prevRandom = 0;
+    let rocks = [];
 
     if (nodeBX == nodeAX) {
       getXcoord = nodeAX;
@@ -359,8 +359,6 @@ class PlayScene extends BaseScene {
       deltaY = distanceBetweenY / numberOfRocks;
     }
 
-    let edgeImage = [];
-
     for (let i = 1; i < numberOfRocks - 1; i++) {
       let randomRock = Math.floor(Math.random() * (8 - 1) + 1);
       if (randomRock === prevRandom) {
@@ -386,13 +384,16 @@ class PlayScene extends BaseScene {
           getYcoord += deltaY;
         }
       }
-      const rockImage = this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+      let rock = this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+      rocks.push(rock);
       prevRandom = randomRock;
-
-      edgeImage.push(rockImage);
     }
 
-    edge.addEdgeImage(edgeImage);
+    let edge = new Edge(
+      nodeA,
+      nodeB,
+      rocks
+    );
     this.edgesArray.push(edge);
   }
 
@@ -733,19 +734,15 @@ class Node {
 }
 
 class Edge {
-  constructor(nodeA, nodeB) {
+  constructor(nodeA, nodeB, rocks) {
     this.nodeA = nodeA;
     this.nodeB = nodeB;
-    this.edgeImage = [];
+    this.rocks = rocks;
     this.init();
   }
 
   init() {
     this.nodeA.addNodeNeighbor(this.nodeB);
     this.nodeB.addNodeNeighbor(this.nodeA);
-  }
-
-  addEdgeImage(arrayImage) {
-    this.edgeImage = arrayImage;
   }
 }
