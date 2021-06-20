@@ -120,11 +120,11 @@ class PreloadScene extends Phaser.Scene {
     );
 
     //music
-    this.load.audio("music", ["assets/sounds/Cipher2.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
+    this.load.audio("music", ["assets/sounds/sb_wanderlust.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
     this.load.audio("soundMenu", [
       "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3",
     ]); //source: https://www.fesliyanstudios.com/
-    this.load.audio("soundNode", ["assets/sounds/lowRandom.mp3"]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
+    this.load.audio("soundNode", ["assets/sounds/mixkit-game-ball-tap-2073.wav"]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
     this.load.json("levels", "assets/jsonLevels/levels.json");
     this.load.json("tutorial", "assets/jsonLevels/tutorial.json");
@@ -140,13 +140,13 @@ class PreloadScene extends Phaser.Scene {
   create() {
     this.scene.start("MenuScene");
     // this.scene.start("DifficultyScene");
-    this.game.config.bgMusicPlaying = false;
 
     this.game.config.defaultFontOptions = {
       fontSize: "40px",
       fill: "#FFFFFF",
       fontFamily: "Neon",
     };
+    this.game.config.soundPlaying = true;
   }
 
   // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
