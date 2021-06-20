@@ -19,10 +19,10 @@ const SHARED_CONFIG = {
 const Scenes = [
   PreloadScene,
   MenuScene,
+  TutorialScene,
   LevelsScene,
   DifficultyScene,
   ScoreScene,
-  TutorialScene,
   PlayScene,
   EndGameScene
 ];
