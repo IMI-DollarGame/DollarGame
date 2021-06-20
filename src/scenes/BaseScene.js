@@ -10,7 +10,8 @@ class BaseScene extends Phaser.Scene {
     this.lineHeight = 80;
     this.defaultTopBtnHeight = innerHeight / 20;
     this.bgMusic;
-    this.quote = "Come and Join us to build the greatest Graphlands !!! \n http://graphlands.herokuapp.com/";
+    this.quote =
+      "Come and Join us to build the greatest Graphlands !!! \n http://graphlands.herokuapp.com/";
     this.completedLevel = [];
   }
 
@@ -29,10 +30,10 @@ class BaseScene extends Phaser.Scene {
 
   createMenu(menu, setupMenuEvents) {
     let lastMenuPositionY = 0;
-    menu.forEach(menuItem => {
+    menu.forEach((menuItem) => {
       const menuPosition = [
         this.screenCenter[0],
-        this.screenCenter[1] + lastMenuPositionY
+        this.screenCenter[1] + lastMenuPositionY,
       ];
       menuItem.textGO = this.add
         .text(
@@ -112,10 +113,10 @@ class BaseScene extends Phaser.Scene {
     });
 
     musicOff.on("pointerdown", () => {
-        this.game.config.bgMusicPlaying = true;
-        musicOff.visible = !this.game.config.bgMusicPlaying;
-        musicOn.visible = this.game.config.bgMusicPlaying;
-        this.bgMusic.play();
+      this.game.config.bgMusicPlaying = true;
+      musicOff.visible = !this.game.config.bgMusicPlaying;
+      musicOn.visible = this.game.config.bgMusicPlaying;
+      this.bgMusic.play();
     });
   }
 
@@ -136,39 +137,46 @@ class BaseScene extends Phaser.Scene {
     );
     footerText.setOrigin(0.5);
 
-    var twitterBtn = this.add.image(-50, 50, 'twitterLogo').setInteractive();
+    var twitterBtn = this.add.image(-50, 50, "twitterLogo").setInteractive();
     this.scaleObject(twitterBtn, 45);
 
-    twitterBtn.on('pointerup', () => {
-      this.openExternalLink("https://twitter.com/intent/tweet?text=" + encodeURIComponent(this.quote));
+    twitterBtn.on("pointerup", () => {
+      this.openExternalLink(
+        "https://twitter.com/intent/tweet?text=" +
+          encodeURIComponent(this.quote)
+      );
     });
 
-    var facebookBtn = this.add.image(50, 50, 'facebookLogo').setInteractive();
+    var facebookBtn = this.add.image(50, 50, "facebookLogo").setInteractive();
     this.scaleObject(facebookBtn, 45);
 
-    facebookBtn.on('pointerup', () => {
-      this.openExternalLink("https://www.facebook.com/sharer/sharer.php?u=graphlands.herokuapp.com&quote=" + encodeURIComponent(this.quote));
+    facebookBtn.on("pointerup", () => {
+      this.openExternalLink(
+        "https://www.facebook.com/sharer/sharer.php?u=graphlands.herokuapp.com&quote=" +
+          encodeURIComponent(this.quote)
+      );
     });
 
-    var githubBtn = this.add.image(0, 50, 'githubLogo').setInteractive();
+    var githubBtn = this.add.image(0, 50, "githubLogo").setInteractive();
     this.scaleObject(githubBtn, 45);
 
-    githubBtn.on('pointerup', () => {
+    githubBtn.on("pointerup", () => {
       this.openExternalLink("https://github.com/IMI-DollarGame/DollarGame");
     });
 
-    const container = this.add.container(
-      xPos, yPos,
-      [twitterBtn, facebookBtn, githubBtn, footerText]
-    );
+    const container = this.add.container(xPos, yPos, [
+      twitterBtn,
+      facebookBtn,
+      githubBtn,
+      footerText,
+    ]);
   }
 
-  openExternalLink(url){
-    var s = window.open(url, '_blank');
+  openExternalLink(url) {
+    var s = window.open(url, "_blank");
     if (s && s.focus) {
       s.focus();
-    }
-    else if (!s) {
+    } else if (!s) {
       window.location.href = url;
     }
   }
