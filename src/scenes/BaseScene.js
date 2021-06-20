@@ -21,13 +21,17 @@ class BaseScene extends Phaser.Scene {
 
   createMenu(menu, setupMenuEvents) {
     let lastMenuPositionY = 0;
-    menu.forEach((menuItem) => {
+    menu.forEach(menuItem => {
       const menuPosition = [
         this.screenCenter[0],
-        this.screenCenter[1] + lastMenuPositionY,
+        this.screenCenter[1] + lastMenuPositionY
       ];
       menuItem.textGO = this.add
-        .text(...menuPosition, menuItem.text, this.game.config.defaultFontOptions)
+        .text(
+          ...menuPosition,
+          menuItem.text,
+          this.game.config.defaultFontOptions
+        )
         .setOrigin(0.5, 1);
       lastMenuPositionY += this.lineHeight;
       setupMenuEvents(menuItem);
@@ -39,7 +43,7 @@ class BaseScene extends Phaser.Scene {
       .image(innerWidth / 20, innerHeight / 20, "arrow")
       .setInteractive()
       .setOrigin(0, 0);
-    this.scaleObject(backButton, 20);
+    this.scaleObject(backButton, 25);
 
     backButton.on("pointerup", () => {
       this.playButtonSound();
@@ -48,7 +52,6 @@ class BaseScene extends Phaser.Scene {
   }
 
   displaySoundButton() {
-
     this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
 
     this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
@@ -58,28 +61,28 @@ class BaseScene extends Phaser.Scene {
       .setOrigin(1, 0)
       .setInteractive();
     musicOn.visible = this.game.config.bgMusicPlaying;
-    this.scaleObject(musicOn, 20);
+    this.scaleObject(musicOn, 30);
 
     const musicOff = this.add
       .image(innerWidth * 0.85, this.defaultTopBtnHeight, "musicOff")
       .setOrigin(1, 0)
       .setInteractive();
     musicOff.visible = !this.game.config.bgMusicPlaying;
-    this.scaleObject(musicOff, 20);
+    this.scaleObject(musicOff, 30);
 
     const soundOn = this.add
       .image(innerWidth * 0.9, this.defaultTopBtnHeight, "soundOn")
       .setOrigin(1, 0)
       .setInteractive();
     soundOn.visible = this.game.config.soundPlaying;
-    this.scaleObject(soundOn, 20);
+    this.scaleObject(soundOn, 30);
 
     const soundOff = this.add
       .image(innerWidth * 0.9, this.defaultTopBtnHeight, "soundOff")
       .setOrigin(1, 0)
       .setInteractive();
     soundOff.visible = !this.game.config.soundPlaying;
-    this.scaleObject(soundOff, 20);
+    this.scaleObject(soundOff, 30);
 
     soundOn.on("pointerdown", () => {
       this.game.config.soundPlaying = false;
@@ -107,7 +110,7 @@ class BaseScene extends Phaser.Scene {
         musicOff.visible = !this.game.config.bgMusicPlaying;
         musicOn.visible = this.game.config.bgMusicPlaying;
         this.bgMusic.play();
-      }
+      } 
       else {
         // wait for 'unlocked' to fire and then play
         this.bgMusic.once(Phaser.Sound.Events.UNLOCKED, () => {

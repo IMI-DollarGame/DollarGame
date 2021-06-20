@@ -7,7 +7,7 @@ class EndGameScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
-      hasTutorial: true,
+      hasTutorial: true
     });
     this.fontSize = 2.3;
     this.allLvlsCompleted = false;
@@ -19,18 +19,21 @@ class EndGameScene extends BaseScene {
     this.createGOTxt();
   }
 
-  createBG() {
-    const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "clouds-bg")
-      .setOrigin(0.5, 0.5)
-      .setScale(1.8);
-    backGround.x = backGround.displayWidth * 0.4;
-  }
-
   init(data) {
     this.message = data.message;
     this.level = data.level;
     this.difficulty = data.difficulty;
+  }
+  createBG() {
+    let thePic = "";
+    if (this.message === "Level Completed") {
+      thePic = "game-won";
+    } else {
+      thePic = "game-over";
+    }
+    const backGround = this.add
+      .image(this.config.width / 2, this.config.height / 2, thePic)
+      .setOrigin(0.5, 0.5);
   }
 
   createGOTxt() {
@@ -147,7 +150,7 @@ class EndGameScene extends BaseScene {
         edges: toImportEdges,
         maximumStepAllowed: toImportSteps,
         difficulty: this.difficulty,
-        level: this.level,
+        level: this.level
       });
     }
   }
