@@ -31,7 +31,7 @@ class LevelsScene extends BaseScene {
     let items = 0;
     menu.forEach((menuItem) => {
       const menuPosition = [
-        innerWidth*0.32 + lastMenuPositionY,
+        innerWidth*0.27 + lastMenuPositionY,
         innerHeight*0.3,
       ];
       if (items > 3 ) {
