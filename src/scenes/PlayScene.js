@@ -207,13 +207,14 @@ class PlayScene extends BaseScene {
           this.soundNode.play();
         }
         this.monitorValues();
-        this.animateEdge(node);
+        this.animateEdge(node.id, false);
         this.checkWinLoseCondition();
       });
     });
   }
 
-  animateEdge(node){
+  animateEdge(nodeId, undo){
+    let node = this.getNodeFromId(nodeId);
     node.neighborNodes.forEach((neighbor) => {
       // get currentEdge
       let currentEdge;
@@ -226,7 +227,7 @@ class PlayScene extends BaseScene {
 
       let rocksArray = currentEdge.rocks;
       // animate from left to right
-      if(node.id === currentEdge.nodeA.id){
+      if((node.id === currentEdge.nodeA.id && !undo) || (node.id === currentEdge.nodeB.id && undo)){
         let i = 1;
         rocksArray.forEach((rock) => {
           this.time.delayedCall(100*(i-1),() => {rock.y += 10;},rock);
@@ -519,6 +520,8 @@ class PlayScene extends BaseScene {
 
     this.undoBtn.on("pointerup", () => {
       this.playButtonSound();
+      if (this.steps < this.maximumStepAllowed)
+        this.animateEdge(this.lastClickedNodeId(), true);
       this.updateStep("increase");
       if (this.steps <= this.maximumStepAllowed) {
         this.undoNodeValue();
@@ -526,6 +529,18 @@ class PlayScene extends BaseScene {
         this.updateValues();
       }
     });
+  }
+
+  lastClickedNodeId(){
+    let lastNode;
+    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
+    var index2 = this.allValuesArray.findIndex((p) => p.step == this.steps+1);
+    for(let i = 0; i < this.allValuesArray[index].allValue.length; i++){
+      if(this.allValuesArray[index].allValue[i].value < this.allValuesArray[index2].allValue[i].value){
+        lastNode = this.allValuesArray[index].allValue[i].id;
+      }
+    }
+    return lastNode;
   }
 
   undoNodeValue() {
