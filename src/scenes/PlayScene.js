@@ -94,11 +94,14 @@ class PlayScene extends BaseScene {
     //   .setScale(2);
     let bgPic = "";
     if (this.difficulty === "easy") {
-      bgPic = "sky-easy";
+      //bgPic = "sky-easy";
+      bgPic = "blueSky";
     } else if (this.difficulty === "normal") {
-      bgPic = "sky-medium";
+      //bgPic = "sky-medium";
+      bgPic = "blueSky";
     } else if (this.difficulty === "hard") {
-      bgPic = "sky-hard";
+      //bgPic = "sky-hard";
+      bgPic = "blueSky";
     } else {
       bgPic = "blueSky";
       //This was the problem
