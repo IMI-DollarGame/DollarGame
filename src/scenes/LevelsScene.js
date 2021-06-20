@@ -4,8 +4,8 @@ class LevelsScene extends BaseScene {
   constructor(config) {
     super("LevelsScene", {
       ...config,
-      addDevelopers: true,
-      hasSoundButton: true
+      hasSoundButton: true,
+      bGWithIslands: true
     });
     this.fontSize = 2.3;
     this.lineWidth = config.width / 7;
@@ -18,7 +18,6 @@ class LevelsScene extends BaseScene {
 
   create() {
     this.menu = [];
-    this.createBG();
     super.create();
     this.createHeader();
     this.createBackButton();
@@ -99,7 +98,7 @@ class LevelsScene extends BaseScene {
       .image(innerWidth / 20, innerHeight / 20, "arrow")
       .setInteractive()
       .setOrigin(0, 0);
-    this.scaleObject(backButton, 20);
+    this.scaleObject(backButton, 25);
 
     backButton.on("pointerup", () => {
       this.playButtonSound();
@@ -132,14 +131,6 @@ class LevelsScene extends BaseScene {
     }
   }
 
-  createBG() {
-    const backGround = this.add
-      .image(this.config.width / 2, this.config.height / 2, "cyan-bg")
-      .setOrigin(0.5, 0.5)
-      .setScale(1.8);
-    backGround.x = backGround.displayWidth * 0.2;
-  }
-
   setupMenuEvents(menuItem) {
 
     menuItem.textGO.getAt(0).setInteractive();
@@ -159,9 +150,10 @@ class LevelsScene extends BaseScene {
           edges: menuItem.edges,
           maximumStepAllowed: menuItem.steps,
           tutorialMode: false,
-          level: menuItem.text,
-          difficulty: this.difficulty,
+          level: menuItem.level,
+          difficulty: this.difficulty
         });
+
       this.playButtonSound();
     });
   }
