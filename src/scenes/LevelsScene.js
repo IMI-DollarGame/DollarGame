@@ -31,19 +31,26 @@ class LevelsScene extends BaseScene {
     let items = 0;
     menu.forEach((menuItem) => {
       const menuPosition = [
-        innerWidth*0.25 + lastMenuPositionY,
+        innerWidth*0.32 + lastMenuPositionY,
         innerHeight*0.3,
       ];
-      if (items > 5 ) {
-        menuPosition[0] = menuPosition[0] - (this.lineWidth*6)
+      if (items > 3 ) {
+        menuPosition[0] = menuPosition[0] - (this.lineWidth*4)
         menuPosition[1] += innerHeight*0.15
       }
-      menuItem.textGO = this.add
-          .image(menuPosition[0], menuPosition[1], "level")
 
-          .setOrigin(0.4, 0.28);
-      menuItem.textGO = this.add
-          .text(menuPosition[0], menuPosition[1], menuItem.text, this.game.config.defaultFontOptions);
+      let levelNumber = this.add.text(0,0, menuItem.text, {
+        fontSize: "30px",
+        fill: "#4a6dc4",
+        fontFamily: "Neon",
+      })
+
+      let buttonImage = this.add.image(10, 16, "cloud")
+      buttonImage.displayWidth = this.game.config.width / 13;
+      buttonImage.displayHeight = this.game.config.height / 10;
+
+      menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1],[buttonImage, levelNumber])
+
 
       lastMenuPositionY += this.lineWidth;
       items += 1;
@@ -54,10 +61,14 @@ class LevelsScene extends BaseScene {
   createHeader() {
       this.add
           .text(
-          innerWidth * 0.428,
+          innerWidth * 0.38,
           innerHeight * 0.065,
           "Select Level",
-          this.game.config.defaultFontOptions
+              {
+                fontSize: "65px",
+                fill: "#4c77db",
+                fontFamily: "Neon",
+              }
       )}
 
   createBackButton() {
@@ -107,18 +118,18 @@ class LevelsScene extends BaseScene {
   }
 
   setupMenuEvents(menuItem) {
-    const textGO = menuItem.textGO;
-    textGO.setInteractive();
 
-    textGO.on("pointerover", () => {
-      textGO.setStyle({ fill: "#ff0" });
+    menuItem.textGO.getAt(0).setInteractive();
+
+    menuItem.textGO.getAt(0).on("pointerover", () => {
+      menuItem.textGO.getAt(1).setStyle({ fill: "#ff0" });
     });
 
-    textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#fffafa" });
+    menuItem.textGO.getAt(0).on("pointerout", () => {
+      menuItem.textGO.getAt(1).setStyle({ fill: "#1e76ff" });
     });
 
-    textGO.on("pointerup", () => {
+    menuItem.textGO.getAt(0).on("pointerup", () => {
       menuItem.scene &&
         this.scene.start(menuItem.scene, {
           nodes: menuItem.nodes,
