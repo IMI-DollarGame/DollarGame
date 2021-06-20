@@ -151,8 +151,7 @@ class PlayScene extends BaseScene {
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
 
-    let valueBg = this.add.image(innerWidth / 20,
-      -innerHeight / 20, "valueBg");
+    let valueBg = this.add.image(innerWidth / 20, -innerHeight / 20, "valueBg");
     this.scaleObject(valueBg, 40);
 
     let nodeValueText = this.createNodeValueText(value);
@@ -175,10 +174,10 @@ class PlayScene extends BaseScene {
       -innerHeight / 20,
       value,
       {
-        fontSize: '25px',
+        fontSize: "25px",
         fill: "#000",
         fontStyle: "bold",
-        align: "center"
+        align: "center",
       }
     );
     nodeValueText.setOrigin(0.5);
@@ -211,9 +210,13 @@ class PlayScene extends BaseScene {
         node.decreaseNodeValue();
         node.updateNeighborNodeValue();
         this.updateValues();
-        this.playSmokeAnimation(node.container.x, node.container.y, 'smoke');
+        this.playSmokeAnimation(node.container.x, node.container.y, "smoke");
         node.getNeighborNodes().forEach((neighborNode) => {
-          this.playSmokeAnimation(neighborNode.container.x, neighborNode.container.y, 'smoke');
+          this.playSmokeAnimation(
+            neighborNode.container.x,
+            neighborNode.container.y,
+            "smoke"
+          );
         });
         this.updateNodeImages();
         if (this.game.config.soundPlaying === true) {
@@ -231,26 +234,54 @@ class PlayScene extends BaseScene {
     node.neighborNodes.forEach((neighbor) => {
       let currentEdge;
       this.edgesArray.forEach((edge) => {
-        if ((edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) ||
-          (edge.nodeA.id === neighbor.id && edge.nodeB.id === node.id)) {
+        if (
+          (edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) ||
+          (edge.nodeA.id === neighbor.id && edge.nodeB.id === node.id)
+        ) {
           currentEdge = edge;
         }
       });
 
       let rocksArray = currentEdge.rocks;
-      if ((node.id === currentEdge.nodeA.id && !undo) || (node.id === currentEdge.nodeB.id && undo)) {
+      if (
+        (node.id === currentEdge.nodeA.id && !undo) ||
+        (node.id === currentEdge.nodeB.id && undo)
+      ) {
         let i = 1;
         rocksArray.forEach((rock) => {
-          this.time.delayedCall(100 * (i - 1), () => { rock.y += 10; }, rock);
-          this.time.delayedCall(100 * i, () => { rock.y -= 10; }, rock);
+          this.time.delayedCall(
+            100 * (i - 1),
+            () => {
+              rock.y += 10;
+            },
+            rock
+          );
+          this.time.delayedCall(
+            100 * i,
+            () => {
+              rock.y -= 10;
+            },
+            rock
+          );
           i++;
         });
-      }
-      else {
+      } else {
         let i = 1;
         for (let j = rocksArray.length - 1; j > -1; j--) {
-          this.time.delayedCall(100 * (i - 1), () => { rocksArray[j].y += 10; }, rocksArray[j]);
-          this.time.delayedCall(100 * i, () => { rocksArray[j].y -= 10; }, rocksArray[j]);
+          this.time.delayedCall(
+            100 * (i - 1),
+            () => {
+              rocksArray[j].y += 10;
+            },
+            rocksArray[j]
+          );
+          this.time.delayedCall(
+            100 * i,
+            () => {
+              rocksArray[j].y -= 10;
+            },
+            rocksArray[j]
+          );
           i++;
         }
       }
@@ -262,14 +293,14 @@ class PlayScene extends BaseScene {
     this.scaleObject(smoke, 2);
     smoke.depth = 100;
     this.anims.create({
-      key: 'transform',
+      key: "transform",
       frameRate: 15,
-      frames: this.anims.generateFrameNames(animation, { start: 1, end: 5 })
+      frames: this.anims.generateFrameNames(animation, { start: 1, end: 5 }),
     });
-    smoke.play('transform');
-    smoke.once('animationcomplete', () => {
-      smoke.destroy()
-    })
+    smoke.play("transform");
+    smoke.once("animationcomplete", () => {
+      smoke.destroy();
+    });
   }
 
   monitorValues() {
@@ -320,8 +351,7 @@ class PlayScene extends BaseScene {
     this.edgesArray.forEach((element) => {
       element.rocks.forEach((e) => {
         e.visible = state;
-      })
-
+      });
     });
   }
 
@@ -424,11 +454,7 @@ class PlayScene extends BaseScene {
       prevRandom = randomRock;
     }
 
-    let edge = new Edge(
-      nodeA,
-      nodeB,
-      rocks
-    );
+    let edge = new Edge(nodeA, nodeB, rocks);
     this.edgesArray.push(edge);
   }
 
@@ -456,7 +482,7 @@ class PlayScene extends BaseScene {
         localStorage.setItem("levelbestscore" + this.level, this.steps);
       }
       sessionStorage.setItem("currentScore", this.steps);
-      localStorage.setItem("level" + this.level, "completed")
+      localStorage.setItem("level" + this.level, "completed");
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
@@ -505,7 +531,7 @@ class PlayScene extends BaseScene {
   }
 
   displayBestScore() {
-    const bestScore = localStorage.getItem("bestScore");
+    const bestScore = localStorage.getItem("levelbestscore" + this.level);
     this.bestScoreText = this.add
       .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
         fill: "#3b3b3b",
@@ -551,8 +577,20 @@ class PlayScene extends BaseScene {
       randomRocks.sort(() => Math.random() - 0.5);
       let i = 1;
       randomRocks.forEach((rock) => {
-        this.time.delayedCall(100 * (i - 1), () => { rock.y += 10; }, rock);
-        this.time.delayedCall(100 * i, () => { rock.y -= 10; }, rock);
+        this.time.delayedCall(
+          100 * (i - 1),
+          () => {
+            rock.y += 10;
+          },
+          rock
+        );
+        this.time.delayedCall(
+          100 * i,
+          () => {
+            rock.y -= 10;
+          },
+          rock
+        );
         i++;
       });
     });
@@ -584,7 +622,10 @@ class PlayScene extends BaseScene {
     var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
     var index2 = this.allValuesArray.findIndex((p) => p.step == this.steps + 1);
     for (let i = 0; i < this.allValuesArray[index].allValue.length; i++) {
-      if (this.allValuesArray[index].allValue[i].value < this.allValuesArray[index2].allValue[i].value) {
+      if (
+        this.allValuesArray[index].allValue[i].value <
+        this.allValuesArray[index2].allValue[i].value
+      ) {
         lastNode = this.allValuesArray[index].allValue[i].id;
       }
     }
@@ -601,9 +642,9 @@ class PlayScene extends BaseScene {
   createTutorialButton() {
     const tutorialText = this.add.text(-150, -50, this.getHelpText(), {
       fontFamily: "Indie Flower, cursive",
-      fill: '#000',
+      fill: "#000",
       fontSize: 20,
-      fontStyle: 'bold',
+      fontStyle: "bold",
       wordWrap: { width: 350, useAdvancedWrap: true },
     });
 
@@ -726,7 +767,11 @@ class PlayScene extends BaseScene {
     }
   }
   createPointer() {
-    this.pointer = this.add.sprite(this.nodesArray[0].container.x, this.nodesArray[0].container.y, "pointer");
+    this.pointer = this.add.sprite(
+      this.nodesArray[0].container.x,
+      this.nodesArray[0].container.y,
+      "pointer"
+    );
     this.pointer.setDepth = 1000;
     this.pointer.visible = false;
     this.scaleObject(this.pointer, 20);
@@ -739,16 +784,16 @@ class PlayScene extends BaseScene {
   movePointerTo(obj, type) {
     let x, y;
     if (type === "node") {
-      x = obj.x + obj.width * 1 / 3;
-      y = obj.y + obj.height * 3 / 2;
+      x = obj.x + (obj.width * 1) / 3;
+      y = obj.y + (obj.height * 3) / 2;
     } else if (type === "undoBtn") {
-      x = obj.x + obj.width * 3 / 5;
+      x = obj.x + (obj.width * 3) / 5;
       y = obj.y + obj.height;
     } else if (type === "restartBtn") {
       x = obj.x;
       y = obj.y + obj.height;
     }
-    this.playSmokeAnimation(x, y, 'smoke');
+    this.playSmokeAnimation(x, y, "smoke");
     this.pointer.setPosition(x, y);
     this.pointer.visible = true;
   }
