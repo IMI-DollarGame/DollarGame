@@ -143,7 +143,7 @@ class PlayScene extends BaseScene {
 
   addNode(id, value, coordX, coordY) {
     let nodeBg = this.add.image(0, 0, "islandBg");
-    this.scaleObject(nodeBg, 8);
+    this.scaleObject(nodeBg, 14);
 
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
@@ -223,31 +223,31 @@ class PlayScene extends BaseScene {
     });
   }
 
-  animateEdge(nodeId, undo){
+  animateEdge(nodeId, undo) {
     let node = this.getNodeFromId(nodeId);
     node.neighborNodes.forEach((neighbor) => {
       let currentEdge;
       this.edgesArray.forEach((edge) => {
-        if((edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) || 
-            (edge.nodeA.id === neighbor.id && edge.nodeB.id === node.id)){
-              currentEdge = edge;
-            }
+        if ((edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) ||
+          (edge.nodeA.id === neighbor.id && edge.nodeB.id === node.id)) {
+          currentEdge = edge;
+        }
       });
 
       let rocksArray = currentEdge.rocks;
-      if((node.id === currentEdge.nodeA.id && !undo) || (node.id === currentEdge.nodeB.id && undo)){
+      if ((node.id === currentEdge.nodeA.id && !undo) || (node.id === currentEdge.nodeB.id && undo)) {
         let i = 1;
         rocksArray.forEach((rock) => {
-          this.time.delayedCall(100*(i-1),() => {rock.y += 10;},rock);
-          this.time.delayedCall(100*i,() => {rock.y -= 10;},rock);
+          this.time.delayedCall(100 * (i - 1), () => { rock.y += 10; }, rock);
+          this.time.delayedCall(100 * i, () => { rock.y -= 10; }, rock);
           i++;
         });
-      } 
+      }
       else {
         let i = 1;
-        for(let j = rocksArray.length-1; j > -1; j--){
-          this.time.delayedCall(100*(i-1),() => {rocksArray[j].y += 10;},rocksArray[j]);
-          this.time.delayedCall(100*i,() => {rocksArray[j].y -= 10;},rocksArray[j]);
+        for (let j = rocksArray.length - 1; j > -1; j--) {
+          this.time.delayedCall(100 * (i - 1), () => { rocksArray[j].y += 10; }, rocksArray[j]);
+          this.time.delayedCall(100 * i, () => { rocksArray[j].y -= 10; }, rocksArray[j]);
           i++;
         }
       }
@@ -420,7 +420,7 @@ class PlayScene extends BaseScene {
       rocks.push(rock);
       prevRandom = randomRock;
     }
-    
+
     let edge = new Edge(
       nodeA,
       nodeB,
@@ -541,22 +541,22 @@ class PlayScene extends BaseScene {
     this.updateNodeImages();
   }
 
-  animateEdgesOnReset(){
+  animateEdgesOnReset() {
     this.edgesArray.forEach((edge) => {
       let randomRocks = [...edge.rocks];
       randomRocks.sort(() => Math.random() - 0.5);
       let i = 1;
       randomRocks.forEach((rock) => {
-        this.time.delayedCall(100*(i-1),() => {rock.y += 10;},rock);
-        this.time.delayedCall(100*i,() => {rock.y -= 10;},rock);
+        this.time.delayedCall(100 * (i - 1), () => { rock.y += 10; }, rock);
+        this.time.delayedCall(100 * i, () => { rock.y -= 10; }, rock);
         i++;
-        });
+      });
     });
   }
 
   displayUndoButton() {
     this.undoBtn = this.add
-      .image(innerWidth * 0.7, this.defaultTopBtnHeight, "undo")
+      .image(innerWidth * 0.72, this.defaultTopBtnHeight, "undo")
       .setOrigin(0, 0)
       .setInteractive();
 
@@ -575,12 +575,12 @@ class PlayScene extends BaseScene {
     });
   }
 
-  lastClickedNodeId(){
+  lastClickedNodeId() {
     let lastNode;
     var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
-    var index2 = this.allValuesArray.findIndex((p) => p.step == this.steps+1);
-    for(let i = 0; i < this.allValuesArray[index].allValue.length; i++){
-      if(this.allValuesArray[index].allValue[i].value < this.allValuesArray[index2].allValue[i].value){
+    var index2 = this.allValuesArray.findIndex((p) => p.step == this.steps + 1);
+    for (let i = 0; i < this.allValuesArray[index].allValue.length; i++) {
+      if (this.allValuesArray[index].allValue[i].value < this.allValuesArray[index2].allValue[i].value) {
         lastNode = this.allValuesArray[index].allValue[i].id;
       }
     }
@@ -607,6 +607,7 @@ class PlayScene extends BaseScene {
       .image(250, 0, "next")
       .setInteractive()
       .on("pointerdown", () => {
+        this.playButtonSound();
         this.changeTutorialStep("next", tutorialText);
       });
     this.scaleObject(nextButton, 20);
@@ -615,6 +616,7 @@ class PlayScene extends BaseScene {
       .image(-250, 0, "previous")
       .setInteractive()
       .on("pointerdown", () => {
+        this.playButtonSound();
         this.changeTutorialStep("previous", tutorialText);
       });
     this.scaleObject(prevButton, 20);
@@ -665,7 +667,7 @@ class PlayScene extends BaseScene {
     //make nodes clickable
     else if (this.currentTutorialStep == 3) {
       this.setNodeInputState(true);
-      this.movePointerTo(this.nodesArray[0].container,"node");
+      this.movePointerTo(this.nodesArray[0].container, "node");
     }
     //make nodes clickable
     else if (this.currentTutorialStep == 4) {
@@ -681,13 +683,13 @@ class PlayScene extends BaseScene {
     else if (this.currentTutorialStep == 6) {
       this.setUndoButtonVisible(true);
       this.setRestartButtonVisible(false);
-      this.movePointerTo(this.undoBtn,"btn");
+      this.movePointerTo(this.undoBtn, "undoBtn");
     }
     //restart btn
     else if (this.currentTutorialStep == 7) {
       this.setRestartButtonVisible(true);
       this.setBestscoreTextVisible(false);
-      this.movePointerTo(this.restartBtn,"btn");
+      this.movePointerTo(this.restartBtn, "restartBtn");
     }
     //win condition
     else if (this.currentTutorialStep == 8) {
@@ -735,8 +737,11 @@ class PlayScene extends BaseScene {
     if (type === "node") {
       x = obj.x + obj.width * 1 / 3;
       y = obj.y + obj.height * 3 / 2;
-    } else {
-      x = obj.x + obj.width * 1 / 3;
+    } else if (type === "undoBtn") {
+      x = obj.x + obj.width * 3 / 5;
+      y = obj.y + obj.height;
+    } else if (type === "restartBtn") {
+      x = obj.x;
       y = obj.y + obj.height;
     }
     this.playSmokeAnimation(x, y, 'smoke');
