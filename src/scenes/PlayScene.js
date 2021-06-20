@@ -216,7 +216,6 @@ class PlayScene extends BaseScene {
   animateEdge(nodeId, undo){
     let node = this.getNodeFromId(nodeId);
     node.neighborNodes.forEach((neighbor) => {
-      // get currentEdge
       let currentEdge;
       this.edgesArray.forEach((edge) => {
         if((edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) || 
@@ -226,17 +225,14 @@ class PlayScene extends BaseScene {
       });
 
       let rocksArray = currentEdge.rocks;
-      // animate from left to right
       if((node.id === currentEdge.nodeA.id && !undo) || (node.id === currentEdge.nodeB.id && undo)){
         let i = 1;
         rocksArray.forEach((rock) => {
           this.time.delayedCall(100*(i-1),() => {rock.y += 10;},rock);
           this.time.delayedCall(100*i,() => {rock.y -= 10;},rock);
           i++;
-          
         });
       } 
-      // animate from right to left
       else {
         let i = 1;
         for(let j = rocksArray.length-1; j > -1; j--){
@@ -499,6 +495,7 @@ class PlayScene extends BaseScene {
       this.steps = this.maximumStepAllowed;
       this.stepsText.setText(this.stepText + this.steps);
       this.resetTheGame();
+      this.animateEdgesOnReset();
     });
   }
 
@@ -508,6 +505,19 @@ class PlayScene extends BaseScene {
     });
     this.updateValues();
     this.updateNodeImages();
+  }
+
+  animateEdgesOnReset(){
+    this.edgesArray.forEach((edge) => {
+      let randomRocks = [...edge.rocks];
+      randomRocks.sort(() => Math.random() - 0.5);
+      let i = 1;
+      randomRocks.forEach((rock) => {
+        this.time.delayedCall(100*(i-1),() => {rock.y += 10;},rock);
+        this.time.delayedCall(100*i,() => {rock.y -= 10;},rock);
+        i++;
+        });
+    });
   }
 
   displayUndoButton() {
