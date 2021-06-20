@@ -16,7 +16,6 @@ class BaseScene extends Phaser.Scene {
 
   create() {
     this.creatingAllButtonsAndBG();
-    this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
   }
 
   createBGWithIslands() {
@@ -64,7 +63,7 @@ class BaseScene extends Phaser.Scene {
     this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
 
     this.soundMenu = this.sound.add("soundMenu", { volume: 0.5 });
-
+    console.log(this.game.config.soundPlaying);
     const musicOn = this.add
       .image(innerWidth * 0.85, this.defaultTopBtnHeight, "musicOn")
       .setOrigin(1, 0)
@@ -113,22 +112,10 @@ class BaseScene extends Phaser.Scene {
     });
 
     musicOff.on("pointerdown", () => {
-      if (!this.sound.locked) {
-        // already unlocked so play
         this.game.config.bgMusicPlaying = true;
         musicOff.visible = !this.game.config.bgMusicPlaying;
         musicOn.visible = this.game.config.bgMusicPlaying;
         this.bgMusic.play();
-      } 
-      else {
-        // wait for 'unlocked' to fire and then play
-        this.bgMusic.once(Phaser.Sound.Events.UNLOCKED, () => {
-          this.game.config.bgMusicPlaying = true;
-          musicOff.visible = !this.game.config.bgMusicPlaying;
-          musicOn.visible = this.game.config.bgMusicPlaying;
-          this.bgMusic.play();
-        });
-      }
     });
   }
 
