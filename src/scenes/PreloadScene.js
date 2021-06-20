@@ -22,6 +22,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("previous", "assets/buttons/previousArrow.png");
     this.load.image("next", "assets/buttons/nextArrow.png");
     this.load.image("cloud", "assets/buttons/cloud.png");
+    this.load.image("cloudflag", "assets/buttons/cloudflag.png");
 
 
     //backgrounds

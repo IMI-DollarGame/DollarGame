@@ -8,7 +8,7 @@ class LevelsScene extends BaseScene {
       hasSoundButton: true
     });
     this.fontSize = 2.3;
-    this.lineWidth = config.width / 10.5;
+    this.lineWidth = config.width / 7;
     this.menu = [];
   }
 
@@ -45,11 +45,34 @@ class LevelsScene extends BaseScene {
         fontFamily: "Neon",
       })
 
-      let buttonImage = this.add.image(10, 16, "cloud")
-      buttonImage.displayWidth = this.game.config.width / 13;
-      buttonImage.displayHeight = this.game.config.height / 10;
+      let buttonImage;
+      if (localStorage.getItem("level" + menuItem.text) === "completed") {
+        buttonImage = this.add.image(10,16,"cloudflag");
+      } else {
+        buttonImage = this.add.image(10, 16, "cloud")
+      }
 
-      menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1],[buttonImage, levelNumber])
+      //buttonImage.displayWidth = this.game.config.width / 13;
+      //buttonImage.displayHeight = this.game.config.height / 10;
+      let bestScore;
+      if (localStorage.getItem("levelbestscore" + menuItem.text)) {
+        bestScore = this.add.text(-70,33,"Best Score: " + localStorage.getItem("levelbestscore" + menuItem.text),{
+          fontSize: "25px",
+          fill: "#4ac4b6",
+          fontFamily: "Neon",
+       }
+       )
+        menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1],[buttonImage, levelNumber, bestScore])
+      } else {
+        menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1],[buttonImage, levelNumber])
+      }
+
+      menuItem.textGO.setSize(100,100)
+      menuItem.textGO.displayWidth = this.game.config.width / 22;
+      menuItem.textGO.displayHeight = this.game.config.height / 12;
+
+
+
 
 
       lastMenuPositionY += this.lineWidth;
@@ -126,7 +149,7 @@ class LevelsScene extends BaseScene {
     });
 
     menuItem.textGO.getAt(0).on("pointerout", () => {
-      menuItem.textGO.getAt(1).setStyle({ fill: "#1e76ff" });
+      menuItem.textGO.getAt(1).setStyle({ fill: "#4a6dc4" });
     });
 
     menuItem.textGO.getAt(0).on("pointerup", () => {
