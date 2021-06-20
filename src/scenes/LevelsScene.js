@@ -4,20 +4,12 @@ class LevelsScene extends BaseScene {
   constructor(config) {
     super("LevelsScene", {
       ...config,
-      addDevelopers: true,
       hasSoundButton: true,
       bGWithIslands: true
     });
     this.fontSize = 2.3;
-    this.lineHeight = config.height / 12.5;
+    this.lineWidth = config.width / 7;
     this.menu = [];
-    this.fontOptions = {
-      fontSize: `${this.fontSize}vw`,
-      fill: "#ffffff",
-      fontFamily: "Indie Flower, cursive",
-      stroke: "#FF0",
-      strokeThickness: 1
-    };
   }
 
   init(data) {
@@ -27,10 +19,79 @@ class LevelsScene extends BaseScene {
   create() {
     this.menu = [];
     super.create();
+    this.createHeader();
     this.createBackButton();
     this.loadAllLevel(this.menu);
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
   }
+
+  createMenu(menu, setupMenuEvents) {
+    let lastMenuPositionY = 0;
+    let items = 0;
+    menu.forEach((menuItem) => {
+      const menuPosition = [
+        innerWidth*0.18 + lastMenuPositionY,
+        innerHeight*0.31,
+      ];
+      if (items > 4 ) {
+        menuPosition[0] = menuPosition[0] - (this.lineWidth*5)
+        menuPosition[1] += innerHeight*0.15
+      }
+
+      let levelNumber = this.add.text(0,0, menuItem.text, {
+        fontSize: "30px",
+        fill: "#4a6dc4",
+        fontFamily: "Neon",
+      })
+
+      let buttonImage;
+      if (localStorage.getItem("level" + menuItem.text) === "completed") {
+        buttonImage = this.add.image(10,16,"cloudflag");
+      } else {
+        buttonImage = this.add.image(10, 16, "cloud")
+      }
+
+      //buttonImage.displayWidth = this.game.config.width / 13;
+      //buttonImage.displayHeight = this.game.config.height / 10;
+      let bestScore;
+      if (localStorage.getItem("levelbestscore" + menuItem.text)) {
+        bestScore = this.add.text(-70,33,"Best Score: " + localStorage.getItem("levelbestscore" + menuItem.text),{
+          fontSize: "25px",
+          fill: "#4ac4b6",
+          fontFamily: "Neon",
+       }
+       )
+        menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1],[buttonImage, levelNumber, bestScore])
+      } else {
+        menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1],[buttonImage, levelNumber])
+      }
+
+      menuItem.textGO.setSize(100,100)
+      menuItem.textGO.displayWidth = this.game.config.width / 22;
+      menuItem.textGO.displayHeight = this.game.config.height / 12;
+
+
+
+
+
+      lastMenuPositionY += this.lineWidth;
+      items += 1;
+      setupMenuEvents(menuItem);
+    });
+  }
+
+  createHeader() {
+      this.add
+          .text(
+          innerWidth * 0.38,
+          innerHeight * 0.065,
+          "Select Level",
+              {
+                fontSize: "65px",
+                fill: "#4c77db",
+                fontFamily: "Neon",
+              }
+      )}
 
   createBackButton() {
     const backButton = this.add
@@ -56,11 +117,11 @@ class LevelsScene extends BaseScene {
       if (level.difficulty === this.difficulty) {
         const item = {
           scene: "PlayScene",
-          text: "Level " + level.level,
+          text:  level.level,
           steps: level.steps,
           nodes: level.nodes,
           edges: level.edges,
-          level: level.level
+          level: level.level,
         };
 
         if (menu.findIndex(x => x.text === item.text) === -1) {
@@ -71,18 +132,18 @@ class LevelsScene extends BaseScene {
   }
 
   setupMenuEvents(menuItem) {
-    const textGO = menuItem.textGO;
-    textGO.setInteractive();
 
-    textGO.on("pointerover", () => {
-      textGO.setStyle({ fill: "#ff0" });
+    menuItem.textGO.getAt(0).setInteractive();
+
+    menuItem.textGO.getAt(0).on("pointerover", () => {
+      menuItem.textGO.getAt(1).setStyle({ fill: "#ff0" });
     });
 
-    textGO.on("pointerout", () => {
-      textGO.setStyle({ fill: "#fffafa" });
+    menuItem.textGO.getAt(0).on("pointerout", () => {
+      menuItem.textGO.getAt(1).setStyle({ fill: "#4a6dc4" });
     });
 
-    textGO.on("pointerup", () => {
+    menuItem.textGO.getAt(0).on("pointerup", () => {
       menuItem.scene &&
         this.scene.start(menuItem.scene, {
           nodes: menuItem.nodes,

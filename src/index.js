@@ -2,7 +2,6 @@ import Phaser from "phaser";
 import MenuScene from "./scenes/MenuScene";
 import PreloadScene from "./scenes/PreloadScene";
 import TutorialScene from "./scenes/TutorialScene";
-import ScoreScene from "./scenes/ScoreScene";
 import LevelsScene from "./scenes/LevelsScene";
 import PlayScene from "./scenes/PlayScene";
 import EndGameScene from "./scenes/EndGameScene";
@@ -22,7 +21,7 @@ const Scenes = [
   TutorialScene,
   LevelsScene,
   DifficultyScene,
-  ScoreScene,
+  TutorialScene,
   PlayScene,
   EndGameScene
 ];
