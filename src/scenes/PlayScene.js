@@ -5,7 +5,7 @@ class PlayScene extends BaseScene {
     super("PlayScene", {
       ...config,
       addDevelopers: true,
-      hasSoundButton: true,
+      hasSoundButton: true
     });
     this.fontSize = 1;
     this.stepText = "Steps left: ";
@@ -33,6 +33,7 @@ class PlayScene extends BaseScene {
 
   create() {
     this.renewScene();
+    super.create();
     this.createBG();
     this.addGraphics();
     this.setMaxSteps();
@@ -46,7 +47,6 @@ class PlayScene extends BaseScene {
       this.createTutorialButton();
       this.turnOnTutorialMode();
     }
-    super.create();
     this.createBackButton();
   }
 
@@ -87,10 +87,6 @@ class PlayScene extends BaseScene {
   }
 
   createBG() {
-    // const backGround = this.add
-    //   .image(this.config.width / 2, this.config.height / 2, "blueSky")
-    //   .setOrigin(0.5, 0.5)
-    //   .setScale(2);
     let bgPic = "";
     if (this.difficulty === "easy") {
       bgPic = "sky-easy";
@@ -106,13 +102,11 @@ class PlayScene extends BaseScene {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, bgPic)
       .setOrigin(0.5, 0.5);
-    // .setScale(2);
-    // backGround.x = backGround.displayWidth * 0.5;
   }
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 4, color: 0xffffff }
     });
   }
 
@@ -135,7 +129,7 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
@@ -172,7 +166,7 @@ class PlayScene extends BaseScene {
       {
         fontSize: `${this.fontSize}vw`,
         fill: "#000",
-        fontStyle: "bold",
+        fontStyle: "bold"
       }
     );
 
@@ -180,7 +174,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeValueTextVisible(state) {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(1).visible = state;
     });
   }
@@ -195,16 +189,20 @@ class PlayScene extends BaseScene {
   }
 
   setupNodeClick() {
-    this.nodesArray.forEach((node) => {
+    this.nodesArray.forEach(node => {
       this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
       node.container.setInteractive().on("pointerdown", () => {
         this.updateStep("decrease");
         node.decreaseNodeValue();
         node.updateNeighborNodeValue();
         this.updateValues();
-        this.playSmokeAnimation(node.container.x, node.container.y, 'smoke');
-        node.getNeighborNodes().forEach((neighborNode) => {
-          this.playSmokeAnimation(neighborNode.container.x, neighborNode.container.y, 'smoke');
+        this.playSmokeAnimation(node.container.x, node.container.y, "smoke");
+        node.getNeighborNodes().forEach(neighborNode => {
+          this.playSmokeAnimation(
+            neighborNode.container.x,
+            neighborNode.container.y,
+            "smoke"
+          );
         });
         this.updateNodeImages();
         if (this.game.config.soundPlaying === true) {
@@ -217,18 +215,18 @@ class PlayScene extends BaseScene {
   }
 
   playSmokeAnimation(x, y, animation) {
-    const smoke = this.add.sprite(x,y,animation,0);
+    const smoke = this.add.sprite(x, y, animation, 0);
     this.scaleObject(smoke, 2);
     smoke.depth = 100;
     this.anims.create({
-      key: 'transform',
-      frameRate:8,
-      frames: this.anims.generateFrameNames(animation, {start: 1, end: 5})
+      key: "transform",
+      frameRate: 15,
+      frames: this.anims.generateFrameNames(animation, { start: 1, end: 5 })
     });
-    smoke.play('transform');
-    smoke.once('animationcomplete', () => {
-      smoke.destroy()
-    })
+    smoke.play("transform");
+    smoke.once("animationcomplete", () => {
+      smoke.destroy();
+    });
   }
 
   monitorValues() {
@@ -239,11 +237,11 @@ class PlayScene extends BaseScene {
 
     let currentValuesAndStep = {
       allValue: currrentValues,
-      step: this.steps,
+      step: this.steps
     };
 
     let currentObjIndex = this.allValuesArray.findIndex(
-      (x) => x.step === this.steps
+      x => x.step === this.steps
     );
 
     if (currentObjIndex !== -1) {
@@ -254,7 +252,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeInputState(state) {
-    this.nodesArray.forEach((node) => {
+    this.nodesArray.forEach(node => {
       node.container.input.enabled = state;
     });
   }
@@ -376,14 +374,14 @@ class PlayScene extends BaseScene {
   }
 
   updateValues() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(1).setText(element.value);
     });
   }
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -392,7 +390,7 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every((element) => element.isPositiveValue())) {
+    if (this.nodesArray.every(element => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("bestScore");
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
@@ -402,11 +400,11 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
-        difficulty: this.difficulty,
+        difficulty: this.difficulty
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!",
+        message: "You ran out of steps. Game over!!"
       });
     }
   }
@@ -441,7 +439,7 @@ class PlayScene extends BaseScene {
         fontSize: "30px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
-        align: "center",
+        align: "center"
       })
       .setOrigin(0.5);
   }
@@ -451,7 +449,7 @@ class PlayScene extends BaseScene {
     this.bestScoreText = this.add
       .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
         fill: "#3b3b3b",
-        fontFamily: "Montserrat-Regular",
+        fontFamily: "Montserrat-Regular"
       })
       .setOrigin(0.5);
 
@@ -479,7 +477,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.resetValue();
     });
     this.updateValues();
@@ -488,7 +486,7 @@ class PlayScene extends BaseScene {
 
   displayUndoButton() {
     this.undoBtn = this.add
-      .image(innerWidth * 0.7, this.defaultTopBtnHeight, "undo")
+      .image(innerWidth * 0.72, this.defaultTopBtnHeight, "undo")
       .setOrigin(0, 0)
       .setInteractive();
 
@@ -506,8 +504,8 @@ class PlayScene extends BaseScene {
   }
 
   undoNodeValue() {
-    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
-    this.allValuesArray[index].allValue.forEach((element) => {
+    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach(element => {
       this.getNodeFromId(element.id).value = element.value;
     });
   }
@@ -516,7 +514,7 @@ class PlayScene extends BaseScene {
     const tutorialText = this.add.text(-150, -50, this.getHelpText(), {
       fontFamily: "Indie Flower, cursive",
       fontSize: 20,
-      wordWrap: { width: 350, useAdvancedWrap: true },
+      wordWrap: { width: 350, useAdvancedWrap: true }
     });
 
     const nextButton = this.add
@@ -618,7 +616,7 @@ class PlayScene extends BaseScene {
           //fontSize: "22px",
           fontFamily: "Montserrat-Regular",
           fill: "#000",
-          align: "center",
+          align: "center"
         }
       )
       .setOrigin(0.5);
@@ -651,12 +649,12 @@ class Node {
     this.value++;
   }
 
-  getNeighborNodes(){
+  getNeighborNodes() {
     return this.neighborNodes;
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach((element) => {
+    this.neighborNodes.forEach(element => {
       element.increaseNodeValueBy1();
     });
   }
