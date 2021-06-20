@@ -4,7 +4,6 @@ class LevelsScene extends BaseScene {
   constructor(config) {
     super("LevelsScene", {
       ...config,
-      addDevelopers: true,
       hasSoundButton: true,
       bGWithIslands: true
     });
