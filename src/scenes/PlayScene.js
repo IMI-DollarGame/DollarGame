@@ -113,7 +113,11 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff, alpha: 0.3 },
+      lineStyle: { width: 6, color: 0x8d6e63, alpha: 0.3 },
+      //22a9ea - blue like waterfall
+      //ef5350 - red like roof
+      //8d6e63 - brown light like terra
+      //689f38 - green like tree
     });
   }
 
@@ -474,13 +478,13 @@ class PlayScene extends BaseScene {
 
   checkWinLoseCondition() {
     if (this.nodesArray.every((element) => element.isPositiveValue())) {
-      const bestScoreText = localStorage.getItem("levelbestscore" + this.level);
+      const bestScoreText = localStorage.getItem("levelbestscore_" + this.difficulty +"_" +this.level);
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
-        localStorage.setItem("levelbestscore" + this.level, this.steps);
+        localStorage.setItem("levelbestscore_" + this.difficulty+"_"+this.level, this.steps);
       }
       sessionStorage.setItem("currentScore", this.steps);
-      localStorage.setItem("level" + this.level, "completed");
+      localStorage.setItem("level_" + this.difficulty+"_"+this.level, "completed");
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
@@ -529,7 +533,7 @@ class PlayScene extends BaseScene {
   }
 
   displayBestScore() {
-    const bestScore = localStorage.getItem("levelbestscore" + this.level);
+    const bestScore = localStorage.getItem("levelbestscore_" + this.difficulty +"_"+ this.level);
     this.bestScoreText = this.add
       .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
         fill: "#3b3b3b",

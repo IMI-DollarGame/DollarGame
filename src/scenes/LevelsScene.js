@@ -45,7 +45,7 @@ class LevelsScene extends BaseScene {
       })
 
       let buttonImage;
-      if (localStorage.getItem("level" + menuItem.text) === "completed") {
+      if (localStorage.getItem("level_" + this.difficulty +"_"+ menuItem.text) === "completed") {
         buttonImage = this.add.image(10,16,"cloudflag");
       } else {
         buttonImage = this.add.image(10, 16, "cloud")
@@ -54,8 +54,8 @@ class LevelsScene extends BaseScene {
       //buttonImage.displayWidth = this.game.config.width / 13;
       //buttonImage.displayHeight = this.game.config.height / 10;
       let bestScore;
-      if (localStorage.getItem("levelbestscore" + menuItem.text)) {
-        bestScore = this.add.text(-70,33,"Best Score: " + localStorage.getItem("levelbestscore" + menuItem.text),{
+      if (localStorage.getItem("levelbestscore_" + this.difficulty +"_"+ menuItem.text)) {
+        bestScore = this.add.text(-70,33,"Best Score: " + localStorage.getItem("levelbestscore_" + this.difficulty +"_" + menuItem.text),{
           fontSize: "25px",
           fill: "#4ac4b6",
           fontFamily: "Neon",

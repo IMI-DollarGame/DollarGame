@@ -57,6 +57,7 @@ class EndGameScene extends BaseScene {
       this.createRestartLvlBtn(0.47);
       this.createToNxtLvlBtn(0.57);
     } else {
+      this.createBestScoreText();
       this.createToAllLvlsBtn(0.42);
       this.createRestartLvlBtn(0.52);
     }
@@ -78,7 +79,7 @@ class EndGameScene extends BaseScene {
   createBestScoreText() {
     const xPos = this.config.width / 2;
     const yPos = this.config.height * 0.55;
-    const bestScore = localStorage.getItem("levelbestscore" + this.level);
+    const bestScore = localStorage.getItem("levelbestscore_" + this.difficulty +"_"+ this.level);
     this.make.text({
       x: xPos,
       y: yPos,
