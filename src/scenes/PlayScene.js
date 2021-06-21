@@ -46,8 +46,8 @@ class PlayScene extends BaseScene {
       this.createTutorialButton();
       this.turnOnTutorialMode();
     }
-    super.create();
     this.createBackButton();
+    super.create();
   }
 
   turnOnTutorialMode() {
@@ -88,10 +88,6 @@ class PlayScene extends BaseScene {
   }
 
   createBG() {
-    // const backGround = this.add
-    //   .image(this.config.width / 2, this.config.height / 2, "blueSky")
-    //   .setOrigin(0.5, 0.5)
-    //   .setScale(2);
     let bgPic = "";
     if (this.difficulty === "easy") {
       bgPic = "sky-easy";
@@ -101,19 +97,16 @@ class PlayScene extends BaseScene {
       bgPic = "sky-hard";
     } else {
       bgPic = "blueSky";
-      //This was the problem
     }
 
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, bgPic)
       .setOrigin(0.5, 0.5);
-    // .setScale(2);
-    // backGround.x = backGround.displayWidth * 0.5;
   }
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 4, color: 0xffffff }
     });
   }
 
@@ -201,16 +194,20 @@ class PlayScene extends BaseScene {
   }
 
   setupNodeClick() {
-    this.nodesArray.forEach((node) => {
+    this.nodesArray.forEach(node => {
       this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
       node.container.setInteractive().on("pointerdown", () => {
         this.updateStep("decrease");
         node.decreaseNodeValue();
         node.updateNeighborNodeValue();
         this.updateValues();
-        this.playSmokeAnimation(node.container.x, node.container.y, 'smoke');
-        node.getNeighborNodes().forEach((neighborNode) => {
-          this.playSmokeAnimation(neighborNode.container.x, neighborNode.container.y, 'smoke');
+        this.playSmokeAnimation(node.container.x, node.container.y, "smoke");
+        node.getNeighborNodes().forEach(neighborNode => {
+          this.playSmokeAnimation(
+            neighborNode.container.x,
+            neighborNode.container.y,
+            "smoke"
+          );
         });
         this.updateNodeImages();
         if (this.game.config.soundPlaying === true) {
@@ -259,13 +256,13 @@ class PlayScene extends BaseScene {
     this.scaleObject(smoke, 2);
     smoke.depth = 100;
     this.anims.create({
-      key: 'transform',
+      key: "transform",
       frameRate: 15,
       frames: this.anims.generateFrameNames(animation, { start: 1, end: 5 })
     });
-    smoke.play('transform');
-    smoke.once('animationcomplete', () => {
-      smoke.destroy()
+    smoke.play("transform");
+    smoke.once("animationcomplete", () => {
+      smoke.destroy();
     })
   }
 
@@ -277,11 +274,11 @@ class PlayScene extends BaseScene {
 
     let currentValuesAndStep = {
       allValue: currrentValues,
-      step: this.steps,
+      step: this.steps
     };
 
     let currentObjIndex = this.allValuesArray.findIndex(
-      (x) => x.step === this.steps
+      x => x.step === this.steps
     );
 
     if (currentObjIndex !== -1) {
@@ -292,7 +289,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeInputState(state) {
-    this.nodesArray.forEach((node) => {
+    this.nodesArray.forEach(node => {
       node.container.input.enabled = state;
     });
   }
@@ -437,7 +434,7 @@ class PlayScene extends BaseScene {
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -457,11 +454,11 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
-        difficulty: this.difficulty,
+        difficulty: this.difficulty
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!",
+        message: "You ran out of steps. Game over!!"
       });
     }
   }
@@ -496,7 +493,7 @@ class PlayScene extends BaseScene {
         fontSize: "30px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
-        align: "center",
+        align: "center"
       })
       .setOrigin(0.5);
   }
@@ -506,7 +503,7 @@ class PlayScene extends BaseScene {
     this.bestScoreText = this.add
       .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
         fill: "#3b3b3b",
-        fontFamily: "Montserrat-Regular",
+        fontFamily: "Montserrat-Regular"
       })
       .setOrigin(0.5);
 
@@ -535,7 +532,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.resetValue();
     });
     this.updateValues();
@@ -589,8 +586,8 @@ class PlayScene extends BaseScene {
   }
 
   undoNodeValue() {
-    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
-    this.allValuesArray[index].allValue.forEach((element) => {
+    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach(element => {
       this.getNodeFromId(element.id).value = element.value;
     });
   }
@@ -714,7 +711,7 @@ class PlayScene extends BaseScene {
           //fontSize: "22px",
           fontFamily: "Montserrat-Regular",
           fill: "#000",
-          align: "center",
+          align: "center"
         }
       )
       .setOrigin(0.5);
@@ -779,7 +776,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach((element) => {
+    this.neighborNodes.forEach(element => {
       element.increaseNodeValueBy1();
     });
   }
