@@ -173,20 +173,20 @@
       "difficulty": "easy",
       "steps": 15,
       "nodes": [
-        { "id": "A", "value": "7", "x": 0.5, "y": 0.5 },
-        { "id": "B", "value": "2", "x": 0.35, "y": 0.5 },
-        { "id": "C", "value": "1", "x": 0.5, "y": 0.35 },
-        { "id": "D", "value": "-2", "x": 0.75, "y": 0.5 },
-        { "id": "E", "value": "-3", "x": 0.75, "y": 0.75 },
-        { "id": "F", "value": "-2", "x": 0.35, "y": 0.75 }
+        { "id": "A", "value": "7", "x": 0.5, "y": 0.55 },
+        { "id": "B", "value": "2", "x": 0.228, "y": 0.55 },
+        { "id": "C", "value": "1", "x": 0.5, "y": 0.3 },
+        { "id": "D", "value": "-2", "x": 0.75, "y": 0.55 },
+        { "id": "E", "value": "-3", "x": 0.75, "y": 0.8 },
+        { "id": "F", "value": "-2", "x": 0.228, "y": 0.8 }
       ],
       "edges": [
-        { "nodeA": "A", "nodeB": "B" },
+        { "nodeA": "B", "nodeB": "A" },
         { "nodeA": "B", "nodeB": "C" },
         { "nodeA": "C", "nodeB": "D" },
         { "nodeA": "D", "nodeB": "E" },
         { "nodeA": "F", "nodeB": "E" },
-        { "nodeA": "F", "nodeB": "B" }
+        { "nodeA": "B", "nodeB": "F" }
       ]
     },
 
