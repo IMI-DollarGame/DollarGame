@@ -19,6 +19,8 @@ class PlayScene extends BaseScene {
     this.undoBtn;
     this.restartBtn;
     this.pointer;
+    this.nextButton;
+    this.prevButton;
   }
 
   init(data) {
@@ -630,23 +632,24 @@ class PlayScene extends BaseScene {
       wordWrap: { width: 350, useAdvancedWrap: true },
     });
 
-    const nextButton = this.add
+    this.nextButton = this.add
       .image(250, 0, "next")
       .setInteractive()
       .on("pointerdown", () => {
         this.playButtonSound();
         this.changeTutorialStep("next", tutorialText);
       });
-    this.scaleObject(nextButton, 20);
+    this.scaleObject(this.nextButton, 20);
 
-    const prevButton = this.add
+    this.prevButton = this.add
       .image(-250, 0, "previous")
       .setInteractive()
       .on("pointerdown", () => {
         this.playButtonSound();
         this.changeTutorialStep("previous", tutorialText);
       });
-    this.scaleObject(prevButton, 20);
+    this.scaleObject(this.prevButton, 20);
+    this.changeTutorialBtnState(this.prevButton,false);
 
     const borderImage = this.add.image(0, 0, "tutorial-border");
     this.scaleObject(borderImage, 4);
@@ -654,7 +657,7 @@ class PlayScene extends BaseScene {
     const container = this.add.container(
       this.config.width * 0.2,
       this.config.height * 0.8,
-      [nextButton, prevButton, tutorialText, borderImage]
+      [this.nextButton, this.prevButton, tutorialText, borderImage]
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
   }
@@ -679,11 +682,13 @@ class PlayScene extends BaseScene {
     if (this.currentTutorialStep == 0) {
       this.setNodeValueTextVisible(false);
       this.chageEdgeVisible(false);
+      this.changeTutorialBtnState(this.prevButton,false);
     }
     //show island values
     else if (this.currentTutorialStep == 1) {
       this.setNodeValueTextVisible(true);
       this.chageEdgeVisible(false);
+      this.changeTutorialBtnState(this.prevButton,true);
     }
     //show edges
     else if (this.currentTutorialStep == 2) {
@@ -717,12 +722,18 @@ class PlayScene extends BaseScene {
       this.setRestartButtonVisible(true);
       this.setBestscoreTextVisible(false);
       this.movePointerTo(this.restartBtn, "restartBtn");
+      this.changeTutorialBtnState(this.nextButton,true);
     }
     //win condition
     else if (this.currentTutorialStep == 8) {
       this.setBestscoreTextVisible(true);
       this.hidePointer();
+      this.changeTutorialBtnState(this.nextButton,false);
     }
+  }
+
+  changeTutorialBtnState(btn, state){
+    btn.visible = state;
   }
 
   destroyNodeImage(image) {
