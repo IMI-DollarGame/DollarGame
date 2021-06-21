@@ -11,6 +11,7 @@ class EndGameScene extends BaseScene {
     });
     this.fontSize = 2.3;
     this.allLvlsCompleted = false;
+    this.tutorialEndMsg = "Congratulations! You have finished the tutorial!";
   }
 
   create() {
@@ -23,10 +24,14 @@ class EndGameScene extends BaseScene {
     this.message = data.message;
     this.level = data.level;
     this.difficulty = data.difficulty;
+    this.tutorialMode = data.tutorialMode;
   }
   createBG() {
     let thePic = "";
-    if (this.message === "Level Completed") {
+    if (
+      this.message === "Level Completed" ||
+      this.message === this.tutorialEndMsg
+    ) {
       thePic = "game-won";
     } else {
       thePic = "game-over";
@@ -56,6 +61,8 @@ class EndGameScene extends BaseScene {
       this.createToAllLvlsBtn(0.37);
       this.createRestartLvlBtn(0.47);
       this.createToNxtLvlBtn(0.57);
+    } else if (this.message === this.tutorialEndMsg) {
+      this.createTutorialEndText();
     } else {
       this.createLevelScoreText();
       this.createBestScoreText();
@@ -65,6 +72,41 @@ class EndGameScene extends BaseScene {
   }
 
   /*--------- BEST SCORE AND CURRENT SCORE ---------- */
+  createTutorialEndText() {
+    const xPos = this.config.width / 2;
+    const yPos = this.config.height * 0.5;
+    const endMsg = this.make.text({
+      x: xPos,
+      y: yPos,
+      text: `Hope you will enjoy the game!!!`,
+      origin: { x: 0.5, y: 0.5 },
+      style: this.game.config.defaultFontOptions
+    });
+    this.toMenuTxt();
+  }
+  toMenuTxt() {
+    const xPos = this.config.width / 2;
+    const yPos = this.config.height * 0.6;
+    const endClickMsg = this.make.text({
+      x: xPos,
+      y: yPos,
+      text: `Click here to return to the main menu!`,
+      origin: { x: 0.5, y: 0.5 },
+      style: this.game.config.defaultFontOptions
+    });
+    endClickMsg.setInteractive();
+    endClickMsg.on("pointerover", () => {
+      endClickMsg.setStyle({ fill: "#ff0" });
+    });
+    endClickMsg.on("pointerout", () => {
+      endClickMsg.setStyle({ fill: "#fff" });
+    });
+    endClickMsg.on("pointerup", () => {
+      this.scene.start("MenuScene");
+      this.playButtonSound();
+    });
+  }
+
   createLevelScoreText() {
     const xPos = this.config.width / 2;
     const yPos = this.config.height * 0.5;
