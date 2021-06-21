@@ -201,12 +201,11 @@ class PlayScene extends BaseScene {
         node.decreaseNodeValue();
         node.updateNeighborNodeValue();
         this.updateValues();
-        this.playSmokeAnimation(node.container.x, node.container.y, "smoke");
+        this.playDarkSmokeAnimation(node.container.x, node.container.y);
         node.getNeighborNodes().forEach(neighborNode => {
-          this.playSmokeAnimation(
+          this.playGraySmokeAnimation(
             neighborNode.container.x,
-            neighborNode.container.y,
-            "smoke"
+            neighborNode.container.y
           );
         });
         this.updateNodeImages();
@@ -251,18 +250,48 @@ class PlayScene extends BaseScene {
     });
   }
 
-  playSmokeAnimation(x, y, animation) {
-    const smoke = this.add.sprite(x, y, animation, 0);
-    this.scaleObject(smoke, 2);
-    smoke.depth = 100;
+  playGraySmokeAnimation(x, y) {
+    const effect = this.add.sprite(x, y, "graySmoke", 0);
+    this.scaleObject(effect, 2);
+    effect.depth = 100;
     this.anims.create({
-      key: "transform",
-      frameRate: 15,
-      frames: this.anims.generateFrameNames(animation, { start: 1, end: 5 })
+      key: "graySmokeTransform",
+      frameRate: 12,
+      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 })
     });
-    smoke.play("transform");
-    smoke.once("animationcomplete", () => {
-      smoke.destroy();
+    effect.play("graySmokeTransform");
+    effect.once("animationcomplete", () => {
+      effect.destroy();
+    })
+  }
+  
+  playDarkSmokeAnimation(x, y) {
+    const effect = this.add.sprite(x, y, "darkSmoke", 0);
+    this.scaleObject(effect, 2);
+    effect.depth = 100;
+    this.anims.create({
+      key: "darkSmokeTransform",
+      frameRate: 12,
+      frames: this.anims.generateFrameNames("darkSmoke", { start: 1, end: 6 })
+    });
+    effect.play("darkSmokeTransform");
+    effect.once("animationcomplete", () => {
+      effect.destroy();
+    })
+  }
+
+  playSplashAnimation(x, y) {
+    const effect = this.add.sprite(x, y, "splash", 0);
+    this.scaleObject(effect, 2);
+    effect.depth = 100;
+    this.anims.create({
+      key: "splashTransform",
+      frameRate: 10,
+      frames: this.anims.generateFrameNames("splash", { start: 1, end: 10 })
+    });
+    effect.play("splashTransform");
+    effect.once("animationcomplete", () => {
+      effect.destroy();
     })
   }
 
@@ -742,7 +771,7 @@ class PlayScene extends BaseScene {
       x = obj.x;
       y = obj.y + obj.height;
     }
-    this.playSmokeAnimation(x, y, 'smoke');
+    this.playSplashAnimation(x, y);
     this.pointer.setPosition(x, y);
     this.pointer.visible = true;
   }
