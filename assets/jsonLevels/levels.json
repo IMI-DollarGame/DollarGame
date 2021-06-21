@@ -185,7 +185,7 @@
         { "nodeA": "B", "nodeB": "C" },
         { "nodeA": "C", "nodeB": "D" },
         { "nodeA": "D", "nodeB": "E" },
-        { "nodeA": "E", "nodeB": "F" },
+        { "nodeA": "F", "nodeB": "E" },
         { "nodeA": "F", "nodeB": "B" }
       ]
     },
@@ -412,7 +412,7 @@
         { "nodeA": "E", "nodeB": "G" },
         { "nodeA": "G", "nodeB": "F" },
         { "nodeA": "F", "nodeB": "D" },
-        { "nodeA": "F", "nodeB": "B" },
+        { "nodeA": "B", "nodeB": "F" },
         { "nodeA": "D", "nodeB": "B" }
       ]
     },
