@@ -41,7 +41,9 @@ class PreloadScene extends Phaser.Scene {
     //https://pngtree.com/so/border-clipart
 
     //animation
-    this.load.spritesheet('smoke', 'assets/spriteSheets/smoke.png',{frameWidth:37, frameHeight: 45});
+    this.load.spritesheet('graySmoke', 'assets/spriteSheets/graySmoke.png', { frameWidth: 37, frameHeight: 45 });
+    this.load.spritesheet('darkSmoke', 'assets/spriteSheets/darkSmoke.png', { frameWidth: 37, frameHeight: 45 });
+    this.load.spritesheet('splash', 'assets/spriteSheets/splash.png', { frameWidth: 37, frameHeight: 45 });
 
     //node image
     this.load.image(
