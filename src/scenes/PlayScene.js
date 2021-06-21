@@ -503,6 +503,10 @@ class PlayScene extends BaseScene {
       this.scene.start("EndGameScene", {
         message: "Congratulations! You have finished the tutorial!"
       });
+    } else if (this.tutorialMode && this.steps == 0) {
+      this.scene.start("EndGameScene", {
+        message: "You ran out of steps!!"
+      });
     } else if (this.nodesArray.every(element => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("levelbestscore" + this.level);
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
