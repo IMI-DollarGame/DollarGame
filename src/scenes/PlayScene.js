@@ -113,7 +113,7 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff },
+      lineStyle: { width: 4, color: 0xffffff, alpha: 0.3 },
     });
   }
 
@@ -452,6 +452,7 @@ class PlayScene extends BaseScene {
     }
 
     let edge = new Edge(nodeA, nodeB, rocks);
+    this.graphics.strokeLineShape(edge.getEdgeCoord());
     this.edgesArray.push(edge);
   }
 
@@ -855,5 +856,14 @@ class Edge {
   init() {
     this.nodeA.addNodeNeighbor(this.nodeB);
     this.nodeB.addNodeNeighbor(this.nodeA);
+  }
+
+  getEdgeCoord() {
+    return new Phaser.Geom.Line(
+      this.nodeA.container.x,
+      this.nodeA.container.y,
+      this.nodeB.container.x,
+      this.nodeB.container.y
+    );
   }
 }
