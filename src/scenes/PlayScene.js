@@ -50,6 +50,22 @@ class PlayScene extends BaseScene {
     }
     this.createBackButton();
     super.create();
+    this.storeScene();
+  }
+
+  storeScene() {
+    sessionStorage.setItem(
+      "currentScene",
+      JSON.stringify({
+        scene: "PlayScene",
+        nodes: this.nodes,
+        edges: this.edges,
+        maximumStepAllowed: this.maximumStepAllowed,
+        tutorialMode: false,
+        level: this.level,
+        difficulty: this.difficulty,
+      })
+    );
   }
 
   turnOnTutorialMode() {
