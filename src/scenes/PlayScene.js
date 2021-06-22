@@ -4,7 +4,7 @@ class PlayScene extends BaseScene {
   constructor(config) {
     super("PlayScene", {
       ...config,
-      hasSoundButton: true,
+      hasSoundButton: true
     });
     this.fontSize = 1;
     this.stepText = "Steps left: ";
@@ -131,7 +131,7 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(1).setTexture(this.getNodeImage(element.value));
     });
   }
@@ -143,8 +143,7 @@ class PlayScene extends BaseScene {
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
 
-    let valueBg = this.add.image(innerWidth / 20,
-      -innerHeight / 20, "valueBg");
+    let valueBg = this.add.image(innerWidth / 20, -innerHeight / 20, "valueBg");
     this.scaleObject(valueBg, 40);
 
     let nodeValueText = this.createNodeValueText(value);
@@ -167,7 +166,7 @@ class PlayScene extends BaseScene {
       -innerHeight / 20,
       value,
       {
-        fontSize: '25px',
+        fontSize: "25px",
         fill: "#000",
         fontStyle: "bold",
         align: "center"
@@ -178,10 +177,10 @@ class PlayScene extends BaseScene {
   }
 
   setNodeValueTextVisible(state) {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(3).visible = state;
     });
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(2).visible = state;
     });
   }
@@ -223,29 +222,57 @@ class PlayScene extends BaseScene {
 
   animateEdge(nodeId, undo) {
     let node = this.getNodeFromId(nodeId);
-    node.neighborNodes.forEach((neighbor) => {
+    node.neighborNodes.forEach(neighbor => {
       let currentEdge;
-      this.edgesArray.forEach((edge) => {
-        if ((edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) ||
-          (edge.nodeA.id === neighbor.id && edge.nodeB.id === node.id)) {
+      this.edgesArray.forEach(edge => {
+        if (
+          (edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) ||
+          (edge.nodeA.id === neighbor.id && edge.nodeB.id === node.id)
+        ) {
           currentEdge = edge;
         }
       });
 
       let rocksArray = currentEdge.rocks;
-      if ((node.id === currentEdge.nodeA.id && !undo) || (node.id === currentEdge.nodeB.id && undo)) {
+      if (
+        (node.id === currentEdge.nodeA.id && !undo) ||
+        (node.id === currentEdge.nodeB.id && undo)
+      ) {
         let i = 1;
-        rocksArray.forEach((rock) => {
-          this.time.delayedCall(100 * (i - 1), () => { rock.y += 10; }, rock);
-          this.time.delayedCall(100 * i, () => { rock.y -= 10; }, rock);
+        rocksArray.forEach(rock => {
+          this.time.delayedCall(
+            100 * (i - 1),
+            () => {
+              rock.y += 10;
+            },
+            rock
+          );
+          this.time.delayedCall(
+            100 * i,
+            () => {
+              rock.y -= 10;
+            },
+            rock
+          );
           i++;
         });
-      }
-      else {
+      } else {
         let i = 1;
         for (let j = rocksArray.length - 1; j > -1; j--) {
-          this.time.delayedCall(100 * (i - 1), () => { rocksArray[j].y += 10; }, rocksArray[j]);
-          this.time.delayedCall(100 * i, () => { rocksArray[j].y -= 10; }, rocksArray[j]);
+          this.time.delayedCall(
+            100 * (i - 1),
+            () => {
+              rocksArray[j].y += 10;
+            },
+            rocksArray[j]
+          );
+          this.time.delayedCall(
+            100 * i,
+            () => {
+              rocksArray[j].y -= 10;
+            },
+            rocksArray[j]
+          );
           i++;
         }
       }
@@ -264,9 +291,9 @@ class PlayScene extends BaseScene {
     effect.play("graySmokeTransform");
     effect.once("animationcomplete", () => {
       effect.destroy();
-    })
+    });
   }
-  
+
   playDarkSmokeAnimation(x, y) {
     const effect = this.add.sprite(x, y, "darkSmoke", 0);
     this.scaleObject(effect, 2);
@@ -279,7 +306,7 @@ class PlayScene extends BaseScene {
     effect.play("darkSmokeTransform");
     effect.once("animationcomplete", () => {
       effect.destroy();
-    })
+    });
   }
 
   playSplashAnimation(x, y) {
@@ -294,7 +321,7 @@ class PlayScene extends BaseScene {
     effect.play("splashTransform");
     effect.once("animationcomplete", () => {
       effect.destroy();
-    })
+    });
   }
 
   monitorValues() {
@@ -342,11 +369,10 @@ class PlayScene extends BaseScene {
   }
 
   chageEdgeVisible(state) {
-    this.edgesArray.forEach((element) => {
-      element.rocks.forEach((e) => {
+    this.edgesArray.forEach(element => {
+      element.rocks.forEach(e => {
         e.visible = state;
-      })
-
+      });
     });
   }
 
@@ -449,16 +475,12 @@ class PlayScene extends BaseScene {
       prevRandom = randomRock;
     }
 
-    let edge = new Edge(
-      nodeA,
-      nodeB,
-      rocks
-    );
+    let edge = new Edge(nodeA, nodeB, rocks);
     this.edgesArray.push(edge);
   }
 
   updateValues() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(3).setText(element.value);
     });
   }
@@ -474,14 +496,25 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every((element) => element.isPositiveValue())) {
+    if (
+      this.tutorialMode &&
+      this.nodesArray.every(element => element.isPositiveValue())
+    ) {
+      this.scene.start("EndGameScene", {
+        message: "Congratulations! You have finished the tutorial!"
+      });
+    } else if (this.tutorialMode && this.steps == 0) {
+      this.scene.start("EndGameScene", {
+        message: "You ran out of steps!!"
+      });
+    } else if (this.nodesArray.every(element => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem("levelbestscore" + this.level);
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
         localStorage.setItem("levelbestscore" + this.level, this.steps);
       }
       sessionStorage.setItem("currentScore", this.steps);
-      localStorage.setItem("level" + this.level, "completed")
+      localStorage.setItem("level" + this.level, "completed");
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
@@ -571,13 +604,25 @@ class PlayScene extends BaseScene {
   }
 
   animateEdgesOnReset() {
-    this.edgesArray.forEach((edge) => {
+    this.edgesArray.forEach(edge => {
       let randomRocks = [...edge.rocks];
       randomRocks.sort(() => Math.random() - 0.5);
       let i = 1;
-      randomRocks.forEach((rock) => {
-        this.time.delayedCall(100 * (i - 1), () => { rock.y += 10; }, rock);
-        this.time.delayedCall(100 * i, () => { rock.y -= 10; }, rock);
+      randomRocks.forEach(rock => {
+        this.time.delayedCall(
+          100 * (i - 1),
+          () => {
+            rock.y += 10;
+          },
+          rock
+        );
+        this.time.delayedCall(
+          100 * i,
+          () => {
+            rock.y -= 10;
+          },
+          rock
+        );
         i++;
       });
     });
@@ -606,10 +651,13 @@ class PlayScene extends BaseScene {
 
   lastClickedNodeId() {
     let lastNode;
-    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
-    var index2 = this.allValuesArray.findIndex((p) => p.step == this.steps + 1);
+    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
+    var index2 = this.allValuesArray.findIndex(p => p.step == this.steps + 1);
     for (let i = 0; i < this.allValuesArray[index].allValue.length; i++) {
-      if (this.allValuesArray[index].allValue[i].value < this.allValuesArray[index2].allValue[i].value) {
+      if (
+        this.allValuesArray[index].allValue[i].value <
+        this.allValuesArray[index2].allValue[i].value
+      ) {
         lastNode = this.allValuesArray[index].allValue[i].id;
       }
     }
@@ -626,10 +674,10 @@ class PlayScene extends BaseScene {
   createTutorialButton() {
     const tutorialText = this.add.text(-150, -50, this.getHelpText(), {
       fontFamily: "Indie Flower, cursive",
-      fill: '#000',
+      fill: "#000",
       fontSize: 20,
-      fontStyle: 'bold',
-      wordWrap: { width: 350, useAdvancedWrap: true },
+      fontStyle: "bold",
+      wordWrap: { width: 350, useAdvancedWrap: true }
     });
 
     this.nextButton = this.add
@@ -649,7 +697,7 @@ class PlayScene extends BaseScene {
         this.changeTutorialStep("previous", tutorialText);
       });
     this.scaleObject(this.prevButton, 20);
-    this.changeTutorialBtnState(this.prevButton,false);
+    this.changeTutorialBtnState(this.prevButton, false);
 
     const borderImage = this.add.image(0, 0, "tutorial-border");
     this.scaleObject(borderImage, 4);
@@ -682,13 +730,13 @@ class PlayScene extends BaseScene {
     if (this.currentTutorialStep == 0) {
       this.setNodeValueTextVisible(false);
       this.chageEdgeVisible(false);
-      this.changeTutorialBtnState(this.prevButton,false);
+      this.changeTutorialBtnState(this.prevButton, false);
     }
     //show island values
     else if (this.currentTutorialStep == 1) {
       this.setNodeValueTextVisible(true);
       this.chageEdgeVisible(false);
-      this.changeTutorialBtnState(this.prevButton,true);
+      this.changeTutorialBtnState(this.prevButton, true);
     }
     //show edges
     else if (this.currentTutorialStep == 2) {
@@ -722,17 +770,17 @@ class PlayScene extends BaseScene {
       this.setRestartButtonVisible(true);
       this.setBestscoreTextVisible(false);
       this.movePointerTo(this.restartBtn, "restartBtn");
-      this.changeTutorialBtnState(this.nextButton,true);
+      this.changeTutorialBtnState(this.nextButton, true);
     }
     //win condition
     else if (this.currentTutorialStep == 8) {
       this.setBestscoreTextVisible(true);
       this.hidePointer();
-      this.changeTutorialBtnState(this.nextButton,false);
+      this.changeTutorialBtnState(this.nextButton, false);
     }
   }
 
-  changeTutorialBtnState(btn, state){
+  changeTutorialBtnState(btn, state) {
     btn.visible = state;
   }
 
@@ -760,7 +808,11 @@ class PlayScene extends BaseScene {
     }
   }
   createPointer() {
-    this.pointer = this.add.sprite(this.nodesArray[0].container.x, this.nodesArray[0].container.y, "pointer");
+    this.pointer = this.add.sprite(
+      this.nodesArray[0].container.x,
+      this.nodesArray[0].container.y,
+      "pointer"
+    );
     this.pointer.setDepth = 1000;
     this.pointer.visible = false;
     this.scaleObject(this.pointer, 20);
@@ -773,10 +825,10 @@ class PlayScene extends BaseScene {
   movePointerTo(obj, type) {
     let x, y;
     if (type === "node") {
-      x = obj.x + obj.width * 1 / 3;
-      y = obj.y + obj.height * 3 / 2;
+      x = obj.x + (obj.width * 1) / 3;
+      y = obj.y + (obj.height * 3) / 2;
     } else if (type === "undoBtn") {
-      x = obj.x + obj.width * 3 / 5;
+      x = obj.x + (obj.width * 3) / 5;
       y = obj.y + obj.height;
     } else if (type === "restartBtn") {
       x = obj.x;
