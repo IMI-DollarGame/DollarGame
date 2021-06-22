@@ -541,6 +541,8 @@ class PlayScene extends BaseScene {
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps. Game over!!",
+        level: this.level,
+        difficulty: this.difficulty,
       });
     }
   }

@@ -17,6 +17,7 @@ class EndGameScene extends BaseScene {
     this.createBG();
     super.create();
     this.createGOTxt();
+    this.storeScene();
   }
 
   init(data) {
@@ -24,6 +25,19 @@ class EndGameScene extends BaseScene {
     this.level = data.level;
     this.difficulty = data.difficulty;
   }
+
+  storeScene(){
+    sessionStorage.setItem(
+      "currentScene",
+      JSON.stringify({
+        scene: "EndGameScene",
+        difficulty: this.difficulty,
+        message: this.message,
+        level: this.level
+      })
+    );
+  }
+
   createBG() {
     let thePic = "";
     if (this.message === "Level Completed") {
@@ -111,7 +125,15 @@ class EndGameScene extends BaseScene {
     restartLvlBtn.on("pointerup", () => {
       this.playButtonSound();
       this.scene.start("PlayScene");
-    });
+    //   this.scene.start("PlayScene", {
+    //     nodes: menuItem.nodes,
+    //     edges: menuItem.edges,
+    //     maximumStepAllowed: menuItem.steps,
+    //     tutorialMode: false,
+    //     level: menuItem.level,
+    //     difficulty: this.difficulty,
+    //   });
+     });
   }
 
   createToNxtLvlBtn(per) {

@@ -200,6 +200,7 @@ class PreloadScene extends Phaser.Scene {
         tutorialMode: currentScene.tutorialMode,
         level: currentScene.level,
         difficulty: currentScene.difficulty,
+        message: currentScene.message,
       });
     } else {
       this.scene.start("MenuScene");
