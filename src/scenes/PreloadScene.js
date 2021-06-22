@@ -191,7 +191,6 @@ class PreloadScene extends Phaser.Scene {
 
   startScene() {
     const currentScene = JSON.parse(sessionStorage.getItem("currentScene"));
-    console.log(currentScene);
     if (currentScene) {
       this.scene.start(currentScene.scene, {
         nodes: currentScene.nodes,

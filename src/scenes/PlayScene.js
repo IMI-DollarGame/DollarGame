@@ -54,18 +54,32 @@ class PlayScene extends BaseScene {
   }
 
   storeScene() {
-    sessionStorage.setItem(
-      "currentScene",
-      JSON.stringify({
-        scene: "PlayScene",
-        nodes: this.nodes,
-        edges: this.edges,
-        maximumStepAllowed: this.maximumStepAllowed,
-        tutorialMode: false,
-        level: this.level,
-        difficulty: this.difficulty,
-      })
-    );
+    if (this.tutorialMode === true) {
+      sessionStorage.setItem(
+        "currentScene",
+        JSON.stringify({
+          scene: "PlayScene",
+          nodes: this.nodes,
+          edges: this.edges,
+          maximumStepAllowed: this.maximumStepAllowed,
+          tutorialMode: true,
+          tutorialSteps: this.tutorialSteps,
+        })
+      );
+    } else {
+      sessionStorage.setItem(
+        "currentScene",
+        JSON.stringify({
+          scene: "PlayScene",
+          nodes: this.nodes,
+          edges: this.edges,
+          maximumStepAllowed: this.maximumStepAllowed,
+          tutorialMode: false,
+          level: this.level,
+          difficulty: this.difficulty,
+        })
+      );
+    }
   }
 
   turnOnTutorialMode() {
@@ -449,7 +463,6 @@ class PlayScene extends BaseScene {
       distanceBetweenY = nodeBY - nodeAY;
       deltaY = distanceBetweenY / numberOfRocks;
     }
-    console.log(nodeAX, nodeAY, numberOfRocks);
     for (let i = 1; i < numberOfRocks - 1; i++) {
       let randomRock = Math.floor(Math.random() * (8 - 1) + 1);
       if (randomRock === prevRandom) {

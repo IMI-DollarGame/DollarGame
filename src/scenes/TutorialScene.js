@@ -20,21 +20,6 @@ class TutorialScene extends BaseScene {
       tutorialMode: true,
       tutorialSteps: this.tutorialSteps,
     });
-    this.storeScene();
-  }
-
-  storeScene() {
-    sessionStorage.setItem(
-      "currentScene",
-      JSON.stringify({
-        scene: "TutorialScene",
-        nodes: this.nodes,
-        edges: this.edges,
-        maximumStepAllowed: this.steps,
-        tutorialMode: true,
-        tutorialSteps: this.tutorialSteps,
-      })
-    );
   }
 
   getTutorialInfo() {
