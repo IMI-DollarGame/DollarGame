@@ -537,12 +537,20 @@ class PlayScene extends BaseScene {
         message: "Level Completed",
         level: this.level,
         difficulty: this.difficulty,
+        edges: this.edges,
+        nodes: this.nodes,
+        maximumStepAllowed: this.maximumStepAllowed,
+        tutorialMode: false,
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps. Game over!!",
         level: this.level,
         difficulty: this.difficulty,
+        edges: this.edges,
+        nodes: this.nodes,
+        maximumStepAllowed: this.maximumStepAllowed,
+        tutorialMode: false,
       });
     }
   }
