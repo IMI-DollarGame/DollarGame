@@ -388,7 +388,6 @@ class PlayScene extends BaseScene {
     let nodeBY = nodeB.container.y;
     let nodeAX = nodeA.container.x;
     let nodeAY = nodeA.container.y;
-
     let getXcoord;
     let getYcoord;
     let deltaX;
@@ -403,39 +402,27 @@ class PlayScene extends BaseScene {
       getXcoord = nodeAX;
       deltaX = 0;
       distanceBetweenY = nodeBY - nodeAY;
-      numberOfRocks = Math.round(distanceBetweenY / (this.config.width * 0.04));
+      numberOfRocks = this.calculateNumberOfRocks(distanceBetweenY);
     } else if (nodeBX > nodeAX) {
+      distanceBetweenX = nodeBX - nodeAX;
       if (nodeBX - nodeAX < 200) {
         distanceBetweenY = nodeBY - nodeAY;
-        numberOfRocks = Math.round(
-          distanceBetweenY / (this.config.width * 0.04)
-        );
-        getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
-        distanceBetweenX = nodeBX - nodeAX;
-        deltaX = distanceBetweenX / numberOfRocks;
+        numberOfRocks = this.calculateNumberOfRocks(distanceBetweenY);
       } else {
-        distanceBetweenX = nodeBX - nodeAX;
-        numberOfRocks = Math.round(
-          distanceBetweenX / (this.config.width * 0.04)
-        );
-        getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
-        deltaX = distanceBetweenX / numberOfRocks;
+        numberOfRocks = this.calculateNumberOfRocks(distanceBetweenX);
       }
+      getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
+      deltaX = distanceBetweenX / numberOfRocks;
     } else {
+      distanceBetweenX = nodeAX - nodeBX;
       if (nodeAX - nodeBX < 200) {
         distanceBetweenY = nodeBY - nodeAY;
-        numberOfRocks = Math.round(
-          distanceBetweenY / (this.config.width * 0.04)
-        );
-        getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
-        distanceBetweenX = nodeAX - nodeBX;
-        deltaX = distanceBetweenX / numberOfRocks;
+        numberOfRocks = this.calculateNumberOfRocks(distanceBetweenY);
       } else {
-        distanceBetweenX = nodeAX - nodeBX;
         numberOfRocks = this.calculateNumberOfRocks(distanceBetweenX);
-        getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
-        deltaX = distanceBetweenX / numberOfRocks;
       }
+      getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
+      deltaX = distanceBetweenX / numberOfRocks;
     }
 
     if (nodeBY == nodeAY) {
@@ -446,7 +433,7 @@ class PlayScene extends BaseScene {
       distanceBetweenY = nodeBY - nodeAY;
       deltaY = distanceBetweenY / numberOfRocks;
     }
-
+    console.log(nodeAX, nodeAY, numberOfRocks);
     for (let i = 1; i < numberOfRocks - 1; i++) {
       let randomRock = Math.floor(Math.random() * (8 - 1) + 1);
       if (randomRock === prevRandom) {
@@ -456,12 +443,11 @@ class PlayScene extends BaseScene {
       }
 
       if (nodeBX < nodeAX && nodeBY > nodeAY) {
+        getYcoord += deltaY;
         if (i == 1) {
-          getXcoord -= deltaX * 2;
-          getYcoord += deltaY;
+          getXcoord -= deltaX * 3;
         } else {
           getXcoord -= deltaX;
-          getYcoord += deltaY;
         }
       } else {
         if (i == 1) {
@@ -476,7 +462,6 @@ class PlayScene extends BaseScene {
       rocks.push(rock);
       prevRandom = randomRock;
     }
-
     let edge = new Edge(nodeA, nodeB, rocks);
     this.graphics.strokeLineShape(edge.getEdgeCoord());
     this.edgesArray.push(edge);
