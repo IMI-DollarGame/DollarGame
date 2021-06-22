@@ -108,12 +108,11 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 6, color: 0x8d6e63, alpha: 0.3 },
+      lineStyle: { width: 10, color: 0x8d6e63, alpha: 0.2 },
       //22a9ea - blue like waterfall
       //ef5350 - red like roof
       //8d6e63 - brown light like terra
       //689f38 - green like tree
-
     });
   }
 
@@ -200,7 +199,7 @@ class PlayScene extends BaseScene {
   }
 
   setupNodeClick() {
-    this.nodesArray.forEach(node => {
+    this.nodesArray.forEach((node) => {
       this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
       node.container.setInteractive().on("pointerdown", () => {
         this.updateStep("decrease");
@@ -208,7 +207,7 @@ class PlayScene extends BaseScene {
         node.updateNeighborNodeValue();
         this.updateValues();
         this.playDarkSmokeAnimation(node.container.x, node.container.y);
-        node.getNeighborNodes().forEach(neighborNode => {
+        node.getNeighborNodes().forEach((neighborNode) => {
           this.playGraySmokeAnimation(
             neighborNode.container.x,
             neighborNode.container.y
@@ -291,14 +290,14 @@ class PlayScene extends BaseScene {
     this.anims.create({
       key: "graySmokeTransform",
       frameRate: 12,
-      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 })
+      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 }),
     });
     effect.play("graySmokeTransform");
     effect.once("animationcomplete", () => {
       effect.destroy();
-    })
+    });
   }
-  
+
   playDarkSmokeAnimation(x, y) {
     const effect = this.add.sprite(x, y, "darkSmoke", 0);
     this.scaleObject(effect, 2);
@@ -306,12 +305,12 @@ class PlayScene extends BaseScene {
     this.anims.create({
       key: "darkSmokeTransform",
       frameRate: 12,
-      frames: this.anims.generateFrameNames("darkSmoke", { start: 1, end: 6 })
+      frames: this.anims.generateFrameNames("darkSmoke", { start: 1, end: 6 }),
     });
     effect.play("darkSmokeTransform");
     effect.once("animationcomplete", () => {
       effect.destroy();
-    })
+    });
   }
 
   playSplashAnimation(x, y) {
@@ -319,14 +318,14 @@ class PlayScene extends BaseScene {
     this.scaleObject(effect, 2);
     effect.depth = 100;
     this.anims.create({
-     key: "splashTransform",
+      key: "splashTransform",
       frameRate: 10,
-      frames: this.anims.generateFrameNames("splash", { start: 1, end: 10 })
+      frames: this.anims.generateFrameNames("splash", { start: 1, end: 10 }),
     });
     effect.play("splashTransform");
     effect.once("animationcomplete", () => {
       effect.destroy();
-    })
+    });
   }
 
   monitorValues() {
@@ -337,11 +336,11 @@ class PlayScene extends BaseScene {
 
     let currentValuesAndStep = {
       allValue: currrentValues,
-      step: this.steps
+      step: this.steps,
     };
 
     let currentObjIndex = this.allValuesArray.findIndex(
-      x => x.step === this.steps
+      (x) => x.step === this.steps
     );
 
     if (currentObjIndex !== -1) {
@@ -352,7 +351,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeInputState(state) {
-    this.nodesArray.forEach(node => {
+    this.nodesArray.forEach((node) => {
       node.container.input.enabled = state;
     });
   }
@@ -433,9 +432,7 @@ class PlayScene extends BaseScene {
         deltaX = distanceBetweenX / numberOfRocks;
       } else {
         distanceBetweenX = nodeAX - nodeBX;
-        numberOfRocks = Math.round(
-          distanceBetweenX / (this.config.width * 0.04)
-        );
+        numberOfRocks = this.calculateNumberOfRocks(distanceBetweenX);
         getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
         deltaX = distanceBetweenX / numberOfRocks;
       }
@@ -485,6 +482,10 @@ class PlayScene extends BaseScene {
     this.edgesArray.push(edge);
   }
 
+  calculateNumberOfRocks(distanceBetween) {
+    return Math.round(distanceBetween / (this.config.width * 0.04));
+  }
+
   updateValues() {
     this.nodesArray.forEach((element) => {
       element.container.getAt(3).setText(element.value);
@@ -493,7 +494,7 @@ class PlayScene extends BaseScene {
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -503,21 +504,29 @@ class PlayScene extends BaseScene {
 
   checkWinLoseCondition() {
     if (this.nodesArray.every((element) => element.isPositiveValue())) {
-      const bestScoreText = localStorage.getItem("levelbestscore_" + this.difficulty +"_" +this.level);
+      const bestScoreText = localStorage.getItem(
+        "levelbestscore_" + this.difficulty + "_" + this.level
+      );
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
-        localStorage.setItem("levelbestscore_" + this.difficulty+"_"+this.level, this.steps);
+        localStorage.setItem(
+          "levelbestscore_" + this.difficulty + "_" + this.level,
+          this.steps
+        );
       }
       sessionStorage.setItem("currentScore", this.steps);
-      localStorage.setItem("level_" + this.difficulty+"_"+this.level, "completed");
+      localStorage.setItem(
+        "level_" + this.difficulty + "_" + this.level,
+        "completed"
+      );
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
-        difficulty: this.difficulty
+        difficulty: this.difficulty,
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!"
+        message: "You ran out of steps. Game over!!",
       });
     }
   }
@@ -552,17 +561,19 @@ class PlayScene extends BaseScene {
         fontSize: "30px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
-        align: "center"
+        align: "center",
       })
       .setOrigin(0.5);
   }
 
   displayBestScore() {
-    const bestScore = localStorage.getItem("levelbestscore_" + this.difficulty +"_"+ this.level);
+    const bestScore = localStorage.getItem(
+      "levelbestscore_" + this.difficulty + "_" + this.level
+    );
     this.bestScoreText = this.add
       .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
         fill: "#3b3b3b",
-        fontFamily: "Montserrat-Regular"
+        fontFamily: "Montserrat-Regular",
       })
       .setOrigin(0.5);
 
@@ -591,7 +602,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.resetValue();
     });
     this.updateValues();
@@ -660,8 +671,8 @@ class PlayScene extends BaseScene {
   }
 
   undoNodeValue() {
-    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
-    this.allValuesArray[index].allValue.forEach(element => {
+    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach((element) => {
       this.getNodeFromId(element.id).value = element.value;
     });
   }
@@ -692,7 +703,7 @@ class PlayScene extends BaseScene {
         this.changeTutorialStep("previous", tutorialText);
       });
     this.scaleObject(this.prevButton, 20);
-    this.changeTutorialBtnState(this.prevButton,false);
+    this.changeTutorialBtnState(this.prevButton, false);
 
     const borderImage = this.add.image(0, 0, "tutorial-border");
     this.scaleObject(borderImage, 4);
@@ -725,13 +736,13 @@ class PlayScene extends BaseScene {
     if (this.currentTutorialStep == 0) {
       this.setNodeValueTextVisible(false);
       this.chageEdgeVisible(false);
-      this.changeTutorialBtnState(this.prevButton,false);
+      this.changeTutorialBtnState(this.prevButton, false);
     }
     //show island values
     else if (this.currentTutorialStep == 1) {
       this.setNodeValueTextVisible(true);
       this.chageEdgeVisible(false);
-      this.changeTutorialBtnState(this.prevButton,true);
+      this.changeTutorialBtnState(this.prevButton, true);
     }
     //show edges
     else if (this.currentTutorialStep == 2) {
@@ -765,17 +776,17 @@ class PlayScene extends BaseScene {
       this.setRestartButtonVisible(true);
       this.setBestscoreTextVisible(false);
       this.movePointerTo(this.restartBtn, "restartBtn");
-      this.changeTutorialBtnState(this.nextButton,true);
+      this.changeTutorialBtnState(this.nextButton, true);
     }
     //win condition
     else if (this.currentTutorialStep == 8) {
       this.setBestscoreTextVisible(true);
       this.hidePointer();
-      this.changeTutorialBtnState(this.nextButton,false);
+      this.changeTutorialBtnState(this.nextButton, false);
     }
   }
 
-  changeTutorialBtnState(btn, state){
+  changeTutorialBtnState(btn, state) {
     btn.visible = state;
   }
 
@@ -794,7 +805,7 @@ class PlayScene extends BaseScene {
           //fontSize: "22px",
           fontFamily: "Montserrat-Regular",
           fill: "#000",
-          align: "center"
+          align: "center",
         }
       )
       .setOrigin(0.5);
@@ -863,7 +874,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach(element => {
+    this.neighborNodes.forEach((element) => {
       element.increaseNodeValueBy1();
     });
   }
