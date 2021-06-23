@@ -108,7 +108,11 @@ class PlayScene extends BaseScene {
 
   addGraphics() {
     this.graphics = this.add.graphics({
-      lineStyle: { width: 4, color: 0xffffff }
+      lineStyle: { width: 10, color: 0x8d6e63, alpha: 0.2 },
+      //22a9ea - blue like waterfall
+      //ef5350 - red like roof
+      //8d6e63 - brown light like terra
+      //689f38 - green like tree
     });
   }
 
@@ -169,7 +173,7 @@ class PlayScene extends BaseScene {
         fontSize: "25px",
         fill: "#000",
         fontStyle: "bold",
-        align: "center"
+        align: "center",
       }
     );
     nodeValueText.setOrigin(0.5);
@@ -195,7 +199,7 @@ class PlayScene extends BaseScene {
   }
 
   setupNodeClick() {
-    this.nodesArray.forEach(node => {
+    this.nodesArray.forEach((node) => {
       this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
       node.container.setInteractive().on("pointerdown", () => {
         this.updateStep("decrease");
@@ -203,7 +207,7 @@ class PlayScene extends BaseScene {
         node.updateNeighborNodeValue();
         this.updateValues();
         this.playDarkSmokeAnimation(node.container.x, node.container.y);
-        node.getNeighborNodes().forEach(neighborNode => {
+        node.getNeighborNodes().forEach((neighborNode) => {
           this.playGraySmokeAnimation(
             neighborNode.container.x,
             neighborNode.container.y
@@ -286,7 +290,7 @@ class PlayScene extends BaseScene {
     this.anims.create({
       key: "graySmokeTransform",
       frameRate: 12,
-      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 })
+      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 }),
     });
     effect.play("graySmokeTransform");
     effect.once("animationcomplete", () => {
@@ -301,7 +305,7 @@ class PlayScene extends BaseScene {
     this.anims.create({
       key: "darkSmokeTransform",
       frameRate: 12,
-      frames: this.anims.generateFrameNames("darkSmoke", { start: 1, end: 6 })
+      frames: this.anims.generateFrameNames("darkSmoke", { start: 1, end: 6 }),
     });
     effect.play("darkSmokeTransform");
     effect.once("animationcomplete", () => {
@@ -316,7 +320,7 @@ class PlayScene extends BaseScene {
     this.anims.create({
       key: "splashTransform",
       frameRate: 10,
-      frames: this.anims.generateFrameNames("splash", { start: 1, end: 10 })
+      frames: this.anims.generateFrameNames("splash", { start: 1, end: 10 }),
     });
     effect.play("splashTransform");
     effect.once("animationcomplete", () => {
@@ -332,11 +336,11 @@ class PlayScene extends BaseScene {
 
     let currentValuesAndStep = {
       allValue: currrentValues,
-      step: this.steps
+      step: this.steps,
     };
 
     let currentObjIndex = this.allValuesArray.findIndex(
-      x => x.step === this.steps
+      (x) => x.step === this.steps
     );
 
     if (currentObjIndex !== -1) {
@@ -347,7 +351,7 @@ class PlayScene extends BaseScene {
   }
 
   setNodeInputState(state) {
-    this.nodesArray.forEach(node => {
+    this.nodesArray.forEach((node) => {
       node.container.input.enabled = state;
     });
   }
@@ -384,7 +388,6 @@ class PlayScene extends BaseScene {
     let nodeBY = nodeB.container.y;
     let nodeAX = nodeA.container.x;
     let nodeAY = nodeA.container.y;
-
     let getXcoord;
     let getYcoord;
     let deltaX;
@@ -399,41 +402,27 @@ class PlayScene extends BaseScene {
       getXcoord = nodeAX;
       deltaX = 0;
       distanceBetweenY = nodeBY - nodeAY;
-      numberOfRocks = Math.round(distanceBetweenY / (this.config.width * 0.04));
+      numberOfRocks = this.calculateNumberOfRocks(distanceBetweenY);
     } else if (nodeBX > nodeAX) {
+      distanceBetweenX = nodeBX - nodeAX;
       if (nodeBX - nodeAX < 200) {
         distanceBetweenY = nodeBY - nodeAY;
-        numberOfRocks = Math.round(
-          distanceBetweenY / (this.config.width * 0.04)
-        );
-        getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
-        distanceBetweenX = nodeBX - nodeAX;
-        deltaX = distanceBetweenX / numberOfRocks;
+        numberOfRocks = this.calculateNumberOfRocks(distanceBetweenY);
       } else {
-        distanceBetweenX = nodeBX - nodeAX;
-        numberOfRocks = Math.round(
-          distanceBetweenX / (this.config.width * 0.04)
-        );
-        getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
-        deltaX = distanceBetweenX / numberOfRocks;
+        numberOfRocks = this.calculateNumberOfRocks(distanceBetweenX);
       }
+      getXcoord = nodeAX + (nodeBX - nodeAX) / numberOfRocks;
+      deltaX = distanceBetweenX / numberOfRocks;
     } else {
+      distanceBetweenX = nodeAX - nodeBX;
       if (nodeAX - nodeBX < 200) {
         distanceBetweenY = nodeBY - nodeAY;
-        numberOfRocks = Math.round(
-          distanceBetweenY / (this.config.width * 0.04)
-        );
-        getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
-        distanceBetweenX = nodeAX - nodeBX;
-        deltaX = distanceBetweenX / numberOfRocks;
+        numberOfRocks = this.calculateNumberOfRocks(distanceBetweenY);
       } else {
-        distanceBetweenX = nodeAX - nodeBX;
-        numberOfRocks = Math.round(
-          distanceBetweenX / (this.config.width * 0.04)
-        );
-        getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
-        deltaX = distanceBetweenX / numberOfRocks;
+        numberOfRocks = this.calculateNumberOfRocks(distanceBetweenX);
       }
+      getXcoord = nodeAX - (nodeBX - nodeAX) / numberOfRocks;
+      deltaX = distanceBetweenX / numberOfRocks;
     }
 
     if (nodeBY == nodeAY) {
@@ -444,7 +433,7 @@ class PlayScene extends BaseScene {
       distanceBetweenY = nodeBY - nodeAY;
       deltaY = distanceBetweenY / numberOfRocks;
     }
-
+    console.log(nodeAX, nodeAY, numberOfRocks);
     for (let i = 1; i < numberOfRocks - 1; i++) {
       let randomRock = Math.floor(Math.random() * (8 - 1) + 1);
       if (randomRock === prevRandom) {
@@ -454,12 +443,11 @@ class PlayScene extends BaseScene {
       }
 
       if (nodeBX < nodeAX && nodeBY > nodeAY) {
+        getYcoord += deltaY;
         if (i == 1) {
-          getXcoord -= deltaX * 2;
-          getYcoord += deltaY;
+          getXcoord -= deltaX * 3;
         } else {
           getXcoord -= deltaX;
-          getYcoord += deltaY;
         }
       } else {
         if (i == 1) {
@@ -474,9 +462,13 @@ class PlayScene extends BaseScene {
       rocks.push(rock);
       prevRandom = randomRock;
     }
-
     let edge = new Edge(nodeA, nodeB, rocks);
+    this.graphics.strokeLineShape(edge.getEdgeCoord());
     this.edgesArray.push(edge);
+  }
+
+  calculateNumberOfRocks(distanceBetween) {
+    return Math.round(distanceBetween / (this.config.width * 0.04));
   }
 
   updateValues() {
@@ -487,7 +479,7 @@ class PlayScene extends BaseScene {
 
   getNodeFromId(nodeId) {
     let node;
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       if (element.id === nodeId) {
         node = element;
       }
@@ -508,21 +500,29 @@ class PlayScene extends BaseScene {
         message: "You ran out of steps!!"
       });
     } else if (this.nodesArray.every(element => element.isPositiveValue())) {
-      const bestScoreText = localStorage.getItem("levelbestscore" + this.level);
+      const bestScoreText = localStorage.getItem(
+        "levelbestscore_" + this.difficulty + "_" + this.level
+      );
       const bestScore = bestScoreText && parseInt(bestScoreText, 10);
       if (!bestScore || this.steps > bestScore) {
-        localStorage.setItem("levelbestscore" + this.level, this.steps);
+        localStorage.setItem(
+          "levelbestscore_" + this.difficulty + "_" + this.level,
+          this.steps
+        );
       }
       sessionStorage.setItem("currentScore", this.steps);
-      localStorage.setItem("level" + this.level, "completed");
+      localStorage.setItem(
+        "level_" + this.difficulty + "_" + this.level,
+        "completed"
+      );
       this.scene.start("EndGameScene", {
         message: "Level Completed",
         level: this.level,
-        difficulty: this.difficulty
+        difficulty: this.difficulty,
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!"
+        message: "You ran out of steps. Game over!!",
       });
     }
   }
@@ -557,17 +557,19 @@ class PlayScene extends BaseScene {
         fontSize: "30px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
-        align: "center"
+        align: "center",
       })
       .setOrigin(0.5);
   }
 
   displayBestScore() {
-    const bestScore = localStorage.getItem("bestScore");
+    const bestScore = localStorage.getItem(
+      "levelbestscore_" + this.difficulty + "_" + this.level
+    );
     this.bestScoreText = this.add
       .text(innerWidth / 2, innerHeight / 8, `Best Score: ${0}`, {
         fill: "#3b3b3b",
-        fontFamily: "Montserrat-Regular"
+        fontFamily: "Montserrat-Regular",
       })
       .setOrigin(0.5);
 
@@ -596,7 +598,7 @@ class PlayScene extends BaseScene {
   }
 
   resetTheGame() {
-    this.nodesArray.forEach(element => {
+    this.nodesArray.forEach((element) => {
       element.resetValue();
     });
     this.updateValues();
@@ -608,6 +610,7 @@ class PlayScene extends BaseScene {
       let randomRocks = [...edge.rocks];
       randomRocks.sort(() => Math.random() - 0.5);
       let i = 1;
+
       randomRocks.forEach(rock => {
         this.time.delayedCall(
           100 * (i - 1),
@@ -665,8 +668,8 @@ class PlayScene extends BaseScene {
   }
 
   undoNodeValue() {
-    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
-    this.allValuesArray[index].allValue.forEach(element => {
+    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
+    this.allValuesArray[index].allValue.forEach((element) => {
       this.getNodeFromId(element.id).value = element.value;
     });
   }
@@ -799,7 +802,7 @@ class PlayScene extends BaseScene {
           //fontSize: "22px",
           fontFamily: "Montserrat-Regular",
           fill: "#000",
-          align: "center"
+          align: "center",
         }
       )
       .setOrigin(0.5);
@@ -868,7 +871,7 @@ class Node {
   }
 
   updateNeighborNodeValue() {
-    this.neighborNodes.forEach(element => {
+    this.neighborNodes.forEach((element) => {
       element.increaseNodeValueBy1();
     });
   }
@@ -899,5 +902,14 @@ class Edge {
   init() {
     this.nodeA.addNodeNeighbor(this.nodeB);
     this.nodeB.addNodeNeighbor(this.nodeA);
+  }
+
+  getEdgeCoord() {
+    return new Phaser.Geom.Line(
+      this.nodeA.container.x,
+      this.nodeA.container.y,
+      this.nodeB.container.x,
+      this.nodeB.container.y
+    );
   }
 }

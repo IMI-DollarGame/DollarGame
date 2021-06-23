@@ -7,7 +7,7 @@ class EndGameScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
-      hasTutorial: true
+      hasTutorial: true,
     });
     this.fontSize = 2.3;
     this.allLvlsCompleted = false;
@@ -51,7 +51,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: this.message,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
     this.checkScene();
   }
@@ -67,7 +67,6 @@ class EndGameScene extends BaseScene {
     } else if (this.message === this.tutorialLost) {
       this.createTutorialEndText();
     } else {
-      this.createLevelScoreText();
       this.createBestScoreText();
       this.createToAllLvlsBtn(0.42);
       this.createRestartLvlBtn(0.52);
@@ -136,19 +135,19 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Your current score: ${currentScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
   }
   createBestScoreText() {
     const xPos = this.config.width / 2;
     const yPos = this.config.height * 0.55;
-    const bestScore = localStorage.getItem("bestScore");
+    const bestScore = localStorage.getItem("levelbestscore_" + this.difficulty +"_"+ this.level);
     this.make.text({
       x: xPos,
       y: yPos,
       text: `Best score: ${bestScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
   }
   /*-----------CREATING BUTTONS -------------- */
@@ -212,7 +211,7 @@ class EndGameScene extends BaseScene {
         edges: toImportEdges,
         maximumStepAllowed: toImportSteps,
         difficulty: this.difficulty,
-        level: this.level
+        level: this.level,
       });
     }
   }
