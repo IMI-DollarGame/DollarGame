@@ -782,7 +782,7 @@ class PlayScene extends BaseScene {
     }
     //show edges
     else if (this.currentTutorialStep == 2) {
-      this.drawEdges();
+      this.chageEdgeVisible(true);
       this.setNodeInputState(false);
       this.hidePointer();
     }
