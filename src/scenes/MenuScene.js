@@ -20,6 +20,16 @@ class MenuScene extends BaseScene {
     this.createFloatingIslands();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
     super.create();
+    this.storeScene();
+  }
+
+  storeScene() {
+    sessionStorage.setItem(
+      "currentScene",
+      JSON.stringify({
+        scene: "MenuScene",
+      })
+    );
   }
 
   createFloatingIslands() {

@@ -5,7 +5,7 @@ class LevelsScene extends BaseScene {
     super("LevelsScene", {
       ...config,
       hasSoundButton: true,
-      bGWithIslands: true
+      bGWithIslands: true,
     });
     this.fontSize = 2.3;
     this.lineWidth = config.width / 7;
@@ -23,6 +23,17 @@ class LevelsScene extends BaseScene {
     this.createBackButton();
     this.loadAllLevel(this.menu);
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+    this.storeScene();
+  }
+
+  storeScene(){
+    sessionStorage.setItem(
+      "currentScene",
+      JSON.stringify({
+        scene: "LevelsScene",
+        difficulty: this.difficulty,
+      })
+    );
   }
 
   createMenu(menu, setupMenuEvents) {
@@ -30,50 +41,65 @@ class LevelsScene extends BaseScene {
     let items = 0;
     menu.forEach((menuItem) => {
       const menuPosition = [
-        innerWidth*0.18 + lastMenuPositionY,
-        innerHeight*0.31,
+        innerWidth * 0.18 + lastMenuPositionY,
+        innerHeight * 0.31,
       ];
-      if (items > 4 ) {
-        menuPosition[0] = menuPosition[0] - (this.lineWidth*5)
-        menuPosition[1] += innerHeight*0.15
+      if (items > 4) {
+        menuPosition[0] = menuPosition[0] - this.lineWidth * 5;
+        menuPosition[1] += innerHeight * 0.15;
       }
 
-      let levelNumber = this.add.text(0,0, menuItem.text, {
+      let levelNumber = this.add.text(0, 0, menuItem.text, {
         fontSize: "30px",
         fill: "#4a6dc4",
         fontFamily: "Neon",
-      })
+      });
 
       let buttonImage;
-      if (localStorage.getItem("level_" + this.difficulty +"_"+ menuItem.text) === "completed") {
-        buttonImage = this.add.image(10,16,"cloudflag");
+      if (
+        localStorage.getItem(
+          "level_" + this.difficulty + "_" + menuItem.text
+        ) === "completed"
+      ) {
+        buttonImage = this.add.image(10, 16, "cloudflag");
       } else {
-        buttonImage = this.add.image(10, 16, "cloud")
+        buttonImage = this.add.image(10, 16, "cloud");
       }
 
-      //buttonImage.displayWidth = this.game.config.width / 13;
-      //buttonImage.displayHeight = this.game.config.height / 10;
       let bestScore;
-      if (localStorage.getItem("levelbestscore_" + this.difficulty +"_"+ menuItem.text)) {
-        bestScore = this.add.text(-70,33,"Best Score: " + localStorage.getItem("levelbestscore_" + this.difficulty +"_" + menuItem.text),{
-          fontSize: "25px",
-          fill: "#4ac4b6",
-          fontFamily: "Neon",
-       }
-       )
-        menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1],[buttonImage, levelNumber, bestScore])
+      if (
+        localStorage.getItem(
+          "levelbestscore_" + this.difficulty + "_" + menuItem.text
+        )
+      ) {
+        bestScore = this.add.text(
+          -70,
+          33,
+          "Best Score: " +
+            localStorage.getItem(
+              "levelbestscore_" + this.difficulty + "_" + menuItem.text
+            ),
+          {
+            fontSize: "25px",
+            fill: "#4ac4b6",
+            fontFamily: "Neon",
+          }
+        );
+        menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1], [
+          buttonImage,
+          levelNumber,
+          bestScore,
+        ]);
       } else {
-        menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1],[buttonImage, levelNumber])
+        menuItem.textGO = this.add.container(menuPosition[0], menuPosition[1], [
+          buttonImage,
+          levelNumber,
+        ]);
       }
 
-      menuItem.textGO.setSize(100,100)
+      menuItem.textGO.setSize(100, 100);
       menuItem.textGO.displayWidth = this.game.config.width / 22;
       menuItem.textGO.displayHeight = this.game.config.height / 12;
-
-
-
-
-
       lastMenuPositionY += this.lineWidth;
       items += 1;
       setupMenuEvents(menuItem);
@@ -81,17 +107,12 @@ class LevelsScene extends BaseScene {
   }
 
   createHeader() {
-      this.add
-          .text(
-          innerWidth * 0.38,
-          innerHeight * 0.065,
-          "Select Level",
-              {
-                fontSize: "65px",
-                fill: "#4c77db",
-                fontFamily: "Neon",
-              }
-      )}
+    this.add.text(innerWidth * 0.38, innerHeight * 0.065, "Select Level", {
+      fontSize: "65px",
+      fill: "#4c77db",
+      fontFamily: "Neon",
+    });
+  }
 
   createBackButton() {
     const backButton = this.add
@@ -117,14 +138,14 @@ class LevelsScene extends BaseScene {
       if (level.difficulty === this.difficulty) {
         const item = {
           scene: "PlayScene",
-          text:  level.level,
+          text: level.level,
           steps: level.steps,
           nodes: level.nodes,
           edges: level.edges,
           level: level.level,
         };
 
-        if (menu.findIndex(x => x.text === item.text) === -1) {
+        if (menu.findIndex((x) => x.text === item.text) === -1) {
           menu.push(item);
         }
       }
@@ -132,7 +153,6 @@ class LevelsScene extends BaseScene {
   }
 
   setupMenuEvents(menuItem) {
-
     menuItem.textGO.getAt(0).setInteractive();
 
     menuItem.textGO.getAt(0).on("pointerover", () => {
@@ -151,9 +171,8 @@ class LevelsScene extends BaseScene {
           maximumStepAllowed: menuItem.steps,
           tutorialMode: false,
           level: menuItem.level,
-          difficulty: this.difficulty
+          difficulty: this.difficulty,
         });
-
       this.playButtonSound();
     });
   }

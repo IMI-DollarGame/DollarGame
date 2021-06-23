@@ -50,6 +50,36 @@ class PlayScene extends BaseScene {
     }
     this.createBackButton();
     super.create();
+    this.storeScene();
+  }
+
+  storeScene() {
+    if (this.tutorialMode === true) {
+      sessionStorage.setItem(
+        "currentScene",
+        JSON.stringify({
+          scene: "PlayScene",
+          nodes: this.nodes,
+          edges: this.edges,
+          maximumStepAllowed: this.maximumStepAllowed,
+          tutorialMode: true,
+          tutorialSteps: this.tutorialSteps,
+        })
+      );
+    } else {
+      sessionStorage.setItem(
+        "currentScene",
+        JSON.stringify({
+          scene: "PlayScene",
+          nodes: this.nodes,
+          edges: this.edges,
+          maximumStepAllowed: this.maximumStepAllowed,
+          tutorialMode: false,
+          level: this.level,
+          difficulty: this.difficulty,
+        })
+      );
+    }
   }
 
   turnOnTutorialMode() {
@@ -433,7 +463,6 @@ class PlayScene extends BaseScene {
       distanceBetweenY = nodeBY - nodeAY;
       deltaY = distanceBetweenY / numberOfRocks;
     }
-    console.log(nodeAX, nodeAY, numberOfRocks);
     for (let i = 1; i < numberOfRocks - 1; i++) {
       let randomRock = Math.floor(Math.random() * (8 - 1) + 1);
       if (randomRock === prevRandom) {
@@ -519,10 +548,20 @@ class PlayScene extends BaseScene {
         message: "Level Completed",
         level: this.level,
         difficulty: this.difficulty,
+        edges: this.edges,
+        nodes: this.nodes,
+        maximumStepAllowed: this.maximumStepAllowed,
+        tutorialMode: false,
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps. Game over!!",
+        level: this.level,
+        difficulty: this.difficulty,
+        edges: this.edges,
+        nodes: this.nodes,
+        maximumStepAllowed: this.maximumStepAllowed,
+        tutorialMode: false,
       });
     }
   }
