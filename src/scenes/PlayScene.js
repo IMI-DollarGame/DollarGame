@@ -4,7 +4,7 @@ class PlayScene extends BaseScene {
   constructor(config) {
     super("PlayScene", {
       ...config,
-      hasSoundButton: true,
+      hasSoundButton: true
     });
     this.fontSize = 1;
     this.stepText = "Steps left: ";
@@ -135,7 +135,7 @@ class PlayScene extends BaseScene {
   }
 
   updateNodeImages() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(1).setTexture(this.getNodeImage(element.value));
     });
   }
@@ -181,10 +181,10 @@ class PlayScene extends BaseScene {
   }
 
   setNodeValueTextVisible(state) {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(3).visible = state;
     });
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(2).visible = state;
     });
   }
@@ -226,9 +226,9 @@ class PlayScene extends BaseScene {
 
   animateEdge(nodeId, undo) {
     let node = this.getNodeFromId(nodeId);
-    node.neighborNodes.forEach((neighbor) => {
+    node.neighborNodes.forEach(neighbor => {
       let currentEdge;
-      this.edgesArray.forEach((edge) => {
+      this.edgesArray.forEach(edge => {
         if (
           (edge.nodeA.id === node.id && edge.nodeB.id === neighbor.id) ||
           (edge.nodeA.id === neighbor.id && edge.nodeB.id === node.id)
@@ -243,7 +243,7 @@ class PlayScene extends BaseScene {
         (node.id === currentEdge.nodeB.id && undo)
       ) {
         let i = 1;
-        rocksArray.forEach((rock) => {
+        rocksArray.forEach(rock => {
           this.time.delayedCall(
             100 * (i - 1),
             () => {
@@ -373,8 +373,8 @@ class PlayScene extends BaseScene {
   }
 
   chageEdgeVisible(state) {
-    this.edgesArray.forEach((element) => {
-      element.rocks.forEach((e) => {
+    this.edgesArray.forEach(element => {
+      element.rocks.forEach(e => {
         e.visible = state;
       });
     });
@@ -472,7 +472,7 @@ class PlayScene extends BaseScene {
   }
 
   updateValues() {
-    this.nodesArray.forEach((element) => {
+    this.nodesArray.forEach(element => {
       element.container.getAt(3).setText(element.value);
     });
   }
@@ -488,7 +488,18 @@ class PlayScene extends BaseScene {
   }
 
   checkWinLoseCondition() {
-    if (this.nodesArray.every((element) => element.isPositiveValue())) {
+    if (
+      this.tutorialMode &&
+      this.nodesArray.every(element => element.isPositiveValue())
+    ) {
+      this.scene.start("EndGameScene", {
+        message: "Congratulations! You have finished the tutorial!"
+      });
+    } else if (this.tutorialMode && this.steps == 0) {
+      this.scene.start("EndGameScene", {
+        message: "You ran out of steps!!"
+      });
+    } else if (this.nodesArray.every(element => element.isPositiveValue())) {
       const bestScoreText = localStorage.getItem(
         "levelbestscore_" + this.difficulty + "_" + this.level
       );
@@ -595,11 +606,12 @@ class PlayScene extends BaseScene {
   }
 
   animateEdgesOnReset() {
-    this.edgesArray.forEach((edge) => {
+    this.edgesArray.forEach(edge => {
       let randomRocks = [...edge.rocks];
       randomRocks.sort(() => Math.random() - 0.5);
       let i = 1;
-      randomRocks.forEach((rock) => {
+
+      randomRocks.forEach(rock => {
         this.time.delayedCall(
           100 * (i - 1),
           () => {
@@ -642,8 +654,8 @@ class PlayScene extends BaseScene {
 
   lastClickedNodeId() {
     let lastNode;
-    var index = this.allValuesArray.findIndex((p) => p.step == this.steps);
-    var index2 = this.allValuesArray.findIndex((p) => p.step == this.steps + 1);
+    var index = this.allValuesArray.findIndex(p => p.step == this.steps);
+    var index2 = this.allValuesArray.findIndex(p => p.step == this.steps + 1);
     for (let i = 0; i < this.allValuesArray[index].allValue.length; i++) {
       if (
         this.allValuesArray[index].allValue[i].value <
@@ -668,7 +680,7 @@ class PlayScene extends BaseScene {
       fill: "#000",
       fontSize: 20,
       fontStyle: "bold",
-      wordWrap: { width: 350, useAdvancedWrap: true },
+      wordWrap: { width: 350, useAdvancedWrap: true }
     });
 
     this.nextButton = this.add
