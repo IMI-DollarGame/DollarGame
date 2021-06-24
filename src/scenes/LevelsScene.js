@@ -83,12 +83,12 @@ class LevelsScene extends BaseScene {
   createHeader() {
       this.add
           .text(
-          innerWidth * 0.38,
+          innerWidth * 0.43,
           innerHeight * 0.065,
           "Select Level",
               {
-                fontSize: "65px",
-                fill: "#4c77db",
+                fontSize: "53px",
+                fill: "#ffffff",
                 fontFamily: "Neon",
               }
       )}
