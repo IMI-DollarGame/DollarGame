@@ -452,13 +452,13 @@ class PlayScene extends BaseScene {
       sessionStorage.setItem("currentScore", this.steps);
       localStorage.setItem("level" + this.level, "completed")
       this.scene.start("EndGameScene", {
-        message: "Level Completed",
+        message: "Level " + this.level + " (" + this.difficulty + ") Completed",
         level: this.level,
         difficulty: this.difficulty
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!"
+        message: "You ran out of steps of " + "Level " + this.level + " (" + this.difficulty + "). Game over!!"
       });
     }
   }
