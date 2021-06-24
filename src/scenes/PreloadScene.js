@@ -28,17 +28,18 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("githubLogo", "assets/buttons/GitHub-Logo.png");
     this.load.image("pointer", "assets/buttons/pointer.png");
     this.load.image("copyright", "assets/buttons/copyright.png");
+    this.load.image("impressum", "assets/buttons/impressum.png");
 
     //Logos
     this.load.image("Logo", "assets/Logos/logo.png");
     // this.load.image("Logo", "assets/Logos/logo-1.png");
 
     //backgrounds
-    this.load.image("game-over", "assets/backgrounds/game-over.png");
-    this.load.image("game-won", "assets/backgrounds/game-won.png");
+    this.load.image("game-over", "assets/backgrounds/game-over.jpg");
+    this.load.image("game-won", "assets/backgrounds/game-won.jpg");
     this.load.image("play-bg", "assets/backgrounds/clouds-light.png");
     this.load.image("blueSky", "assets/backgrounds/blueSky.jpg");
-    this.load.image("sky-easy", "assets/backgrounds/sky-easy.png");
+    this.load.image("sky-easy", "assets/backgrounds/sky-easy.jpg");
     this.load.image("sky-medium", "assets/backgrounds/sky-medium.png");
     this.load.image("sky-hard", "assets/backgrounds/sky-hard.jpg");
     this.load.image(
@@ -208,8 +209,8 @@ class PreloadScene extends Phaser.Scene {
         message: currentScene.message
       });
     } else {
-      this.scene.start("MenuScene");
-      // this.scene.start("CreditsScene");
+      // this.scene.start("MenuScene");
+      this.scene.start("CreditsScene");
     }
   }
 

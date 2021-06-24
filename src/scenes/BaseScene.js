@@ -146,17 +146,17 @@ class BaseScene extends Phaser.Scene {
       );
     });
     // ---------------------------------------------------------
-    let copyright = this.add
-      .image(twitterBtn.x + 45, 50, "copyright")
+    let impressum = this.add
+      .image(twitterBtn.x + 45, 50, "impressum")
       .setInteractive();
-    this.scaleObject(copyright, 40);
+    this.scaleObject(impressum, 40);
 
-    copyright.on("pointerup", () => {
-      this.scene.start("CreditsScene");
+    impressum.on("pointerup", () => {
+      this.scene.start("ImpressumScene");
     });
     // ---------------------------------------------------------
     let githubBtn = this.add
-      .image(copyright.x + 50, 50, "githubLogo")
+      .image(impressum.x + 50, 50, "githubLogo")
       .setInteractive();
     this.scaleObject(githubBtn, 45);
 
@@ -179,7 +179,7 @@ class BaseScene extends Phaser.Scene {
     const container = this.add.container(xPos, yPos, [
       twitterBtn,
       facebookBtn,
-      copyright,
+      impressum,
       githubBtn,
       footerText
     ]);
@@ -212,11 +212,26 @@ class BaseScene extends Phaser.Scene {
     });
   }
 
+  creditsBtn() {
+    let copyright = this.add
+      .image(this.config.width * 0.95, this.defaultTopBtnHeight, "copyright")
+      .setInteractive()
+      .setOrigin(1, 0);
+    this.scaleObject(copyright, 30);
+
+    copyright.on("pointerup", () => {
+      this.scene.start("CreditsScene");
+    });
+  }
+
   creatingAllButtonsAndBG() {
     //Creating BG with Islands
     //ORDER MATTERS
     if (this.config.bGWithIslands) {
       this.createBGWithIslands();
+    }
+    if (this.config.hasCredits) {
+      this.creditsBtn();
     }
     if (this.config.canGoBack) {
       this.createBackButton();
