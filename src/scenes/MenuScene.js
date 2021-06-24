@@ -90,7 +90,7 @@ class MenuScene extends BaseScene {
 
   createLogo() {
     this.testLogo = this.add
-      .image(this.config.width * 0.5, this.config.height * 0.35, "node7")
+      .image(this.config.width * 0.5, this.config.height * 0.37, "node7")
       .setOrigin(0.5);
     this.testLogo1 = this.add
       .image(this.config.width * 0.5, this.config.height * 0.55, "Logo")

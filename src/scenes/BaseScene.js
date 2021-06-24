@@ -147,9 +147,9 @@ class BaseScene extends Phaser.Scene {
     });
     // ---------------------------------------------------------
     let copyright = this.add
-      .image(twitterBtn.x + 50, 50, "copyright")
+      .image(twitterBtn.x + 45, 50, "copyright")
       .setInteractive();
-    this.scaleObject(copyright, 42);
+    this.scaleObject(copyright, 40);
 
     copyright.on("pointerup", () => {
       this.scene.start("CreditsScene");
