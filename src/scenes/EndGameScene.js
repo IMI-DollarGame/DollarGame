@@ -7,7 +7,7 @@ class EndGameScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
-      hasTutorial: true,
+      hasTutorial: true
     });
     this.fontSize = 2.3;
     this.allLvlsCompleted = false;
@@ -43,7 +43,7 @@ class EndGameScene extends BaseScene {
         edges: this.edges,
         nodes: this.nodes,
         maximumStepAllowed: this.maximumStepAllowed,
-        tutorialMode: this.tutorialMode,
+        tutorialMode: this.tutorialMode
       })
     );
   }
@@ -72,25 +72,31 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: this.message,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions,
+      style: this.game.config.defaultFontOptions
     });
     this.checkScene();
   }
   checkScene() {
+    const bestScore = localStorage.getItem(
+      "levelbestscore_" + this.difficulty + "_" + this.level
+    );
+
     if (this.message === "Level Completed") {
       this.createLevelScoreText();
       this.createBestScoreText();
-      this.createToAllLvlsBtn(0.37);
-      this.createRestartLvlBtn(0.47);
-      this.createToNxtLvlBtn(0.57);
+      this.createRestartLvlBtn(0.43);
+      this.createToNxtLvlBtn(0.53);
     } else if (this.message === this.tutorialEndMsg) {
       this.createTutorialEndText();
     } else if (this.message === this.tutorialLost) {
       this.createTutorialEndText();
     } else {
-      this.createBestScoreText();
-      this.createToAllLvlsBtn(0.42);
-      this.createRestartLvlBtn(0.52);
+      if (bestScore !== null) {
+        this.createBestScoreText();
+      }
+      // this.createToAllLvlsBtn(0.42);
+      this.createBackButton();
+      this.createRestartLvlBtn(0.47);
     }
   }
 
@@ -156,7 +162,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Your current score: ${currentScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions,
+      style: this.game.config.defaultFontOptions
     });
   }
   createBestScoreText() {
@@ -170,20 +176,38 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Best score: ${bestScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions,
+      style: this.game.config.defaultFontOptions
     });
   }
   /*-----------CREATING BUTTONS -------------- */
-  createToAllLvlsBtn(per) {
-    const allLvlBtn = this.add
-      .image(innerWidth * per, innerHeight * 0.7, "all-levels-arrow")
+  // createToAllLvlsBtn(per) {
+  //   const allLvlBtn = this.add
+  //     .image(innerWidth * per, innerHeight * 0.7, "all-levels-arrow")
+  //     .setInteractive()
+  //     .setOrigin(0, 0);
+  //   this.scaleObject(allLvlBtn, 20);
+
+  //   allLvlBtn.on("pointerup", () => {
+  //     this.playButtonSound();
+  //     this.scene.start("LevelsScene", { difficulty: this.difficulty });
+  //   });
+  // }
+
+  createBackButton() {
+    const backButton = this.add
+      .image(innerWidth / 20, innerHeight / 20, "arrow")
       .setInteractive()
       .setOrigin(0, 0);
-    this.scaleObject(allLvlBtn, 20);
+    this.scaleObject(backButton, 25);
 
-    allLvlBtn.on("pointerup", () => {
+    backButton.on("pointerup", () => {
       this.playButtonSound();
-      this.scene.start("LevelsScene",{difficulty:this.difficulty});
+      this.scene.stop();
+      if (this.tutorialMode === true) {
+        this.scene.start("MenuScene");
+      } else {
+        this.scene.start("LevelsScene", { difficulty: this.difficulty });
+      }
     });
   }
 
@@ -202,7 +226,7 @@ class EndGameScene extends BaseScene {
         edges: currentScene.edges,
         maximumStepAllowed: currentScene.maximumStepAllowed,
         level: currentScene.level,
-        difficulty: currentScene.difficulty,
+        difficulty: currentScene.difficulty
       });
     });
   }
@@ -241,7 +265,7 @@ class EndGameScene extends BaseScene {
         edges: toImportEdges,
         maximumStepAllowed: toImportSteps,
         difficulty: this.difficulty,
-        level: this.level,
+        level: this.level
       });
     }
   }

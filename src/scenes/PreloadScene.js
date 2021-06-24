@@ -27,6 +27,11 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("facebookLogo", "assets/buttons/Facebook-Logo.png");
     this.load.image("githubLogo", "assets/buttons/GitHub-Logo.png");
     this.load.image("pointer", "assets/buttons/pointer.png");
+    this.load.image("copyright", "assets/buttons/copyright.png");
+
+    //Logos
+    this.load.image("Logo", "assets/Logos/logo.png");
+    // this.load.image("Logo", "assets/Logos/logo-1.png");
 
     //backgrounds
     this.load.image("game-over", "assets/backgrounds/game-over.png");
@@ -35,7 +40,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("blueSky", "assets/backgrounds/blueSky.jpg");
     this.load.image("sky-easy", "assets/backgrounds/sky-easy.png");
     this.load.image("sky-medium", "assets/backgrounds/sky-medium.png");
-    this.load.image("sky-hard", "assets/backgrounds/sky-hard.png");
+    this.load.image("sky-hard", "assets/backgrounds/sky-hard.jpg");
     this.load.image(
       "tutorial-border",
       "assets/backgrounds/tutorial-txt-border.png"
@@ -45,15 +50,15 @@ class PreloadScene extends Phaser.Scene {
     //animation
     this.load.spritesheet("graySmoke", "assets/spriteSheets/graySmoke.png", {
       frameWidth: 37,
-      frameHeight: 45,
+      frameHeight: 45
     });
     this.load.spritesheet("darkSmoke", "assets/spriteSheets/darkSmoke.png", {
       frameWidth: 37,
-      frameHeight: 45,
+      frameHeight: 45
     });
     this.load.spritesheet("splash", "assets/spriteSheets/splash.png", {
       frameWidth: 37,
-      frameHeight: 45,
+      frameHeight: 45
     });
 
     //node image
@@ -161,10 +166,10 @@ class PreloadScene extends Phaser.Scene {
     //music
     this.load.audio("music", ["assets/sounds/sb_wanderlust.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
     this.load.audio("soundMenu", [
-      "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3",
+      "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"
     ]); //source: https://www.fesliyanstudios.com/
     this.load.audio("soundNode", [
-      "assets/sounds/mixkit-game-ball-tap-2073.wav",
+      "assets/sounds/mixkit-game-ball-tap-2073.wav"
     ]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
     this.load.json("levels", "assets/jsonLevels/levels.json");
@@ -185,7 +190,7 @@ class PreloadScene extends Phaser.Scene {
     this.game.config.defaultFontOptions = {
       fontSize: "40px",
       fill: "#FFFFFF",
-      fontFamily: "Neon",
+      fontFamily: "Neon"
     };
   }
 
@@ -200,10 +205,11 @@ class PreloadScene extends Phaser.Scene {
         tutorialMode: currentScene.tutorialMode,
         level: currentScene.level,
         difficulty: currentScene.difficulty,
-        message: currentScene.message,
+        message: currentScene.message
       });
     } else {
       this.scene.start("MenuScene");
+      // this.scene.start("CreditsScene");
     }
   }
 
@@ -212,10 +218,10 @@ class PreloadScene extends Phaser.Scene {
     var newFont = new FontFace(name, `url(${url})`);
     newFont
       .load()
-      .then(function (loaded) {
+      .then(function(loaded) {
         document.fonts.add(loaded);
       })
-      .catch(function (error) {
+      .catch(function(error) {
         return error;
       });
   }
