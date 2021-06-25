@@ -108,8 +108,9 @@ class CreditsScene extends BaseScene {
     this.make.text({
       x: this.config.width * 0.05,
       y: this.config.height * 0.35,
-      text: `Background music: www.chosic.com
-Sound effects: mixkit.co/free-sound-effects/`,
+      text: `https://www.youtube.com/watch?v=s3fEbZwiJ94
+https://www.fesliyanstudios.com/play-mp3/2903
+mixkit.co/free-sound-effects/`,
       origin: { x: 0, y: 0 },
       style: {
         ...this.fontOptions,
@@ -197,8 +198,8 @@ https://unsplash.com/photos/AnGx1n-gtw8
     this.make.text({
       x: this.config.width * 0.5,
       y: this.config.height * 0.35,
-      text: `https://www.dafont.com/de/neon-80s.font
-https://fonts.google.com/specimen/Montserrat?selection.family=Montserrat`,
+      text: `https://fonts.google.com/specimen/Montserrat?selection.family=Montserrat
+https://www.dafont.com/de/neon-80s.font`,
       origin: { x: 0, y: 0 },
       style: {
         ...this.fontOptions,
