@@ -37,7 +37,6 @@ class PreloadScene extends Phaser.Scene {
     //backgrounds
     this.load.image("game-over", "assets/backgrounds/game-over.jpg");
     this.load.image("game-won", "assets/backgrounds/game-won.jpg");
-    this.load.image("play-bg", "assets/backgrounds/clouds-light.png");
     this.load.image("blueSky", "assets/backgrounds/blueSky.jpg");
     this.load.image("sky-easy", "assets/backgrounds/sky-easy.jpg");
     this.load.image("sky-medium", "assets/backgrounds/sky-medium.png");
@@ -209,8 +208,7 @@ class PreloadScene extends Phaser.Scene {
         message: currentScene.message
       });
     } else {
-      // this.scene.start("MenuScene");
-      this.scene.start("CreditsScene");
+      this.scene.start("MenuScene");
     }
   }
 

@@ -28,7 +28,8 @@ class ImpressumScene extends BaseScene {
   createBG() {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "blueSky")
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
   }
 
   createRightsReservedText() {
@@ -45,14 +46,27 @@ class ImpressumScene extends BaseScene {
   }
 
   createImpressum() {
-    const xPos = this.config.width * 0.25;
-    const yPos = this.config.height * 0.25;
+    const xPos = this.config.width * 0.5;
+    const yPos = this.config.height * 0.1;
 
     this.make.text({
       x: xPos,
       y: yPos,
-      text: `Impressum \n 
-Information according to § 5 TMG:`,
+      text: `Impressum`,
+      origin: { x: 0.5, y: 0.5 },
+      style: {
+        ...this.fontOptions,
+        fill: "#000000",
+        fontSize: `35px`,
+        fontWeight: "bold",
+        stroke: "#000",
+        strokeThickness: 1
+      }
+    });
+    this.make.text({
+      x: this.config.width * 0.5,
+      y: this.config.height * 0.18,
+      text: `Information according to § 5 TMG:`,
       origin: { x: 0.5, y: 0.5 },
       style: {
         ...this.fontOptions,
@@ -92,6 +106,7 @@ Information according to § 5 TMG:`,
 students of the International Media Computing study course:
 
 Project supervisor: Professor Dr. Klaus Jung
+
 Muhammad Safarov
 Felix Deumlich
 Nadzeya Kandakova

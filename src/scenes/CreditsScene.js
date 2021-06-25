@@ -27,7 +27,8 @@ class CreditsScene extends BaseScene {
   createBG() {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "blueSky")
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.5)
+      .setScale(1.8);
   }
   createBackButton() {
     const backButton = this.add
@@ -94,67 +95,6 @@ class CreditsScene extends BaseScene {
     this.make.text({
       x: this.config.width * 0.05,
       y: this.config.height * 0.3,
-      text: `Background pictures:`,
-      origin: { x: 0, y: 0 },
-      style: {
-        ...this.fontOptions,
-        fill: "#000",
-        fontSize: `35px`,
-        fontWeight: "bold"
-      }
-    });
-
-    this.make.text({
-      x: this.config.width * 0.05,
-      y: this.config.height * 0.36,
-      text: `https://pixabay.com/de/photos/himmel-wolken-d%c3%bcster-dramatisch-592415/
-https://pixabay.com/de/photos/wolke-dunkel-sturm-hintergrund-2725520/
-https://pixabay.com/de/photos/wolken-natur-himmel-cumulus-4215608/
-https://pixabay.com/de/photos/wolken-himmel-hell-tageslicht-1282314/
-https://pixabay.com/de/photos/wolken-himmel-2483302/
-https://unsplash.com/photos/AnGx1n-gtw8 
-`,
-      origin: { x: 0, y: 0 },
-      style: {
-        ...this.fontOptions,
-        fill: "#000",
-        fontSize: `20px`,
-        fontWeight: "bold"
-      }
-    });
-    // *******************************************************
-    this.make.text({
-      x: this.config.width * 0.05,
-      y: this.config.height * 0.56,
-      text: `Buttons/Icons:`,
-      origin: { x: 0, y: 0 },
-      style: {
-        ...this.fontOptions,
-        fill: "#000",
-        fontSize: `35px`,
-        fontWeight: "bold"
-      }
-    });
-
-    this.make.text({
-      x: this.config.width * 0.05,
-      y: this.config.height * 0.61,
-      text: `https://de.wikipedia.org/wiki/Facebook
-https://de.wikipedia.org/wiki/Twitter
-https://fonts.google.com/icons
-`,
-      origin: { x: 0, y: 0 },
-      style: {
-        ...this.fontOptions,
-        fill: "#000",
-        fontSize: `20px`,
-        fontWeight: "bold"
-      }
-    });
-    // *******************************************************
-    this.make.text({
-      x: this.config.width * 0.05,
-      y: this.config.height * 0.72,
       text: `Music/Sound effects:`,
       origin: { x: 0, y: 0 },
       style: {
@@ -167,9 +107,98 @@ https://fonts.google.com/icons
 
     this.make.text({
       x: this.config.width * 0.05,
-      y: this.config.height * 0.77,
+      y: this.config.height * 0.35,
       text: `Background music: www.chosic.com
 Sound effects: mixkit.co/free-sound-effects/`,
+      origin: { x: 0, y: 0 },
+      style: {
+        ...this.fontOptions,
+        fill: "#000",
+        fontSize: `20px`,
+        fontWeight: "bold"
+      }
+    });
+    // *******************************************************
+    this.make.text({
+      x: this.config.width * 0.05,
+      y: this.config.height * 0.47,
+      text: `Buttons/Icons:`,
+      origin: { x: 0, y: 0 },
+      style: {
+        ...this.fontOptions,
+        fill: "#000",
+        fontSize: `35px`,
+        fontWeight: "bold"
+      }
+    });
+
+    this.make.text({
+      x: this.config.width * 0.05,
+      y: this.config.height * 0.52,
+      text: `https://de.wikipedia.org/wiki/Facebook
+https://de.wikipedia.org/wiki/Twitter
+https://fonts.google.com/icons
+    `,
+      origin: { x: 0, y: 0 },
+      style: {
+        ...this.fontOptions,
+        fill: "#000",
+        fontSize: `20px`,
+        fontWeight: "bold"
+      }
+    });
+    // *******************************************************
+    this.make.text({
+      x: this.config.width * 0.05,
+      y: this.config.height * 0.65,
+      text: `Background Images:`,
+      origin: { x: 0, y: 0 },
+      style: {
+        ...this.fontOptions,
+        fill: "#000",
+        fontSize: `35px`,
+        fontWeight: "bold"
+      }
+    });
+
+    this.make.text({
+      x: this.config.width * 0.05,
+      y: this.config.height * 0.7,
+      text: `https://pixabay.com/de/photos/himmel-wolken-d%c3%bcster-dramatisch-592415/
+https://pixabay.com/de/photos/wolke-dunkel-sturm-hintergrund-2725520/
+https://pixabay.com/de/photos/wolken-natur-himmel-cumulus-4215608/
+https://pixabay.com/de/photos/wolken-himmel-hell-tageslicht-1282314/
+https://pixabay.com/de/photos/wolken-himmel-2483302/
+https://unsplash.com/photos/AnGx1n-gtw8 
+    `,
+      origin: { x: 0, y: 0 },
+      style: {
+        ...this.fontOptions,
+        fill: "#000",
+        fontSize: `20px`,
+        fontWeight: "bold"
+      }
+    });
+    // ************************************************************
+    // *******************************************************
+    this.make.text({
+      x: this.config.width * 0.5,
+      y: this.config.height * 0.3,
+      text: `Fonts:`,
+      origin: { x: 0, y: 0 },
+      style: {
+        ...this.fontOptions,
+        fill: "#000",
+        fontSize: `35px`,
+        fontWeight: "bold"
+      }
+    });
+
+    this.make.text({
+      x: this.config.width * 0.5,
+      y: this.config.height * 0.35,
+      text: `https://www.dafont.com/de/neon-80s.font
+https://fonts.google.com/specimen/Montserrat?selection.family=Montserrat`,
       origin: { x: 0, y: 0 },
       style: {
         ...this.fontOptions,
