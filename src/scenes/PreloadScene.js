@@ -28,7 +28,6 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("githubLogo", "assets/buttons/GitHub-Logo.png");
     this.load.image("pointer", "assets/buttons/pointer.png");
 
-
     //backgrounds
     this.load.image("game-over", "assets/backgrounds/game-over.png");
     this.load.image("game-won", "assets/backgrounds/game-won.png");
@@ -37,11 +36,25 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("sky-easy", "assets/backgrounds/sky-easy.png");
     this.load.image("sky-medium", "assets/backgrounds/sky-medium.png");
     this.load.image("sky-hard", "assets/backgrounds/sky-hard.png");
-    this.load.image("tutorial-border", "assets/backgrounds/tutorial-txt-border.png");
+    this.load.image(
+      "tutorial-border",
+      "assets/backgrounds/tutorial-txt-border.png"
+    );
     //https://pngtree.com/so/border-clipart
 
     //animation
-    this.load.spritesheet('smoke', 'assets/spriteSheets/smoke.png',{frameWidth:37, frameHeight: 45});
+    this.load.spritesheet("graySmoke", "assets/spriteSheets/graySmoke.png", {
+      frameWidth: 37,
+      frameHeight: 45,
+    });
+    this.load.spritesheet("darkSmoke", "assets/spriteSheets/darkSmoke.png", {
+      frameWidth: 37,
+      frameHeight: 45,
+    });
+    this.load.spritesheet("splash", "assets/spriteSheets/splash.png", {
+      frameWidth: 37,
+      frameHeight: 45,
+    });
 
     //node image
     this.load.image(
@@ -79,14 +92,38 @@ class PreloadScene extends Phaser.Scene {
       "assets/playSceneAssets/islands/floating_island-1_cropped.png"
     );
     //this.load.image("node-1", "assets/playSceneAssets/floating_island-1.png");
-    this.load.image("node0", "assets/playSceneAssets/islands/floating_island0.png");
-    this.load.image("node1", "assets/playSceneAssets/islands/floating_island1.png");
-    this.load.image("node2", "assets/playSceneAssets/islands/floating_island2.png");
-    this.load.image("node3", "assets/playSceneAssets/islands/floating_island3.png");
-    this.load.image("node4", "assets/playSceneAssets/islands/floating_island4.png");
-    this.load.image("node5", "assets/playSceneAssets/islands/floating_island5.png");
-    this.load.image("node6", "assets/playSceneAssets/islands/floating_island6.png");
-    this.load.image("node7", "assets/playSceneAssets/islands/floating_island7.png");
+    this.load.image(
+      "node0",
+      "assets/playSceneAssets/islands/floating_island0.png"
+    );
+    this.load.image(
+      "node1",
+      "assets/playSceneAssets/islands/floating_island1.png"
+    );
+    this.load.image(
+      "node2",
+      "assets/playSceneAssets/islands/floating_island2.png"
+    );
+    this.load.image(
+      "node3",
+      "assets/playSceneAssets/islands/floating_island3.png"
+    );
+    this.load.image(
+      "node4",
+      "assets/playSceneAssets/islands/floating_island4.png"
+    );
+    this.load.image(
+      "node5",
+      "assets/playSceneAssets/islands/floating_island5.png"
+    );
+    this.load.image(
+      "node6",
+      "assets/playSceneAssets/islands/floating_island6.png"
+    );
+    this.load.image(
+      "node7",
+      "assets/playSceneAssets/islands/floating_island7.png"
+    );
     this.load.image("islandBg", "assets/playSceneAssets/islandBg.png");
     this.load.image("valueBg", "assets/playSceneAssets/valueBg.png");
 
@@ -126,7 +163,9 @@ class PreloadScene extends Phaser.Scene {
     this.load.audio("soundMenu", [
       "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3",
     ]); //source: https://www.fesliyanstudios.com/
-    this.load.audio("soundNode", ["assets/sounds/mixkit-game-ball-tap-2073.wav"]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
+    this.load.audio("soundNode", [
+      "assets/sounds/mixkit-game-ball-tap-2073.wav",
+    ]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
     this.load.json("levels", "assets/jsonLevels/levels.json");
     this.load.json("tutorial", "assets/jsonLevels/tutorial.json");
@@ -140,15 +179,32 @@ class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("MenuScene");
-    // this.scene.start("DifficultyScene");
+    this.startScene();
+    this.game.config.bgMusicPlaying = false;
 
     this.game.config.defaultFontOptions = {
       fontSize: "40px",
       fill: "#FFFFFF",
       fontFamily: "Neon",
     };
-    this.game.config.soundPlaying = true;
+  }
+
+  startScene() {
+    const currentScene = JSON.parse(sessionStorage.getItem("currentScene"));
+    if (currentScene) {
+      this.scene.start(currentScene.scene, {
+        nodes: currentScene.nodes,
+        edges: currentScene.edges,
+        maximumStepAllowed: currentScene.maximumStepAllowed,
+        tutorialSteps: currentScene.tutorialSteps,
+        tutorialMode: currentScene.tutorialMode,
+        level: currentScene.level,
+        difficulty: currentScene.difficulty,
+        message: currentScene.message,
+      });
+    } else {
+      this.scene.start("MenuScene");
+    }
   }
 
   // source: https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3

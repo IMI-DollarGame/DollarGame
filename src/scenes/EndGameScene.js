@@ -7,23 +7,47 @@ class EndGameScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
-      hasTutorial: true
+      hasTutorial: true,
     });
     this.fontSize = 2.3;
     this.allLvlsCompleted = false;
+    this.tutorialEndMsg = "Congratulations! You have finished the tutorial!";
+    this.tutorialLost = "You ran out of steps!!";
   }
 
   create() {
     this.createBG();
     super.create();
     this.createGOTxt();
+    this.storeScene();
   }
 
   init(data) {
     this.message = data.message;
     this.level = data.level;
     this.difficulty = data.difficulty;
+    this.edges = data.edges;
+    this.nodes = data.nodes;
+    this.maximumStepAllowed = data.maximumStepAllowed;
+    this.tutorialMode = data.tutorialMode;
   }
+
+  storeScene() {
+    sessionStorage.setItem(
+      "currentScene",
+      JSON.stringify({
+        scene: "EndGameScene",
+        difficulty: this.difficulty,
+        message: this.message,
+        level: this.level,
+        edges: this.edges,
+        nodes: this.nodes,
+        maximumStepAllowed: this.maximumStepAllowed,
+        tutorialMode: this.tutorialMode,
+      })
+    );
+  }
+
   createBG() {
     let thePic = "";
     if (this.message === "Level " + this.level + " (" + this.difficulty + ") Completed") {
@@ -45,7 +69,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: this.message,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
     this.checkScene();
   }
@@ -56,8 +80,11 @@ class EndGameScene extends BaseScene {
       this.createToAllLvlsBtn(0.37);
       this.createRestartLvlBtn(0.47);
       this.createToNxtLvlBtn(0.57);
+    } else if (this.message === this.tutorialEndMsg) {
+      this.createTutorialEndText();
+    } else if (this.message === this.tutorialLost) {
+      this.createTutorialEndText();
     } else {
-      this.createLevelScoreText();
       this.createBestScoreText();
       this.createToAllLvlsBtn(0.42);
       this.createRestartLvlBtn(0.52);
@@ -65,6 +92,58 @@ class EndGameScene extends BaseScene {
   }
 
   /*--------- BEST SCORE AND CURRENT SCORE ---------- */
+  createTutorialEndText() {
+    let message = "";
+    if (this.message === this.tutorialEndMsg) {
+      message = `Hope you will enjoy the game!!!`;
+    } else if (this.message === this.tutorialLost) {
+      message = "But dont give up!";
+    }
+    const xPos = this.config.width / 2;
+    const yPos = this.config.height * 0.5;
+    const endMsg = this.make.text({
+      x: xPos,
+      y: yPos,
+      text: message,
+      origin: { x: 0.5, y: 0.5 },
+      style: this.game.config.defaultFontOptions
+    });
+    this.toMenuTxt();
+  }
+  toMenuTxt() {
+    let message = "";
+    const xPos = this.config.width / 2;
+    const yPos = this.config.height * 0.6;
+
+    if (this.message === this.tutorialEndMsg) {
+      message = `Click here to return to the main menu!`;
+    } else if (this.message === this.tutorialLost) {
+      message = "Click here to try again !!!";
+    }
+    const endClickMsg = this.make.text({
+      x: xPos,
+      y: yPos,
+      text: message,
+      origin: { x: 0.5, y: 0.5 },
+      style: this.game.config.defaultFontOptions
+    });
+    endClickMsg.setInteractive();
+    endClickMsg.on("pointerover", () => {
+      endClickMsg.setStyle({ fill: "#ff0" });
+    });
+    endClickMsg.on("pointerout", () => {
+      endClickMsg.setStyle({ fill: "#fff" });
+    });
+    endClickMsg.on("pointerup", () => {
+      if (this.message === this.tutorialEndMsg) {
+        this.scene.start("MenuScene");
+      } else if (this.message === this.tutorialLost) {
+        this.scene.start("PlayScene");
+      }
+      this.playButtonSound();
+    });
+  }
+
   createLevelScoreText() {
     const xPos = this.config.width / 2;
     const yPos = this.config.height * 0.5;
@@ -74,19 +153,21 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Your current score: ${currentScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
   }
   createBestScoreText() {
     const xPos = this.config.width / 2;
     const yPos = this.config.height * 0.55;
-    const bestScore = localStorage.getItem("bestScore");
+    const bestScore = localStorage.getItem(
+      "levelbestscore_" + this.difficulty + "_" + this.level
+    );
     this.make.text({
       x: xPos,
       y: yPos,
       text: `Best score: ${bestScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
   }
   /*-----------CREATING BUTTONS -------------- */
@@ -99,9 +180,10 @@ class EndGameScene extends BaseScene {
 
     allLvlBtn.on("pointerup", () => {
       this.playButtonSound();
-      this.scene.start("LevelsScene");
+      this.scene.start("LevelsScene",{difficulty:this.difficulty});
     });
   }
+
   createRestartLvlBtn(per) {
     const restartLvlBtn = this.add
       .image(innerWidth * per, innerHeight * 0.7, "restartLvl")
@@ -111,7 +193,14 @@ class EndGameScene extends BaseScene {
 
     restartLvlBtn.on("pointerup", () => {
       this.playButtonSound();
-      this.scene.start("PlayScene");
+      const currentScene = JSON.parse(sessionStorage.getItem("currentScene"));
+      this.scene.start("PlayScene", {
+        nodes: currentScene.nodes,
+        edges: currentScene.edges,
+        maximumStepAllowed: currentScene.maximumStepAllowed,
+        level: currentScene.level,
+        difficulty: currentScene.difficulty,
+      });
     });
   }
 
@@ -124,7 +213,6 @@ class EndGameScene extends BaseScene {
 
     nexttLvlBtn.on("pointerup", () => {
       this.playButtonSound();
-
       this.goToNextLvl();
     });
   }
@@ -150,7 +238,7 @@ class EndGameScene extends BaseScene {
         edges: toImportEdges,
         maximumStepAllowed: toImportSteps,
         difficulty: this.difficulty,
-        level: this.level
+        level: this.level,
       });
     }
   }
