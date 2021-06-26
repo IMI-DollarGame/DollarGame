@@ -714,12 +714,11 @@ class PlayScene extends BaseScene {
   }
 
   createTutorialButton() {
-    const tutorialText = this.add.text(-150, -50, this.getHelpText(), {
-      fontFamily: "Indie Flower, cursive",
-      fill: "#000",
-      fontSize: 20,
-      fontStyle: "bold",
-      wordWrap: { width: 350, useAdvancedWrap: true }
+    const tutorialText = this.add.text(-150, -130, this.getHelpText(), {
+      fontSize: "30px",
+      fill: "#000000",
+      fontFamily: "Neon",
+      wordWrap: { width: 350, useAdvancedWrap: true },
     });
 
     this.nextButton = this.add
@@ -729,7 +728,6 @@ class PlayScene extends BaseScene {
         this.playButtonSound();
         this.changeTutorialStep("next", tutorialText);
       });
-    this.scaleObject(this.nextButton, 20);
 
     this.prevButton = this.add
       .image(-250, 0, "previous")
@@ -738,18 +736,18 @@ class PlayScene extends BaseScene {
         this.playButtonSound();
         this.changeTutorialStep("previous", tutorialText);
       });
-    this.scaleObject(this.prevButton, 20);
     this.changeTutorialBtnState(this.prevButton, false);
 
     const borderImage = this.add.image(0, 0, "tutorial-border");
-    this.scaleObject(borderImage, 4);
 
     const container = this.add.container(
       this.config.width * 0.2,
       this.config.height * 0.8,
       [this.nextButton, this.prevButton, tutorialText, borderImage]
     );
-    container.setSize(innerWidth / 10, innerHeight / 10);
+    container.setSize(100,100)
+    container.displayWidth = this.game.config.width / 22;
+    container.displayHeight = this.game.config.height / 12;
   }
 
   changeTutorialStep(action, tutorialText) {
