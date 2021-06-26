@@ -254,6 +254,12 @@ class PlayScene extends BaseScene {
     });
   }
 
+  animateAllNodes() {
+    this.nodesArray.forEach(element => {
+      this.playGraySmokeAnimation(element.container.x, element.container.y);
+    });
+  }
+
   animateEdge(nodeId, undo) {
     let node = this.getNodeFromId(nodeId);
     node.neighborNodes.forEach(neighbor => {
@@ -633,6 +639,7 @@ class PlayScene extends BaseScene {
       this.stepsText.setText(this.stepText + this.steps);
       this.resetTheGame();
       this.animateEdgesOnReset();
+      this.animateAllNodes();
     });
   }
 
@@ -680,8 +687,10 @@ class PlayScene extends BaseScene {
 
     this.undoBtn.on("pointerup", () => {
       this.playButtonSound();
-      if (this.steps < this.maximumStepAllowed)
+      if (this.steps < this.maximumStepAllowed) {
         this.animateEdge(this.lastClickedNodeId(), true);
+        this.animateAllNodes();
+      }
       this.updateStep("increase");
       if (this.steps <= this.maximumStepAllowed) {
         this.undoNodeValue();
@@ -745,7 +754,7 @@ class PlayScene extends BaseScene {
       this.config.height * 0.8,
       [this.nextButton, this.prevButton, tutorialText, borderImage]
     );
-    container.setSize(100,100)
+    container.setSize(100, 100)
     container.displayWidth = this.game.config.width / 22;
     container.displayHeight = this.game.config.height / 12;
   }
