@@ -545,7 +545,7 @@ class PlayScene extends BaseScene {
         "completed"
       );
       this.scene.start("EndGameScene", {
-        message: "Level Completed",
+        message: "Level " + this.level + " (" + this.difficulty + ") Completed",
         level: this.level,
         difficulty: this.difficulty,
         edges: this.edges,
@@ -555,7 +555,7 @@ class PlayScene extends BaseScene {
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!",
+        message: "You ran out of steps of " + "Level " + this.level + " (" + this.difficulty + "). Game over!!",
         level: this.level,
         difficulty: this.difficulty,
         edges: this.edges,
