@@ -6,27 +6,37 @@ class DifficultyScene extends BaseScene {
       ...config,
       bGWithIslands: true,
       canGoBack: true,
-      hasSoundButton: true
+      hasSoundButton: true,
     });
     this.fontSize = 2.3;
     this.lineHeight = config.height / 12.5;
     this.menu = [
       { scene: "LevelsScene", text: "Easy", difficulty: "easy" },
       { scene: "LevelsScene", text: "Normal", difficulty: "normal" },
-      { scene: "LevelsScene", text: "Difficult", difficulty: "hard" }
+      { scene: "LevelsScene", text: "Difficult", difficulty: "hard" },
     ];
     this.fontOptions = {
       fontSize: `${this.fontSize}vw`,
       fill: "#ffffff",
       fontFamily: "Indie Flower, cursive",
       stroke: "#FF0",
-      strokeThickness: 1
+      strokeThickness: 1,
     };
   }
 
   create() {
     super.create();
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
+    this.storeScene();
+  }
+
+  storeScene() {
+    sessionStorage.setItem(
+      "currentScene",
+      JSON.stringify({
+        scene: "DifficultyScene",
+      })
+    );
   }
 
   setupMenuEvents(menuItem) {
