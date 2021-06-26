@@ -26,7 +26,7 @@ class LevelsScene extends BaseScene {
     this.storeScene();
   }
 
-  storeScene(){
+  storeScene() {
     sessionStorage.setItem(
       "currentScene",
       JSON.stringify({
@@ -76,9 +76,9 @@ class LevelsScene extends BaseScene {
           -70,
           33,
           "Best Score: " +
-            localStorage.getItem(
-              "levelbestscore_" + this.difficulty + "_" + menuItem.text
-            ),
+          localStorage.getItem(
+            "levelbestscore_" + this.difficulty + "_" + menuItem.text
+          ),
           {
             fontSize: "25px",
             fill: "#4ac4b6",
@@ -107,17 +107,17 @@ class LevelsScene extends BaseScene {
   }
 
   createHeader() {
-      this.add
-          .text(
-          innerWidth * 0.43,
-          innerHeight * 0.065,
-          "Select Level",
-              {
-                fontSize: "53px",
-                fill: "#ffffff",
-                fontFamily: "Neon",
-              }
-      )}
+    this.add
+      .text(
+        innerWidth * 0.43,
+        innerHeight * 0.065,
+        "Select Level",
+        {
+          fontSize: "53px",
+          fill: "#ffffff",
+          fontFamily: "Neon",
+        }
+      )
   }
 
   createBackButton() {
