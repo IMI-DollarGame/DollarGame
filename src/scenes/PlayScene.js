@@ -166,14 +166,11 @@ class PlayScene extends BaseScene {
 
   updateNodeImages() {
     this.nodesArray.forEach(element => {
-      element.container.getAt(1).setTexture(this.getNodeImage(element.value));
+      element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
 
   addNode(id, value, coordX, coordY) {
-    let nodeBg = this.add.image(0, 0, "islandBg");
-    this.scaleObject(nodeBg, 14);
-
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
 
@@ -185,7 +182,7 @@ class PlayScene extends BaseScene {
     let container = this.add.container(
       this.config.width * coordX,
       this.config.height * coordY,
-      [nodeBg, nodeImage, valueBg, nodeValueText]
+      [nodeImage, valueBg, nodeValueText]
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
     container.setDepth(1);
@@ -212,10 +209,10 @@ class PlayScene extends BaseScene {
 
   setNodeValueTextVisible(state) {
     this.nodesArray.forEach(element => {
-      element.container.getAt(3).visible = state;
+      element.container.getAt(2).visible = state;
     });
     this.nodesArray.forEach(element => {
-      element.container.getAt(2).visible = state;
+      element.container.getAt(1).visible = state;
     });
   }
 
@@ -508,7 +505,7 @@ class PlayScene extends BaseScene {
 
   updateValues() {
     this.nodesArray.forEach(element => {
-      element.container.getAt(3).setText(element.value);
+      element.container.getAt(2).setText(element.value);
     });
   }
 
