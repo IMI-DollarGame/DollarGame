@@ -3,6 +3,21 @@
     {
       "level": 1,
       "difficulty": "easy",
+      "steps": 28,
+      "nodes": [
+        { "id": "A", "value": "4", "x": 0.228, "y": 0.35 },
+        { "id": "B", "value": "-1", "x": 0.7, "y": 0.35 },
+        { "id": "C", "value": "-2", "x": 0.5, "y": 0.6 }
+      ],
+      "edges": [
+        { "nodeA": "A", "nodeB": "B" },
+        { "nodeA": "A", "nodeB": "C" },
+        { "nodeA": "C", "nodeB": "B" }
+      ]
+    },
+    {
+      "level": 2,
+      "difficulty": "easy",
       "steps": 30,
       "nodes": [
         { "id": "A", "value": "3", "x": 0.228, "y": 0.35 },
@@ -15,21 +30,6 @@
         { "nodeA": "A", "nodeB": "C" },
         { "nodeA": "C", "nodeB": "B" },
         { "nodeA": "C", "nodeB": "E" }
-      ]
-    },
-    {
-      "level": 2,
-      "difficulty": "easy",
-      "steps": 28,
-      "nodes": [
-        { "id": "A", "value": "4", "x": 0.228, "y": 0.35 },
-        { "id": "B", "value": "-1", "x": 0.7, "y": 0.35 },
-        { "id": "C", "value": "-2", "x": 0.5, "y": 0.6 }
-      ],
-      "edges": [
-        { "nodeA": "A", "nodeB": "B" },
-        { "nodeA": "A", "nodeB": "C" },
-        { "nodeA": "C", "nodeB": "B" }
       ]
     },
     {
