@@ -304,11 +304,11 @@ class BaseScene extends Phaser.Scene {
     btn.on("pointerover", () => {
       btn.setTintFill(0xffffff);
     });
+    */
 
     btn.on("pointerout", () => {
       btn.clearTint();
     });
-    */
 
     btn.on("pointerup", () => {
       btn.clearTint();
