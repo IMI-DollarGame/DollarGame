@@ -60,7 +60,8 @@ class EndGameScene extends BaseScene {
     }
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, thePic)
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.65)
+      .setScale(1.9);
   }
 
   createGOTxt() {
