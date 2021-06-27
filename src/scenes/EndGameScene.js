@@ -50,10 +50,7 @@ class EndGameScene extends BaseScene {
 
   createBG() {
     let thePic = "";
-    if (
-      this.message === "Level Completed" ||
-      this.message === this.tutorialEndMsg
-    ) {
+    if (this.message === "Level " + this.level + " (" + this.difficulty + ") Completed") {
       thePic = "game-won";
     } else {
       thePic = "game-over";
@@ -77,11 +74,13 @@ class EndGameScene extends BaseScene {
     this.checkScene();
   }
   checkScene() {
+
     const bestScore = localStorage.getItem(
       "levelbestscore_" + this.difficulty + "_" + this.level
     );
 
     if (this.message === "Level Completed") {
+
       this.createLevelScoreText();
       this.createBestScoreText();
       this.createRestartLvlBtn(0.43);
