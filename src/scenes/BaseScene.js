@@ -58,6 +58,8 @@ class BaseScene extends Phaser.Scene {
       this.playButtonSound();
       this.scene.start("MenuScene");
     });
+
+    this.buttonEffect(backButton);
   }
 
   displaySoundButton() {
@@ -117,6 +119,11 @@ class BaseScene extends Phaser.Scene {
       musicOn.visible = this.game.config.bgMusicPlaying;
       this.bgMusic.play();
     });
+
+    this.buttonEffect(musicOn);
+    this.buttonEffect(musicOff);
+    this.buttonEffect(soundOn);
+    this.buttonEffect(soundOff);
   }
 
   createDevelopersTxt() {
@@ -290,6 +297,26 @@ class BaseScene extends Phaser.Scene {
     obj.displayWidth = this.game.config.width / wPer;
     let hPer = (innerHeight / innerWidth) * wPer;
     obj.displayHeight = this.game.config.height / hPer;
+  }
+
+  buttonEffect(btn){
+    /*
+    btn.on("pointerover", () => {
+      btn.setTintFill(0xffffff);
+    });
+
+    btn.on("pointerout", () => {
+      btn.clearTint();
+    });
+    */
+
+    btn.on("pointerup", () => {
+      btn.clearTint();
+    });
+
+    btn.on("pointerdown", () => {
+      btn.setTintFill(0xffff00);
+    });
   }
 }
 export default BaseScene;
