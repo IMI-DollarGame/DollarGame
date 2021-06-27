@@ -132,6 +132,8 @@ class LevelsScene extends BaseScene {
       this.scene.stop();
       this.scene.start("DifficultyScene");
     });
+
+    this.buttonEffect(backButton);
   }
 
   loadAllLevel(menu) {
