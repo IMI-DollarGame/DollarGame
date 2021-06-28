@@ -167,14 +167,11 @@ class PlayScene extends BaseScene {
 
   updateNodeImages() {
     this.nodesArray.forEach(element => {
-      element.container.getAt(1).setTexture(this.getNodeImage(element.value));
+      element.container.getAt(0).setTexture(this.getNodeImage(element.value));
     });
   }
 
   addNode(id, value, coordX, coordY) {
-    let nodeBg = this.add.image(0, 0, "islandBg");
-    this.scaleObject(nodeBg, 14);
-
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
 
@@ -186,7 +183,7 @@ class PlayScene extends BaseScene {
     let container = this.add.container(
       this.config.width * coordX,
       this.config.height * coordY,
-      [nodeBg, nodeImage, valueBg, nodeValueText]
+      [nodeImage, valueBg, nodeValueText]
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
     container.setDepth(1);
@@ -213,10 +210,10 @@ class PlayScene extends BaseScene {
 
   setNodeValueTextVisible(state) {
     this.nodesArray.forEach(element => {
-      element.container.getAt(3).visible = state;
+      element.container.getAt(2).visible = state;
     });
     this.nodesArray.forEach(element => {
-      element.container.getAt(2).visible = state;
+      element.container.getAt(1).visible = state;
     });
   }
 
@@ -252,6 +249,12 @@ class PlayScene extends BaseScene {
         this.animateEdge(node.id, false);
         this.checkWinLoseCondition();
       });
+    });
+  }
+
+  animateAllNodes() {
+    this.nodesArray.forEach(element => {
+      this.playGraySmokeAnimation(element.container.x, element.container.y);
     });
   }
 
@@ -503,7 +506,7 @@ class PlayScene extends BaseScene {
 
   updateValues() {
     this.nodesArray.forEach(element => {
-      element.container.getAt(3).setText(element.value);
+      element.container.getAt(2).setText(element.value);
     });
   }
 
@@ -546,7 +549,7 @@ class PlayScene extends BaseScene {
         "completed"
       );
       this.scene.start("EndGameScene", {
-        message: "Level Completed",
+        message: "Level " + this.level + " (" + this.difficulty + ") Completed",
         level: this.level,
         difficulty: this.difficulty,
         edges: this.edges,
@@ -556,7 +559,7 @@ class PlayScene extends BaseScene {
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
-        message: "You ran out of steps. Game over!!",
+        message: "You ran out of steps of " + "Level " + this.level + " (" + this.difficulty + "). Game over!!",
         level: this.level,
         difficulty: this.difficulty,
         edges: this.edges,
@@ -634,6 +637,7 @@ class PlayScene extends BaseScene {
       this.stepsText.setText(this.stepText + this.steps);
       this.resetTheGame();
       this.animateEdgesOnReset();
+      this.animateAllNodes();
     });
   }
 
@@ -681,8 +685,10 @@ class PlayScene extends BaseScene {
 
     this.undoBtn.on("pointerup", () => {
       this.playButtonSound();
-      if (this.steps < this.maximumStepAllowed)
+      if (this.steps < this.maximumStepAllowed) {
         this.animateEdge(this.lastClickedNodeId(), true);
+        this.animateAllNodes();
+      }
       this.updateStep("increase");
       if (this.steps <= this.maximumStepAllowed) {
         this.undoNodeValue();
@@ -715,12 +721,11 @@ class PlayScene extends BaseScene {
   }
 
   createTutorialButton() {
-    const tutorialText = this.add.text(-150, -50, this.getHelpText(), {
-      fontFamily: "Indie Flower, cursive",
-      fill: "#000",
-      fontSize: 20,
-      fontStyle: "bold",
-      wordWrap: { width: 350, useAdvancedWrap: true }
+    const tutorialText = this.add.text(-150, -130, this.getHelpText(), {
+      fontSize: "30px",
+      fill: "#000000",
+      fontFamily: "Neon",
+      wordWrap: { width: 350, useAdvancedWrap: true },
     });
 
     this.nextButton = this.add
@@ -730,7 +735,6 @@ class PlayScene extends BaseScene {
         this.playButtonSound();
         this.changeTutorialStep("next", tutorialText);
       });
-    this.scaleObject(this.nextButton, 20);
 
     this.prevButton = this.add
       .image(-250, 0, "previous")
@@ -739,18 +743,18 @@ class PlayScene extends BaseScene {
         this.playButtonSound();
         this.changeTutorialStep("previous", tutorialText);
       });
-    this.scaleObject(this.prevButton, 20);
     this.changeTutorialBtnState(this.prevButton, false);
 
     const borderImage = this.add.image(0, 0, "tutorial-border");
-    this.scaleObject(borderImage, 4);
 
     const container = this.add.container(
       this.config.width * 0.2,
       this.config.height * 0.8,
       [this.nextButton, this.prevButton, tutorialText, borderImage]
     );
-    container.setSize(innerWidth / 10, innerHeight / 10);
+    container.setSize(100, 100)
+    container.displayWidth = this.game.config.width / 22;
+    container.displayHeight = this.game.config.height / 12;
   }
 
   changeTutorialStep(action, tutorialText) {
