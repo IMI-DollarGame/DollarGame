@@ -180,19 +180,6 @@ class EndGameScene extends BaseScene {
       style: this.game.config.defaultFontOptions
     });
   }
-  /*-----------CREATING BUTTONS -------------- */
-  // createToAllLvlsBtn(per) {
-  //   const allLvlBtn = this.add
-  //     .image(innerWidth * per, innerHeight * 0.7, "all-levels-arrow")
-  //     .setInteractive()
-  //     .setOrigin(0, 0);
-  //   this.scaleObject(allLvlBtn, 20);
-
-  //   allLvlBtn.on("pointerup", () => {
-  //     this.playButtonSound();
-  //     this.scene.start("LevelsScene", { difficulty: this.difficulty });
-  //   });
-  // }
 
   createBackButton() {
     const backButton = this.add
