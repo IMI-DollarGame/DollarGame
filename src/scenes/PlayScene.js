@@ -109,6 +109,8 @@ class PlayScene extends BaseScene {
         this.scene.start("LevelsScene", { difficulty: this.difficulty });
       }
     });
+
+    this.buttonEffect(backButton);
   }
 
   renewScene() {
@@ -639,6 +641,8 @@ class PlayScene extends BaseScene {
       this.animateEdgesOnReset();
       this.animateAllNodes();
     });
+
+    this.buttonEffect(this.restartBtn);
   }
 
   resetTheGame() {
@@ -696,6 +700,8 @@ class PlayScene extends BaseScene {
         this.updateValues();
       }
     });
+
+    this.buttonEffect(this.undoBtn);
   }
 
   lastClickedNodeId() {
@@ -744,6 +750,9 @@ class PlayScene extends BaseScene {
         this.changeTutorialStep("previous", tutorialText);
       });
     this.changeTutorialBtnState(this.prevButton, false);
+
+    this.buttonEffect(this.nextButton);
+    this.buttonEffect(this.prevButton);
 
     const borderImage = this.add.image(0, 0, "tutorial-border");
 

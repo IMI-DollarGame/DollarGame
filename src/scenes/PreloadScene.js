@@ -169,7 +169,9 @@ class PreloadScene extends Phaser.Scene {
       "assets/sounds/Menu-Selection-Change-M-www.fesliyanstudios.com.mp3"
     ]); //source: https://www.fesliyanstudios.com/
     this.load.audio("soundNode", [
-      "assets/sounds/mixkit-game-ball-tap-2073.wav"
+
+      "assets/sounds/mixkit-game-ball-tap-2073.mp3",
+
     ]); //source: https://opengameart.org/content/63-digital-sound-effects-lasers-phasers-space-etc
 
     this.load.json("levels", "assets/jsonLevels/levels.json");
@@ -185,8 +187,9 @@ class PreloadScene extends Phaser.Scene {
 
   create() {
     this.startScene();
-    this.game.config.bgMusicPlaying = false;
-
+    this.game.config.bgMusicPlaying = true;
+    this.game.config.soundPlaying = true;
+    this.game.config.gameStarted = false;
     this.game.config.defaultFontOptions = {
       fontSize: "40px",
       fill: "#FFFFFF",

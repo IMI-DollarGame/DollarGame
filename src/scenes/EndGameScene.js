@@ -203,6 +203,8 @@ class EndGameScene extends BaseScene {
         this.scene.start("LevelsScene", { difficulty: this.difficulty });
       }
     });
+
+    this.buttonEffect(allLvlBtn);
   }
 
   createRestartLvlBtn(per) {
@@ -223,6 +225,8 @@ class EndGameScene extends BaseScene {
         difficulty: currentScene.difficulty
       });
     });
+
+    this.buttonEffect(restartLvlBtn);
   }
 
   createToNxtLvlBtn(per) {
@@ -236,6 +240,8 @@ class EndGameScene extends BaseScene {
       this.playButtonSound();
       this.goToNextLvl();
     });
+
+    this.buttonEffect(nexttLvlBtn);
   }
 
   goToNextLvl() {
