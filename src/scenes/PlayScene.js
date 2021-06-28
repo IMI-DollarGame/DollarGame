@@ -187,7 +187,7 @@ class PlayScene extends BaseScene {
       [nodeImage, valueBg, nodeValueText]
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
-    container.setDepth(1);
+    container.setDepth(0);
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
@@ -880,14 +880,14 @@ class PlayScene extends BaseScene {
   movePointerTo(obj, type) {
     let x, y;
     if (type === "node") {
-      x = obj.x + (obj.width * 1) / 3;
-      y = obj.y + (obj.height * 3) / 2;
+      x = obj.x + obj.width * 1/4;
+      y = obj.y + obj.height /2;
     } else if (type === "undoBtn") {
-      x = obj.x + (obj.width * 3) / 5;
+      x = obj.x + obj.width * 3/5;
       y = obj.y + obj.height;
     } else if (type === "restartBtn") {
       x = obj.x;
-      y = obj.y + obj.height;
+      y = obj.y + obj.height *6/5;
     }
     this.playSplashAnimation(x, y);
     this.pointer.setPosition(x, y);
