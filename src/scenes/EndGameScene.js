@@ -50,7 +50,10 @@ class EndGameScene extends BaseScene {
 
   createBG() {
     let thePic = "";
-    if (this.message === "Level " + this.level + " (" + this.difficulty + ") Completed") {
+    if (
+      this.message ===
+      "Level " + this.level + " (" + this.difficulty + ") Completed"
+    ) {
       thePic = "game-won";
     } else {
       thePic = "game-over";
@@ -75,28 +78,32 @@ class EndGameScene extends BaseScene {
     this.checkScene();
   }
   checkScene() {
-
     const bestScore = localStorage.getItem(
       "levelbestscore_" + this.difficulty + "_" + this.level
     );
-
-    if (this.message === "Level Completed") {
-
+    const winMsg =
+      "Level " + this.level + " (" + this.difficulty + ") Completed";
+    const loseMsg =
+      "You ran out of steps of " +
+      "Level " +
+      this.level +
+      " (" +
+      this.difficulty +
+      "). Game over!!";
+    if (
+      this.message === winMsg ||
+      (this.message === loseMsg && bestScore !== null)
+    ) {
       this.createLevelScoreText();
       this.createBestScoreText();
       this.createRestartLvlBtn(0.43);
       this.createToNxtLvlBtn(0.53);
+    } else if (this.message === loseMsg && bestScore === null) {
+      this.createRestartLvlBtn(0.47);
     } else if (this.message === this.tutorialEndMsg) {
       this.createTutorialEndText();
     } else if (this.message === this.tutorialLost) {
       this.createTutorialEndText();
-    } else {
-      if (bestScore !== null) {
-        this.createBestScoreText();
-      }
-      // this.createToAllLvlsBtn(0.42);
-      this.createBackButton();
-      this.createRestartLvlBtn(0.47);
     }
   }
 
