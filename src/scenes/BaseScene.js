@@ -5,7 +5,7 @@ class BaseScene extends Phaser.Scene {
   constructor(key, config) {
     super(key);
     this.config = config;
-    this.screenCenter = [config.width / 2, config.height / 3];
+    this.screenCenter = [config.width / 2, config.height / 2.5];
     this.fontSize = 40;
     this.lineHeight = 80;
     this.defaultTopBtnHeight = innerHeight / 20;
@@ -30,10 +30,10 @@ class BaseScene extends Phaser.Scene {
 
   createMenu(menu, setupMenuEvents) {
     let lastMenuPositionY = 0;
-    menu.forEach((menuItem) => {
+    menu.forEach(menuItem => {
       const menuPosition = [
         this.screenCenter[0],
-        this.screenCenter[1] + lastMenuPositionY,
+        this.screenCenter[1] + lastMenuPositionY
       ];
       menuItem.textGO = this.add
         .text(
@@ -65,7 +65,10 @@ class BaseScene extends Phaser.Scene {
   displaySoundButton() {
     this.bgMusic = this.sound.add("music", { volume: 0.4, loop: true });
 
-    if(this.game.config.bgMusicPlaying === true && this.game.config.gameStarted === false){
+    if (
+      this.game.config.bgMusicPlaying === true &&
+      this.game.config.gameStarted === false
+    ) {
       this.bgMusic.play();
       this.game.config.gameStarted = true;
     }
@@ -133,7 +136,7 @@ class BaseScene extends Phaser.Scene {
   createDevelopersTxt() {
     const xPos = this.config.width / 2;
     const yPos = this.config.height * 0.9;
-
+    // ---------------------------------------------------------
     const footerText = this.add.text(
       0,
       0,
@@ -142,12 +145,12 @@ class BaseScene extends Phaser.Scene {
         fontSize: "15px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
-        align: "center",
+        align: "center"
       }
     );
     footerText.setOrigin(0.5);
-
-    var twitterBtn = this.add.image(-50, 50, "twitterLogo").setInteractive();
+    // ---------------------------------------------------------
+    let twitterBtn = this.add.image(-75, 50, "twitterLogo").setInteractive();
     this.scaleObject(twitterBtn, 45);
 
     twitterBtn.on("pointerup", () => {
@@ -156,8 +159,28 @@ class BaseScene extends Phaser.Scene {
           encodeURIComponent(this.quote)
       );
     });
+    // ---------------------------------------------------------
+    let impressum = this.add
+      .image(twitterBtn.x + 45, 50, "impressum")
+      .setInteractive();
+    this.scaleObject(impressum, 40);
 
-    var facebookBtn = this.add.image(50, 50, "facebookLogo").setInteractive();
+    impressum.on("pointerup", () => {
+      this.scene.start("ImpressumScene");
+    });
+    // ---------------------------------------------------------
+    let githubBtn = this.add
+      .image(impressum.x + 50, 50, "githubLogo")
+      .setInteractive();
+    this.scaleObject(githubBtn, 45);
+
+    githubBtn.on("pointerup", () => {
+      this.openExternalLink("https://github.com/IMI-DollarGame/DollarGame");
+    });
+    // ---------------------------------------------------------
+    let facebookBtn = this.add
+      .image(githubBtn.x + 50, 50, "facebookLogo")
+      .setInteractive();
     this.scaleObject(facebookBtn, 45);
 
     facebookBtn.on("pointerup", () => {
@@ -166,19 +189,13 @@ class BaseScene extends Phaser.Scene {
           encodeURIComponent(this.quote)
       );
     });
-
-    var githubBtn = this.add.image(0, 50, "githubLogo").setInteractive();
-    this.scaleObject(githubBtn, 45);
-
-    githubBtn.on("pointerup", () => {
-      this.openExternalLink("https://github.com/IMI-DollarGame/DollarGame");
-    });
-
+    // ---------------------------------------------------------
     const container = this.add.container(xPos, yPos, [
       twitterBtn,
       facebookBtn,
+      impressum,
       githubBtn,
-      footerText,
+      footerText
     ]);
   }
 
@@ -208,12 +225,50 @@ class BaseScene extends Phaser.Scene {
       this.playButtonSound();
     });
   }
+  creditsBtn() {
+    let copyright = this.add
+      .image(this.config.width * 0.95, this.defaultTopBtnHeight, "copyright")
+      .setInteractive()
+      .setOrigin(1, 0);
+    this.scaleObject(copyright, 30);
+
+    copyright.on("pointerup", () => {
+      this.scene.start("CreditsScene");
+    });
+  }
+  createRightsReservedText() {
+    const xPos = this.config.width / 2;
+    const yPos = this.config.height * 0.95;
+    let gameUrl = this.make
+      .text({
+        x: xPos,
+        y: yPos,
+        text: `© 2021  https://graphlands.herokuapp.com - All Rights Reserved.`,
+        origin: { x: 0.5, y: 0.5 },
+        style: { ...this.fontOptions, fill: "#000000" }
+      })
+      .setInteractive();
+    gameUrl.on("pointerover", () => {
+      gameUrl.setStyle({ fill: "#EEE" });
+    });
+
+    gameUrl.on("pointerout", () => {
+      gameUrl.setStyle({ fill: "#000" });
+    });
+
+    gameUrl.on("pointerup", () => {
+      this.openExternalLink("https://graphlands.herokuapp.com");
+    });
+  }
 
   creatingAllButtonsAndBG() {
     //Creating BG with Islands
     //ORDER MATTERS
     if (this.config.bGWithIslands) {
       this.createBGWithIslands();
+    }
+    if (this.config.hasCredits) {
+      this.creditsBtn();
     }
     if (this.config.canGoBack) {
       this.createBackButton();
@@ -223,6 +278,9 @@ class BaseScene extends Phaser.Scene {
     }
     if (this.config.hasSoundButton) {
       this.displaySoundButton();
+    }
+    if (this.config.allRightsReserved) {
+      this.createRightsReservedText();
     }
   }
 
@@ -303,7 +361,7 @@ class BaseScene extends Phaser.Scene {
     obj.displayHeight = this.game.config.height / hPer;
   }
 
-  buttonEffect(btn){
+  buttonEffect(btn) {
     /*
     btn.on("pointerover", () => {
       btn.setTintFill(0xffffff);
