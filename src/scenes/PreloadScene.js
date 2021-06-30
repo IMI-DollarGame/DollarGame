@@ -65,37 +65,30 @@ class PreloadScene extends Phaser.Scene {
       "node-7",
       "assets/playSceneAssets/islands/floating_island-7_cropped.png"
     );
-    //this.load.image("node-7", "assets/playSceneAssets/floating_island-7.png");
     this.load.image(
       "node-6",
       "assets/playSceneAssets/islands/floating_island-6_cropped.png"
     );
-    // this.load.image("node-6", "assets/playSceneAssets/floating_island-6.png");
     this.load.image(
       "node-5",
       "assets/playSceneAssets/islands/floating_island-5_cropped.png"
     );
-    //this.load.image("node-5", "assets/playSceneAssets/floating_island-5.png");
     this.load.image(
       "node-4",
       "assets/playSceneAssets/islands/floating_island-4_cropped.png"
     );
-    //this.load.image("node-4", "assets/playSceneAssets/floating_island-4.png");
     this.load.image(
       "node-3",
       "assets/playSceneAssets/islands/floating_island-3_cropped.png"
     );
-    //this.load.image("node-3", "assets/playSceneAssets/floating_island-3.png");
     this.load.image(
       "node-2",
       "assets/playSceneAssets/islands/floating_island-2_cropped.png"
     );
-    //this.load.image("node-2", "assets/playSceneAssets/floating_island-2.png");
     this.load.image(
       "node-1",
       "assets/playSceneAssets/islands/floating_island-1_cropped.png"
     );
-    //this.load.image("node-1", "assets/playSceneAssets/floating_island-1.png");
     this.load.image(
       "node0",
       "assets/playSceneAssets/islands/floating_island0.png"
@@ -132,7 +125,6 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("valueBg", "assets/playSceneAssets/valueBg.png");
 
     //bridge image
-    //this.load.image("bridge", "assets/playSceneAssets/bridge/bridge.png");
     this.load.image(
       "rock-1",
       "assets/playSceneAssets/bridge/floating-rock1.png"
@@ -161,6 +153,18 @@ class PreloadScene extends Phaser.Scene {
       "rock-7",
       "assets/playSceneAssets/bridge/floating-rock7.png"
     );
+
+    //logo letters
+    this.load.image("G", "assets/logoAssets/G.png");
+    this.load.image("R", "assets/logoAssets/R.png");
+    this.load.image("A1", "assets/logoAssets/A1.png");
+    this.load.image("P", "assets/logoAssets/P.png");
+    this.load.image("H", "assets/logoAssets/H.png");
+    this.load.image("L", "assets/logoAssets/L.png");
+    this.load.image("A2", "assets/logoAssets/A2.png");
+    this.load.image("N", "assets/logoAssets/N.png");
+    this.load.image("D", "assets/logoAssets/D.png");
+    this.load.image("S", "assets/logoAssets/S.png");
 
     //music
     this.load.audio("music", ["assets/sounds/sb_wanderlust.mp3"]); //source: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100844
@@ -208,7 +212,7 @@ class PreloadScene extends Phaser.Scene {
         message: currentScene.message
       });
     } else {
-      this.scene.start("MenuScene");
+      this.scene.start("FirstScene");
     }
   }
 
