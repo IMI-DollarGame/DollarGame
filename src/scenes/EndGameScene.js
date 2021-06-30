@@ -7,7 +7,7 @@ class EndGameScene extends BaseScene {
       canGoBack: true,
       addDevelopers: true,
       hasSoundButton: true,
-      hasTutorial: true,
+      hasTutorial: true
     });
     this.fontSize = 2.3;
     this.allLvlsCompleted = false;
@@ -43,21 +43,25 @@ class EndGameScene extends BaseScene {
         edges: this.edges,
         nodes: this.nodes,
         maximumStepAllowed: this.maximumStepAllowed,
-        tutorialMode: this.tutorialMode,
+        tutorialMode: this.tutorialMode
       })
     );
   }
 
   createBG() {
     let thePic = "";
-    if (this.message === "Level " + this.level + " (" + this.difficulty + ") Completed") {
+    if (
+      this.message ===
+      "Level " + this.level + " (" + this.difficulty + ") Completed"
+    ) {
       thePic = "game-won";
     } else {
       thePic = "game-over";
     }
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, thePic)
-      .setOrigin(0.5, 0.5);
+      .setOrigin(0.5, 0.65)
+      .setScale(1.9);
   }
 
   createGOTxt() {
@@ -69,25 +73,57 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: this.message,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions,
+      style: this.game.config.defaultFontOptions
     });
     this.checkScene();
   }
+  // checkScene() {
+  //   if (
+  //     this.message ===
+  //     "Level " + this.level + " (" + this.difficulty + ") Completed"
+  //   ) {
+  //     this.createLevelScoreText();
+  //     this.createBestScoreText();
+  //     this.createToAllLvlsBtn(0.37);
+  //     this.createRestartLvlBtn(0.47);
+  //     this.createToNxtLvlBtn(0.57);
+  //   } else if (this.message === this.tutorialEndMsg) {
+  //     this.createTutorialEndText();
+  //   } else if (this.message === this.tutorialLost) {
+  //     this.createTutorialEndText();
+  //   } else {
+  //     this.createBestScoreText();
+  //     this.createToAllLvlsBtn(0.42);
+  //     this.createRestartLvlBtn(0.52);
+  //   }
+  // }
   checkScene() {
-    if (this.message === "Level " + this.level + " (" + this.difficulty + ") Completed") {
+    const bestScore = localStorage.getItem(
+      "levelbestscore_" + this.difficulty + "_" + this.level
+    );
+    const winMsg =
+      "Level " + this.level + " (" + this.difficulty + ") Completed";
+    const loseMsg =
+      "You ran out of steps of " +
+      "Level " +
+      this.level +
+      " (" +
+      this.difficulty +
+      "). Game over!!";
+    if (
+      this.message === winMsg ||
+      (this.message === loseMsg && bestScore !== null)
+    ) {
       this.createLevelScoreText();
       this.createBestScoreText();
-      this.createToAllLvlsBtn(0.37);
+      this.createRestartLvlBtn(0.43);
+      this.createToNxtLvlBtn(0.53);
+    } else if (this.message === loseMsg && bestScore === null) {
       this.createRestartLvlBtn(0.47);
-      this.createToNxtLvlBtn(0.57);
     } else if (this.message === this.tutorialEndMsg) {
       this.createTutorialEndText();
     } else if (this.message === this.tutorialLost) {
       this.createTutorialEndText();
-    } else {
-      this.createBestScoreText();
-      this.createToAllLvlsBtn(0.42);
-      this.createRestartLvlBtn(0.52);
     }
   }
 
@@ -153,7 +189,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Your current score: ${currentScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions,
+      style: this.game.config.defaultFontOptions
     });
   }
   createBestScoreText() {
@@ -167,24 +203,24 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Best score: ${bestScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions,
+      style: this.game.config.defaultFontOptions
     });
   }
   /*-----------CREATING BUTTONS -------------- */
-  createToAllLvlsBtn(per) {
-    const allLvlBtn = this.add
-      .image(innerWidth * per, innerHeight * 0.7, "all-levels-arrow")
-      .setInteractive()
-      .setOrigin(0, 0);
-    this.scaleObject(allLvlBtn, 20);
+  // createToAllLvlsBtn(per) {
+  //   const allLvlBtn = this.add
+  //     .image(innerWidth * per, innerHeight * 0.7, "all-levels-arrow")
+  //     .setInteractive()
+  //     .setOrigin(0, 0);
+  //   this.scaleObject(allLvlBtn, 20);
 
-    allLvlBtn.on("pointerup", () => {
-      this.playButtonSound();
-      this.scene.start("LevelsScene",{difficulty:this.difficulty});
-    });
+  //   allLvlBtn.on("pointerup", () => {
+  //     this.playButtonSound();
+  //     this.scene.start("LevelsScene", { difficulty: this.difficulty });
+  //   });
 
-    this.buttonEffect(allLvlBtn);
-  }
+  //   this.buttonEffect(allLvlBtn);
+  // }
 
   createRestartLvlBtn(per) {
     const restartLvlBtn = this.add
@@ -201,7 +237,7 @@ class EndGameScene extends BaseScene {
         edges: currentScene.edges,
         maximumStepAllowed: currentScene.maximumStepAllowed,
         level: currentScene.level,
-        difficulty: currentScene.difficulty,
+        difficulty: currentScene.difficulty
       });
     });
 
@@ -244,7 +280,7 @@ class EndGameScene extends BaseScene {
         edges: toImportEdges,
         maximumStepAllowed: toImportSteps,
         difficulty: this.difficulty,
-        level: this.level,
+        level: this.level
       });
     }
   }
