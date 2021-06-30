@@ -4,7 +4,7 @@ class EndGameScene extends BaseScene {
   constructor(config) {
     super("EndGameScene", {
       ...config,
-      canGoBack: true,
+
       addDevelopers: true,
       hasSoundButton: true,
       hasTutorial: true
@@ -17,6 +17,7 @@ class EndGameScene extends BaseScene {
 
   create() {
     this.createBG();
+    this.createBackButton();
     super.create();
     this.createGOTxt();
     this.storeScene();
@@ -77,26 +78,19 @@ class EndGameScene extends BaseScene {
     });
     this.checkScene();
   }
-  // checkScene() {
-  //   if (
-  //     this.message ===
-  //     "Level " + this.level + " (" + this.difficulty + ") Completed"
-  //   ) {
-  //     this.createLevelScoreText();
-  //     this.createBestScoreText();
-  //     this.createToAllLvlsBtn(0.37);
-  //     this.createRestartLvlBtn(0.47);
-  //     this.createToNxtLvlBtn(0.57);
-  //   } else if (this.message === this.tutorialEndMsg) {
-  //     this.createTutorialEndText();
-  //   } else if (this.message === this.tutorialLost) {
-  //     this.createTutorialEndText();
-  //   } else {
-  //     this.createBestScoreText();
-  //     this.createToAllLvlsBtn(0.42);
-  //     this.createRestartLvlBtn(0.52);
-  //   }
-  // }
+  createBackButton() {
+    const backButton = this.add
+      .image(innerWidth / 20, innerHeight / 20, "arrow")
+      .setInteractive()
+      .setOrigin(0, 0);
+    this.scaleObject(backButton, 25);
+
+    backButton.on("pointerup", () => {
+      this.playButtonSound();
+      this.scene.stop();
+      this.scene.start("LevelsScene");
+    });
+  }
   checkScene() {
     const bestScore = localStorage.getItem(
       "levelbestscore_" + this.difficulty + "_" + this.level
@@ -110,14 +104,14 @@ class EndGameScene extends BaseScene {
       " (" +
       this.difficulty +
       "). Game over!!";
-    if (
-      this.message === winMsg ||
-      (this.message === loseMsg && bestScore !== null)
-    ) {
+    if (this.message === winMsg) {
       this.createLevelScoreText();
       this.createBestScoreText();
       this.createRestartLvlBtn(0.43);
       this.createToNxtLvlBtn(0.53);
+    } else if (this.message === loseMsg && bestScore !== null) {
+      this.createBestScoreText();
+      this.createRestartLvlBtn(0.47);
     } else if (this.message === loseMsg && bestScore === null) {
       this.createRestartLvlBtn(0.47);
     } else if (this.message === this.tutorialEndMsg) {
