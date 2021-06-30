@@ -6,6 +6,8 @@ import LevelsScene from "./scenes/LevelsScene";
 import PlayScene from "./scenes/PlayScene";
 import EndGameScene from "./scenes/EndGameScene";
 import DifficultyScene from "./scenes/DifficultyScene";
+import ImpressumScene from "./scenes/ImpressumScene";
+import CreditsScene from "./scenes/CreditsScene";
 
 const WIDTH = innerWidth;
 const HEIGHT = innerHeight;
@@ -22,6 +24,8 @@ const Scenes = [
   LevelsScene,
   DifficultyScene,
   TutorialScene,
+  ImpressumScene,
+  CreditsScene,
   PlayScene,
   EndGameScene
 ];

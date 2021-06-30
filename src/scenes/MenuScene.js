@@ -27,7 +27,7 @@ class MenuScene extends BaseScene {
     sessionStorage.setItem(
       "currentScene",
       JSON.stringify({
-        scene: "MenuScene",
+        scene: "MenuScene"
       })
     );
   }
@@ -86,9 +86,15 @@ class MenuScene extends BaseScene {
       "node7"
     );
 
+    this.createLogo();
+  }
+  createLogo() {
     this.testLogo = this.add
-      .image(this.config.width * 0.5, this.config.height * 0.5, "node7")
-      .setScale(1.3);
+      .image(this.config.width * 0.5, this.config.height * 0.37, "node7")
+      .setOrigin(0.5);
+    this.testLogo1 = this.add
+      .image(this.config.width * 0.5, this.config.height * 0.55, "Logo")
+      .setOrigin(0.5);
   }
 
   createBG() {
