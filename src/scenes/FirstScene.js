@@ -7,14 +7,15 @@ class FirstScene extends BaseScene {
     });
     this.fontSize = 2.3;
     this.animationIsOver = false;
-    this.lettersAreInTheMiddle =false;
-    this.letters = [];
-    this.delay = 1000;
+    this.lettersAreInTheMiddle = false;
+    this.logoLetterImages = [this.g, this.r, this.a1, this.p, this.h, this.l, this.a2, this.n, this.d, this.s];
+    this.stopYposArray = [0.46, 0.45, 0.47, 0.46, 0.465, 0.46, 0.455, 0.45, 0.465,0.46];
+    this.delay = 500;
+    this.startYpos = this.config.height * 0.9 + 200;
   }
 
   create() {
     this.createBG();
-    this.navigateToMenuScene();
     this.addLogoLetters();
     super.create();
   }
@@ -25,101 +26,47 @@ class FirstScene extends BaseScene {
       .setOrigin(0.5, 0.5);
   }
 
-  navigateToMenuScene() {
-    const clickText = this.make
-      .text({
-        x: this.config.width / 2,
-        y: this.config.height * 0.8,
-        text: "Click here to start",
-        origin: { x: 0.5, y: 0.5 },
-        style: this.game.config.defaultFontOptions,
-      })
-      .setInteractive();
-    clickText.on("pointerover", () => {
-      clickText.setStyle({ fill: "#ff0" });
-    });
-    clickText.on("pointerout", () => {
-      clickText.setStyle({ fill: "#fff" });
-    });
-    clickText.on("pointerup", () => {
-      this.scene.start("MenuScene");
-    });
+  addLogoLetters() {
+    const letters = ["G", "R", "A1", "P", "H", "L", "A2", "N", "D", "S"];
+    let xPosition = 0.32;
+    for (let i = 0; i < this.logoLetterImages.length; i++) {
+      this.logoLetterImages[i] = this.addImage(xPosition, letters[i]);
+      xPosition += 0.04;
+    }
   }
 
-  addLogoLetters() {
-    this.g = this.add.image(
-      this.config.width * 0.32,
-      this.config.height * 0.9,
-      "G"
+  addImage(posX,letter) {
+   return this.add.image(
+      this.config.width * posX,
+      this.startYpos,
+      letter
     );
-    this.r = this.add.image(
-      this.config.width * 0.36,
-      this.config.height * 0.9,
-      "R"
-    );
-    this.a1 = this.add.image(
-      this.config.width * 0.4,
-      this.config.height * 0.9,
-      "A1"
-    );
-    this.p = this.add.image(
-      this.config.width * 0.44,
-      this.config.height * 0.9,
-      "P"
-    );
-    this.h = this.add.image(
-      this.config.width * 0.48,
-      this.config.height * 0.9,
-      "H"
-    );
-    this.l = this.add.image(
-      this.config.width * 0.52,
-      this.config.height * 0.9,
-      "L"
-    );
-    this.a2 = this.add.image(
-      this.config.width * 0.56,
-      this.config.height * 0.9,
-      "A2"
-    );
-    this.n = this.add.image(
-      this.config.width * 0.6,
-      this.config.height * 0.9,
-      "N"
-    );
-    this.d = this.add.image(
-      this.config.width * 0.64,
-      this.config.height * 0.9,
-      "D"
-    );
-    this.s = this.add.image(
-      this.config.width * 0.68,
-      this.config.height * 0.9,
-      "S"
-    );
+  }
 
-    this.letters.push(this.g, this.r, this.a1, this.p, this.h , this.l , this.a2, this.n, this.d, this.s)
-   //this.letters.push(this.r, this.p, this.a1, this.g, this.h , this.n , this.d, this.l, this.a2, this.s)
+  animateLogo() {
+    let i = 0;
+    for (const val of this.logoLetterImages){
+      this.moveLetter(val, this.config.height * this.stopYposArray[i], 2);
+      i++;
+    } 
   }
 
   moveLetter(letter, maxY, speedY) {
-    if (letter.y > maxY) {
+    if (letter !== this.s && letter.y >= maxY) {
       letter.y -= speedY;
     } else {
-       letter.y = maxY;
-       this.lettersAreInTheMiddle = true;
-    
-     }
-     
+      letter.y = maxY;
+      this.lettersAreInTheMiddle = true;
+    }
   }
 
-  splashAnimation(letter, x, y) {
+  splashAnimation(x, y) {
     const effect = this.add.sprite(x, y, "graySmoke", 0);
-    this.scaleObject(effect, 6);
+    this.scaleObject(effect, 4);
     effect.depth = 100;
     this.anims.create({
       key: "graySmokeTransform",
-      frameRate: 15,
+      frameRate: 20,
       frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 }),
     });
     effect.play("graySmokeTransform");
@@ -127,54 +74,23 @@ class FirstScene extends BaseScene {
       effect.destroy();
       this.animationIsOver = true;
     });
-    //letter.destroy();
-    //this.time.delayedCall(3000,() => { this.scene.start("MenuScene");});
+    this.time.delayedCall(4000,() => { this.scene.start("MenuScene");});
   }
 
-  animateLogo() {
-    this.moveLetter(this.g, this.config.height * 0.46, 2);
-    //
-    //maxX = this.config.width * 0.32,
-
-    this.moveLetter(this.r, this.config.height * 0.45, 2);
-    //maxX = this.config.width * 0.36,
-
-    this.moveLetter(this.a1, this.config.height * 0.47, 2);
-    //maxX = this.config.width * 0.4,
-
-    this.moveLetter(this.p, this.config.height * 0.46, 2);
-    //maxX = this.config.width * 0.44,
-
-    this.moveLetter(this.h, this.config.height * 0.465, 2);
-    //maxX =  this.config.width * 0.48,
-
-    this.moveLetter(this.l, this.config.height * 0.46, 2);
-    //maxX =  this.config.width * 0.52,
-
-    this.moveLetter(this.a2, this.config.height * 0.455, 2);
-    //maxX =  this.config.width * 0.56,
-
-    this.moveLetter(this.n, this.config.height * 0.45, 2);
-    //maxX =   this.config.width * 0.6,
-
-    this.moveLetter(this.d, this.config.height * 0.465, 2);
-    //maxX =   this.config.width * 0.64,
-
-    this.moveLetter(this.s, this.config.height * 0.46, 2);
-    //maxX =  this.config.width * 0.68,
-  }
 
   update() {
     if (!this.lettersAreInTheMiddle) {
       this.animateLogo();
-    }else if (!this.animationIsOver){
-  
-        for (const val of this.letters){
-            this.time.delayedCall(this.delay, () => {
-            this.splashAnimation(val, val.x, val.y)});
-            this.delay += 400;
-        }
-        this.animationIsOver = true;
+    } else if (!this.animationIsOver) {
+      const arr = [3,1,5,8,0,6,2,7,4,9];
+      for (let j =0; j <this.logoLetterImages.length; j++){
+        let num = arr[j];
+        this.time.delayedCall(this.delay, () => {
+        this.splashAnimation(this.logoLetterImages[num].x, this.logoLetterImages[num].y);
+      });
+       this.delay += 300;
+      }
+      this.animationIsOver = true;
     }
   }
 }
