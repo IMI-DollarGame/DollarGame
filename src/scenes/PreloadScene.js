@@ -129,7 +129,8 @@ class PreloadScene extends Phaser.Scene {
       "assets/playSceneAssets/islands/floating_island7.png"
     );
     this.load.image("islandBg", "assets/playSceneAssets/islandBg.png");
-    this.load.image("valueBg", "assets/playSceneAssets/valueBg.png");
+    //this.load.image("valueBg", "assets/playSceneAssets/valueBg.png");
+    this.load.image("nodeValueBg", "assets/playSceneAssets/nodeValueBg.png");
 
     //bridge image
     //this.load.image("bridge", "assets/playSceneAssets/bridge/bridge.png");
