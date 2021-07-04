@@ -177,7 +177,8 @@ class PlayScene extends BaseScene {
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
 
-    let valueBg = this.add.image(innerWidth / 20, -innerHeight / 20, "valueBg");
+    let valueBg = this.add.image(innerWidth / 20, -innerHeight / 20, "nodeValueBg");
+    this.changeNodeValueBgColor(valueBg, value);
     this.scaleObject(valueBg, 40);
 
     let nodeValueText = this.createNodeValueText(value);
@@ -193,6 +194,11 @@ class PlayScene extends BaseScene {
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
   }
+
+changeNodeValueBgColor(bg, value){
+  if(value < 0) bg.setTintFill(0xef5350); // red
+  else bg.setTintFill(0x74b23f); // green
+}
 
   createNodeValueText(value) {
     let nodeValueText = this.add.text(
@@ -509,6 +515,7 @@ class PlayScene extends BaseScene {
   updateValues() {
     this.nodesArray.forEach(element => {
       element.container.getAt(2).setText(element.value);
+      this.changeNodeValueBgColor(element.container.getAt(1), element.value);
     });
   }
 
