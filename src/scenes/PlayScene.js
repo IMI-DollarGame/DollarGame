@@ -189,7 +189,7 @@ class PlayScene extends BaseScene {
       [nodeImage, valueBg, nodeValueText]
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
-    container.setDepth(0);
+    container.setDepth(1);
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
@@ -500,6 +500,7 @@ changeNodeValueBgColor(bg, value){
         }
       }
       let rock = this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+      rock.setDepth = 0;
       rocks.push(rock);
       prevRandom = randomRock;
     }
@@ -883,7 +884,7 @@ changeNodeValueBgColor(bg, value){
       this.nodesArray[0].container.y,
       "pointer"
     );
-    this.pointer.setDepth = 1000;
+    this.pointer.depth = 3;
     this.pointer.visible = false;
     this.scaleObject(this.pointer, 20);
   }
