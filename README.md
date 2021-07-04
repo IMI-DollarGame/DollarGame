@@ -40,18 +40,9 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#credits">Credits</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
@@ -167,4 +158,4 @@ https://www.dafont.com/de/neon-80s.font <br>
 [stars-url]: https://github.com/IMI-DollarGame/Graphlands/stargazers
 [issues-shield]: https://img.shields.io/github/issues/IMI-DollarGame/Graphlands.svg?style=for-the-badge
 [issues-url]: https://github.com/IMI-DollarGame/Graphlands/issues
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: assets/screenshot.png
