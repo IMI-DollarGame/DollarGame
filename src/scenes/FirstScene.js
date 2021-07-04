@@ -7,7 +7,7 @@ class FirstScene extends BaseScene {
     });
     this.fontSize = 2.3;
     this.animationIsOver = false;
-    this.lettersAreInTheMiddle = false;
+    this.lettersAreInTheMiddle = 0;
     this.logoLetterImages = [
       this.g,
       this.r,
@@ -59,13 +59,13 @@ class FirstScene extends BaseScene {
       i++;
     }
   }
+  
 
   moveLetter(letter, maxY, speedY) {
-    if (letter !== this.s && letter.y >= maxY) {
+    if (letter.y >= maxY) {
       letter.y -= speedY;
     } else {
-      letter.y = maxY;
-      this.lettersAreInTheMiddle = true;
+      this.lettersAreInTheMiddle++;
     }
   }
 
@@ -104,7 +104,7 @@ class FirstScene extends BaseScene {
   }
 
   update() {
-    if (!this.lettersAreInTheMiddle) {
+    if (this.lettersAreInTheMiddle<11) {
       this.animateLogo();
     } else if (!this.animationIsOver) {
       const arr = [3, 1, 5, 8, 0, 6, 2, 7, 4, 9];
