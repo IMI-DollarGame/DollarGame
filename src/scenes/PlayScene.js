@@ -821,6 +821,7 @@ changeNodeValueBgColor(bg, value){
     //make nodes clickable
     else if (this.currentTutorialStep == 4) {
       this.setStepTextVisible(false);
+      this.movePointerTo(this.nodesArray[0].container, "node");
     }
     //show steps
     else if (this.currentTutorialStep == 5) {
