@@ -8,6 +8,7 @@ import EndGameScene from "./scenes/EndGameScene";
 import DifficultyScene from "./scenes/DifficultyScene";
 import ImpressumScene from "./scenes/ImpressumScene";
 import CreditsScene from "./scenes/CreditsScene";
+import FirstScene from "./scenes/FirstScene";
 
 const WIDTH = innerWidth;
 const HEIGHT = innerHeight;
@@ -19,6 +20,7 @@ const SHARED_CONFIG = {
 
 const Scenes = [
   PreloadScene,
+  FirstScene,
   MenuScene,
   TutorialScene,
   LevelsScene,
