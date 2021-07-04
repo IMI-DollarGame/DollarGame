@@ -158,4 +158,4 @@ https://www.dafont.com/de/neon-80s.font <br>
 [stars-url]: https://github.com/IMI-DollarGame/Graphlands/stargazers
 [issues-shield]: https://img.shields.io/github/issues/IMI-DollarGame/Graphlands.svg?style=for-the-badge
 [issues-url]: https://github.com/IMI-DollarGame/Graphlands/issues
-[product-screenshot]: assets/screenshot.png
+[product-screenshot]: assets/Screenshot.png
