@@ -11,7 +11,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/IMI-DollarGame/Graphlands">
-    <img src="assets/Logo/logo.png" alt="Logo">
+    <img src="assets/Logo/logogithub.jpg" alt="Logo">
   </a>
 
 <h3 align="center">Graphlands (Project Name: Dollar Gamr)</h3>
@@ -91,7 +91,7 @@ Contributions are what make the open source community such an amazing place to b
 
 
 <!-- CREDITS -->
-## Credtis
+## Credits
 
 During the development of the game, several free images,music and assets were downloaded from various sources.
 All images, music and assets can be used for free and without any restrictions. <br>
