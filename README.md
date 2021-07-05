@@ -17,7 +17,7 @@
 <h3 align="center">Graphlands (Project Name: Dollar Game)</h3>
 
   <p align="center">
-    An awesome Puzzle Game that will train your braincells.
+    An awesome Puzzle Game that will train your brain cells.
     <br />
     <a href="https://graphlands.herokuapp.com/"><strong>Try it out »</strong></a>
     <br />
