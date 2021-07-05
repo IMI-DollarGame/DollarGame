@@ -43,7 +43,9 @@ class FirstScene extends BaseScene {
     const letters = ["G", "R", "A1", "P", "H", "L", "A2", "N", "D", "S"];
     let xPosition = 0.32;
     for (let i = 0; i < this.logoLetterImages.length; i++) {
-      this.logoLetterImages[i] = this.addImage(xPosition, letters[i]).setScale(1.5);
+      this.logoLetterImages[i] = this.addImage(xPosition, letters[i]).setScale(
+        1.5
+      );
       xPosition += 0.04;
     }
   }
@@ -59,7 +61,6 @@ class FirstScene extends BaseScene {
       i++;
     }
   }
-  
 
   moveLetter(letter, maxY, speedY) {
     if (letter.y >= maxY) {
@@ -76,32 +77,33 @@ class FirstScene extends BaseScene {
     this.anims.create({
       key: "graySmokeTransform",
       frameRate: framerate,
-      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 }),
+      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 10 }),
     });
     effect.play("graySmokeTransform");
     effect.once("animationcomplete", () => {
       effect.destroy();
     });
-    
   }
 
   playGraySmokeAnimation(x, y) {
     const effect = this.add.sprite(x, y, "graySmoke", 0);
-    this.scaleObject(effect, 0.5);
-    effect.depth = 100;
+    this.scaleObject(effect, 1);
+    effect.depth = 1000;
     this.anims.create({
       key: "graySmokeTransform",
       frameRate: 12,
-      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 5 })
+      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 }),
     });
     effect.play("graySmokeTransform");
+    this.logoLetterImages.forEach((el) => el.destroy());
     effect.once("animationcomplete", () => {
       this.animationIsOver = true;
+      effect.destroy();
     });
   }
 
   update() {
-    if (this.lettersAreInTheMiddle<11) {
+    if (this.lettersAreInTheMiddle < 11) {
       this.animateLogo();
     } else if (!this.animationIsOver) {
       const arr = [3, 1, 5, 8, 0, 6, 2, 7, 4, 9];
@@ -115,8 +117,8 @@ class FirstScene extends BaseScene {
             15
           );
           if (j == 9) {
-            this.time.delayedCall(1000, () => {
-              for(const val of this.logoLetterImages){
+            this.time.delayedCall(200, () => {
+              for (const val of this.logoLetterImages) {
                 this.playGraySmokeAnimation(val.x, val.y);
               }
             });
@@ -124,8 +126,8 @@ class FirstScene extends BaseScene {
         });
         this.delay += 300;
       }
-    }else if(this.animationIsOver){
-        this.scene.start("MenuScene");
+    } else if (this.animationIsOver) {
+     this.scene.start("MenuScene");
     }
   }
 }
