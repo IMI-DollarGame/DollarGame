@@ -55,7 +55,7 @@ class FirstScene extends BaseScene {
   animateLogo() {
     let i = 0;
     for (const val of this.logoLetterImages) {
-      this.moveLetter(val, this.config.height * this.stopYposArray[i], 2);
+      this.moveLetter(val, this.config.height * this.stopYposArray[i], 3);
       i++;
     }
   }
@@ -81,11 +81,8 @@ class FirstScene extends BaseScene {
     effect.play("graySmokeTransform");
     effect.once("animationcomplete", () => {
       effect.destroy();
-      this.animationIsOver = true;
     });
-    this.time.delayedCall(4500, () => {
-      this.scene.start("MenuScene");
-    });
+    
   }
 
   playGraySmokeAnimation(x, y) {
@@ -95,11 +92,11 @@ class FirstScene extends BaseScene {
     this.anims.create({
       key: "graySmokeTransform",
       frameRate: 12,
-      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 6 })
+      frames: this.anims.generateFrameNames("graySmoke", { start: 1, end: 5 })
     });
     effect.play("graySmokeTransform");
     effect.once("animationcomplete", () => {
-      effect.destroy();
+      this.animationIsOver = true;
     });
   }
 
@@ -127,7 +124,8 @@ class FirstScene extends BaseScene {
         });
         this.delay += 300;
       }
-      this.animationIsOver = true;
+    }else if(this.animationIsOver){
+        this.scene.start("MenuScene");
     }
   }
 }
