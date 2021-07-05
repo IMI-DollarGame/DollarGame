@@ -14,7 +14,7 @@
     <img src="assets/Logo/logo.png" alt="Logo">
   </a>
 
-<h3 align="center">Graphlands (Project Name: Dollar Gamr)</h3>
+<h3 align="center">Graphlands (Project Name: Dollar Game)</h3>
 
   <p align="center">
     An awesome Puzzle Game that will train your braincells.
@@ -72,7 +72,7 @@ In order to start the project you need to run the followong commands in terminal
 - npm run dev  // or npm run build (in order to build)
 
 Note:
-Inside of the src folder we have scenes folder : there you find all Scenes , which we need for the project : e.g. Tutorail scene, Levels scene , etc.
+Inside of the src folder we have scenes folder : there you find all Scenes , which we need for the project : e.g. Tutorial scene, Levels scene , etc.
 
 
 
