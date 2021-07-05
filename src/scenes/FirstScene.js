@@ -43,7 +43,7 @@ class FirstScene extends BaseScene {
     const letters = ["G", "R", "A1", "P", "H", "L", "A2", "N", "D", "S"];
     let xPosition = 0.32;
     for (let i = 0; i < this.logoLetterImages.length; i++) {
-      this.logoLetterImages[i] = this.addImage(xPosition, letters[i]);
+      this.logoLetterImages[i] = this.addImage(xPosition, letters[i]).setScale(1.5);
       xPosition += 0.04;
     }
   }
