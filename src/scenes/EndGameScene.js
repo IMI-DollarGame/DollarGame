@@ -88,7 +88,7 @@ class EndGameScene extends BaseScene {
 
     backButton.on("pointerup", () => {
       this.playButtonSound();
-      this.scene.stop();
+      // this.scene.stop();
       this.scene.start(location);
     });
   }

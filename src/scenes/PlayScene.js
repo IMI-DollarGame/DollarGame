@@ -177,7 +177,11 @@ class PlayScene extends BaseScene {
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
 
-    let valueBg = this.add.image(innerWidth / 20, -innerHeight / 20, "nodeValueBg");
+    let valueBg = this.add.image(
+      innerWidth / 20,
+      -innerHeight / 20,
+      "nodeValueBg"
+    );
     this.changeNodeValueBgColor(valueBg, value);
     this.scaleObject(valueBg, 40);
 
@@ -195,10 +199,11 @@ class PlayScene extends BaseScene {
     this.nodesArray.push(node);
   }
 
-changeNodeValueBgColor(bg, value){
-  if(value < 0) bg.setTintFill(0xef5350); // red
-  else bg.setTintFill(0x74b23f); // green
-}
+  changeNodeValueBgColor(bg, value) {
+    if (value < 0) bg.setTintFill(0xef5350);
+    // red
+    else bg.setTintFill(0x74b23f); // green
+  }
 
   createNodeValueText(value) {
     let nodeValueText = this.add.text(
@@ -535,9 +540,14 @@ changeNodeValueBgColor(bg, value){
       this.tutorialMode &&
       this.nodesArray.every(element => element.isPositiveValue())
     ) {
-      this.scene.start("EndGameScene", {
-        message: "Congratulations! You have finished the tutorial!"
+      this.time.addEvent({
+        delay: 1300,
+        callback: this.tutorialCompleted,
+        callbackScope: this
       });
+      // this.scene.start("EndGameScene", {
+      //   message: "Congratulations! You have finished the tutorial!"
+      // });
     } else if (this.tutorialMode && this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps!!"
@@ -558,14 +568,10 @@ changeNodeValueBgColor(bg, value){
         "level_" + this.difficulty + "_" + this.level,
         "completed"
       );
-      this.scene.start("EndGameScene", {
-        message: "Level " + this.level + " (" + this.difficulty + ") Completed",
-        level: this.level,
-        difficulty: this.difficulty,
-        edges: this.edges,
-        nodes: this.nodes,
-        maximumStepAllowed: this.maximumStepAllowed,
-        tutorialMode: false
+      this.time.addEvent({
+        delay: 1500,
+        callback: this.startWinScene,
+        callbackScope: this
       });
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
@@ -584,6 +590,24 @@ changeNodeValueBgColor(bg, value){
         tutorialMode: false
       });
     }
+  }
+
+  tutorialCompleted() {
+    return this.scene.start("EndGameScene", {
+      message: "Congratulations! You have finished the tutorial!"
+    });
+  }
+
+  startWinScene() {
+    this.scene.start("EndGameScene", {
+      message: "Level " + this.level + " (" + this.difficulty + ") Completed",
+      level: this.level,
+      difficulty: this.difficulty,
+      edges: this.edges,
+      nodes: this.nodes,
+      maximumStepAllowed: this.maximumStepAllowed,
+      tutorialMode: false
+    });
   }
 
   drawGraph() {
@@ -896,14 +920,14 @@ changeNodeValueBgColor(bg, value){
   movePointerTo(obj, type) {
     let x, y;
     if (type === "node") {
-      x = obj.x + obj.width * 1/4;
-      y = obj.y + obj.height /2;
+      x = obj.x + (obj.width * 1) / 4;
+      y = obj.y + obj.height / 2;
     } else if (type === "undoBtn") {
-      x = obj.x + obj.width * 3/5;
+      x = obj.x + (obj.width * 3) / 5;
       y = obj.y + obj.height;
     } else if (type === "restartBtn") {
       x = obj.x;
-      y = obj.y + obj.height *6/5;
+      y = obj.y + (obj.height * 6) / 5;
     }
     this.playSplashAnimation(x, y);
     this.pointer.setPosition(x, y);
