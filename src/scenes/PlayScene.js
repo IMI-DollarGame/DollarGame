@@ -540,14 +540,7 @@ class PlayScene extends BaseScene {
       this.tutorialMode &&
       this.nodesArray.every(element => element.isPositiveValue())
     ) {
-      this.time.addEvent({
-        delay: 1300,
-        callback: this.tutorialCompleted,
-        callbackScope: this
-      });
-      // this.scene.start("EndGameScene", {
-      //   message: "Congratulations! You have finished the tutorial!"
-      // });
+      this.gameWonActions(this.tutorialCompleted);
     } else if (this.tutorialMode && this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps!!"
@@ -568,11 +561,7 @@ class PlayScene extends BaseScene {
         "level_" + this.difficulty + "_" + this.level,
         "completed"
       );
-      this.time.addEvent({
-        delay: 1500,
-        callback: this.startWinScene,
-        callbackScope: this
-      });
+      this.gameWonActions(this.startWinScene);
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
         message:
@@ -590,6 +579,20 @@ class PlayScene extends BaseScene {
         tutorialMode: false
       });
     }
+  }
+
+  gameWonActions(sceneToStart) {
+    this.nodesArray.forEach(node => {
+      this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
+      node.container.disableInteractive();
+    });
+    this.undoBtn.disableInteractive();
+    this.restartBtn.disableInteractive();
+    this.time.addEvent({
+      delay: 1500,
+      callback: sceneToStart,
+      callbackScope: this
+    });
   }
 
   tutorialCompleted() {
