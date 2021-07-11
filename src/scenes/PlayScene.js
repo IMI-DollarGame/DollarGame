@@ -201,7 +201,6 @@ class PlayScene extends BaseScene {
 
   changeNodeValueBgColor(bg, value) {
     if (value < 0) bg.setTintFill(0xef5350);
-    // red
     else bg.setTintFill(0x74b23f); // green
   }
 
@@ -848,34 +847,39 @@ class PlayScene extends BaseScene {
     }
     //make nodes clickable
     else if (this.currentTutorialStep == 4) {
-      this.setStepTextVisible(false);
       this.movePointerTo(this.nodesArray[0].container, "node");
-    }
-    //show steps
-    else if (this.currentTutorialStep == 5) {
-      this.setStepTextVisible(true);
       this.setUndoButtonVisible(false);
-      this.hidePointer();
     }
     //undo btn
-    else if (this.currentTutorialStep == 6) {
+    else if (this.currentTutorialStep == 5) {
       this.setUndoButtonVisible(true);
       this.setRestartButtonVisible(false);
       this.movePointerTo(this.undoBtn, "undoBtn");
     }
     //restart btn
-    else if (this.currentTutorialStep == 7) {
+    else if (this.currentTutorialStep == 6) {
       this.setRestartButtonVisible(true);
-      this.setBestscoreTextVisible(false);
+      this.setStepTextVisible(false);
       this.movePointerTo(this.restartBtn, "restartBtn");
-      this.changeTutorialBtnState(this.nextButton, true);
+    }
+    //show steps
+    else if (this.currentTutorialStep == 7) {
+      this.setStepTextVisible(true);
+      this.movePointerTo(this.stepsText, "stepsText");
     }
     //win condition
     else if (this.currentTutorialStep == 8) {
-      this.setBestscoreTextVisible(true);
+      this.setBestscoreTextVisible(false);
       this.hidePointer();
-      this.changeTutorialBtnState(this.nextButton, false);
+      this.changeTutorialBtnState(this.nextButton, true);
     }
+    //show best score
+    else if (this.currentTutorialStep == 9) {
+      this.setBestscoreTextVisible(true);
+      this.changeTutorialBtnState(this.nextButton, false);
+      this.movePointerTo(this.bestScoreText, "bestScoreText");
+    }
+
   }
 
   changeTutorialBtnState(btn, state) {
@@ -923,14 +927,21 @@ class PlayScene extends BaseScene {
   movePointerTo(obj, type) {
     let x, y;
     if (type === "node") {
-      x = obj.x + (obj.width * 1) / 4;
+      x = obj.x + obj.width * 1 / 4;
       y = obj.y + obj.height / 2;
     } else if (type === "undoBtn") {
-      x = obj.x + (obj.width * 3) / 5;
+      x = obj.x + obj.width * 3 / 5;
       y = obj.y + obj.height;
     } else if (type === "restartBtn") {
       x = obj.x;
-      y = obj.y + (obj.height * 6) / 5;
+      y = obj.y + obj.height * 6 / 5;
+    }
+    else if (type === "stepsText") {
+      x = obj.x + obj.width * 1 / 4;
+      y = obj.y + obj.height * 7/4;
+    } else if (type === "bestScoreText") {
+      x = obj.x + obj.width * 1 / 4;
+      y = obj.y + obj.height * 7/2;
     }
     this.playSplashAnimation(x, y);
     this.pointer.setPosition(x, y);
