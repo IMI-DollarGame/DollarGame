@@ -177,7 +177,11 @@ class PlayScene extends BaseScene {
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
 
-    let valueBg = this.add.image(innerWidth / 20, -innerHeight / 20, "nodeValueBg");
+    let valueBg = this.add.image(
+      innerWidth / 20,
+      -innerHeight / 20,
+      "nodeValueBg"
+    );
     this.changeNodeValueBgColor(valueBg, value);
     this.scaleObject(valueBg, 40);
 
@@ -196,7 +200,7 @@ class PlayScene extends BaseScene {
   }
 
   changeNodeValueBgColor(bg, value) {
-    if (value < 0) bg.setTintFill(0xef5350); // red
+    if (value < 0) bg.setTintFill(0xef5350);
     else bg.setTintFill(0x74b23f); // green
   }
 
@@ -535,9 +539,7 @@ class PlayScene extends BaseScene {
       this.tutorialMode &&
       this.nodesArray.every(element => element.isPositiveValue())
     ) {
-      this.scene.start("EndGameScene", {
-        message: "Congratulations! You have finished the tutorial!"
-      });
+      this.gameWonActions(this.tutorialCompleted);
     } else if (this.tutorialMode && this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps!!"
@@ -558,15 +560,7 @@ class PlayScene extends BaseScene {
         "level_" + this.difficulty + "_" + this.level,
         "completed"
       );
-      this.scene.start("EndGameScene", {
-        message: "Level " + this.level + " (" + this.difficulty + ") Completed",
-        level: this.level,
-        difficulty: this.difficulty,
-        edges: this.edges,
-        nodes: this.nodes,
-        maximumStepAllowed: this.maximumStepAllowed,
-        tutorialMode: false
-      });
+      this.gameWonActions(this.startWinScene);
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
         message:
@@ -584,6 +578,38 @@ class PlayScene extends BaseScene {
         tutorialMode: false
       });
     }
+  }
+
+  gameWonActions(sceneToStart) {
+    this.nodesArray.forEach(node => {
+      this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
+      node.container.disableInteractive();
+    });
+    this.undoBtn.disableInteractive();
+    this.restartBtn.disableInteractive();
+    this.time.addEvent({
+      delay: 1500,
+      callback: sceneToStart,
+      callbackScope: this
+    });
+  }
+
+  tutorialCompleted() {
+    return this.scene.start("EndGameScene", {
+      message: "Congratulations! You have finished the tutorial!"
+    });
+  }
+
+  startWinScene() {
+    this.scene.start("EndGameScene", {
+      message: "Level " + this.level + " (" + this.difficulty + ") Completed",
+      level: this.level,
+      difficulty: this.difficulty,
+      edges: this.edges,
+      nodes: this.nodes,
+      maximumStepAllowed: this.maximumStepAllowed,
+      tutorialMode: false
+    });
   }
 
   drawGraph() {
