@@ -7,7 +7,7 @@ class EndGameScene extends BaseScene {
 
       addDevelopers: true,
       hasSoundButton: true,
-      hasTutorial: true
+      hasTutorial: true,
     });
     this.fontSize = 2.3;
     this.allLvlsCompleted = false;
@@ -43,7 +43,7 @@ class EndGameScene extends BaseScene {
         edges: this.edges,
         nodes: this.nodes,
         maximumStepAllowed: this.maximumStepAllowed,
-        tutorialMode: this.tutorialMode
+        tutorialMode: this.tutorialMode,
       })
     );
   }
@@ -61,8 +61,7 @@ class EndGameScene extends BaseScene {
     }
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, thePic)
-      .setOrigin(0.5, 0.65)
-      .setScale(1.9);
+      .setOrigin(0.5, 0.5);
   }
 
   createGOTxt() {
@@ -74,7 +73,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: this.message,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
     this.checkScene();
   }
@@ -141,7 +140,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: message,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
     this.toMenuTxt();
   }
@@ -160,7 +159,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: message,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
     endClickMsg.setInteractive();
     endClickMsg.on("pointerover", () => {
@@ -188,7 +187,7 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Your current score: ${currentScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
   }
   createBestScoreText() {
@@ -202,10 +201,10 @@ class EndGameScene extends BaseScene {
       y: yPos,
       text: `Best score: ${bestScore}`,
       origin: { x: 0.5, y: 0.5 },
-      style: this.game.config.defaultFontOptions
+      style: this.game.config.defaultFontOptions,
     });
   }
-  
+
   createRestartLvlBtn(per) {
     const restartLvlBtn = this.add
       .image(innerWidth * per, innerHeight * 0.7, "restartLvl")
@@ -221,7 +220,7 @@ class EndGameScene extends BaseScene {
         edges: currentScene.edges,
         maximumStepAllowed: currentScene.maximumStepAllowed,
         level: currentScene.level,
-        difficulty: currentScene.difficulty
+        difficulty: currentScene.difficulty,
       });
     });
 
@@ -264,7 +263,7 @@ class EndGameScene extends BaseScene {
         edges: toImportEdges,
         maximumStepAllowed: toImportSteps,
         difficulty: this.difficulty,
-        level: this.level
+        level: this.level,
       });
     }
   }
