@@ -8,7 +8,7 @@ class MenuScene extends BaseScene {
       addDevelopers: true,
       hasSoundButton: true
     });
-    this.screenCenter = [config.width / 2, config.height / 1.35];
+    this.screenCenter = [config.width / 2, config.height / 1.5];
     this.menu = [
       { scene: "DifficultyScene", text: "Play" },
       { scene: "TutorialScene", text: "Tutorial" }
@@ -112,7 +112,7 @@ class MenuScene extends BaseScene {
       .image(this.config.width * 0.5, this.config.height * 0.30, "node7")
       .setOrigin(0.5);
     this.testLogo1 = this.add
-      .image(this.config.width * 0.5, this.config.height * 0.576, "Logo")
+      .image(this.config.width * 0.5, this.config.height * 0.49, "Logo")
       .setOrigin(0.5)
   }
 
