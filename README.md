@@ -11,7 +11,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/IMI-DollarGame/Graphlands">
-    <img src="assets/Logo/logogithub.jpg" alt="Logo">
+    <img src="assets/Logo/logoreadme.jpg" alt="Logo">
   </a>
 
 <h3 align="center">Graphlands (Project Name: Dollar Game)</h3>

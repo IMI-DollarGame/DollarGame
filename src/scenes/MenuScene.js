@@ -8,7 +8,7 @@ class MenuScene extends BaseScene {
       addDevelopers: true,
       hasSoundButton: true
     });
-
+    this.screenCenter = [config.width / 2, config.height / 1.5];
     this.menu = [
       { scene: "DifficultyScene", text: "Play" },
       { scene: "TutorialScene", text: "Tutorial" }
@@ -21,6 +21,25 @@ class MenuScene extends BaseScene {
     this.createMenu(this.menu, this.setupMenuEvents.bind(this));
     super.create();
     this.storeScene();
+  }
+
+  createMenu(menu, setupMenuEvents) {
+    let lastMenuPositionY = 0;
+    menu.forEach(menuItem => {
+      const menuPosition = [
+        this.screenCenter[0],
+        this.screenCenter[1] + lastMenuPositionY
+      ];
+      menuItem.textGO = this.add
+          .text(
+              ...menuPosition,
+              menuItem.text,
+              this.game.config.defaultFontOptions
+          )
+          .setOrigin(0.5, 1);
+      lastMenuPositionY += this.lineHeight;
+      setupMenuEvents(menuItem);
+    });
   }
 
   storeScene() {
@@ -90,11 +109,11 @@ class MenuScene extends BaseScene {
   }
   createLogo() {
     this.testLogo = this.add
-      .image(this.config.width * 0.5, this.config.height * 0.37, "node7")
+      .image(this.config.width * 0.5, this.config.height * 0.30, "node7")
       .setOrigin(0.5);
     this.testLogo1 = this.add
-      .image(this.config.width * 0.5, this.config.height * 0.55, "Logo")
-      .setOrigin(0.5);
+      .image(this.config.width * 0.5, this.config.height * 0.49, "Logo")
+      .setOrigin(0.5)
   }
 
   createBG() {
