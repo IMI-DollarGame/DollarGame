@@ -52,7 +52,6 @@ const config = {
   soundPlaying: true,
   gameStarted: false,
 
-  //Basically what a user sees on the screen
   scene: initScenes()
 };
 

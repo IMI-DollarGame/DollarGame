@@ -104,7 +104,7 @@ class CreditsScene extends BaseScene {
       }
     });
 
-    // *******************************************************
+    // --------------------------------------------
     this.make.text({
       x: this.config.width * 0.05,
       y: this.config.height * 0.3,
@@ -130,7 +130,7 @@ class CreditsScene extends BaseScene {
     );
     this.createLink("https://mixkit.co/free-sound-effects/", 0.05, 0.44);
 
-    // *******************************************************
+    // --------------------------------------------
     this.make.text({
       x: this.config.width * 0.05,
       y: this.config.height * 0.47,
@@ -152,7 +152,7 @@ class CreditsScene extends BaseScene {
     this.createLink("https://de.wikipedia.org/wiki/Twitter", 0.05, 0.58);
     this.createLink("https://fonts.google.com/icons", 0.05, 0.61);
 
-    // *******************************************************
+    // --------------------------------------------
     this.make.text({
       x: this.config.width * 0.05,
       y: this.config.height * 0.65,
@@ -192,8 +192,7 @@ class CreditsScene extends BaseScene {
     );
     this.createLink("https://unsplash.com/photos/AnGx1n-gtw8", 0.05, 0.85);
 
-    // ************************************************************
-    // this.createLink("",0.05,0.82)
+  // --------------------------------------------
     this.make.text({
       x: this.config.width * 0.5,
       y: this.config.height * 0.3,

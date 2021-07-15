@@ -142,10 +142,6 @@ class PlayScene extends BaseScene {
   addGraphics() {
     this.graphics = this.add.graphics({
       lineStyle: { width: 10, color: 0x8d6e63, alpha: 0.2 }
-      //22a9ea - blue like waterfall
-      //ef5350 - red like roof
-      //8d6e63 - brown light like terra
-      //689f38 - green like tree
     });
   }
 
@@ -898,7 +894,6 @@ class PlayScene extends BaseScene {
         innerHeight / 20,
         "Level " + this.level + " - " + this.difficulty,
         {
-          //fontSize: "22px",
           fontFamily: "Montserrat-Regular",
           fill: "#000",
           align: "center"
