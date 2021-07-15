@@ -8,15 +8,12 @@ class PreloadScene extends Phaser.Scene {
   preload() {
     //buttons
     this.load.image("arrow", "assets/buttons/backArrow.png");
-    this.load.image("help", "assets/buttons/helpButton.png");
     this.load.image("undo", "assets/buttons/undoButton.png");
     this.load.image("restart", "assets/buttons/restartButton.png");
     this.load.image("soundOn", "assets/buttons/soundOn.png");
     this.load.image("soundOff", "assets/buttons/soundOff.png");
     this.load.image("musicOn", "assets/buttons/musicOn.png");
     this.load.image("musicOff", "assets/buttons/musicOff.png");
-    this.load.image("nextLevel", "assets/buttons/rightArrow.png");
-    this.load.image("all-levels-arrow", "assets/buttons/backToLvls.png");
     this.load.image("nextLvlArrow", "assets/buttons/nextLvlArrow.png");
     this.load.image("restartLvl", "assets/buttons/restartCurrentLvl.png");
     this.load.image("previous", "assets/buttons/previousArrow.png");
@@ -121,8 +118,7 @@ class PreloadScene extends Phaser.Scene {
       "node7",
       "assets/playSceneAssets/islands/floating_island7.png"
     );
-    this.load.image("islandBg", "assets/playSceneAssets/islandBg.png");
-    //this.load.image("valueBg", "assets/playSceneAssets/valueBg.png");
+ 
     this.load.image("nodeValueBg", "assets/playSceneAssets/nodeValueBg.png");
 
     //bridge image
