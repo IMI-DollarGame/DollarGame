@@ -22,18 +22,16 @@ class BaseScene extends Phaser.Scene {
   createBGWithIslands() {
     const backGround = this.add
       .image(this.config.width / 2, this.config.height / 2, "blueSky")
-      .setOrigin(0.5, 0.5)
-      .setScale(1.8);
-    backGround.x = backGround.displayWidth * 0.2;
+      .setOrigin(0.5, 0.5);
     this.createFloatingIslands(18);
   }
 
   createMenu(menu, setupMenuEvents) {
     let lastMenuPositionY = 0;
-    menu.forEach(menuItem => {
+    menu.forEach((menuItem) => {
       const menuPosition = [
         this.screenCenter[0],
-        this.screenCenter[1] + lastMenuPositionY
+        this.screenCenter[1] + lastMenuPositionY,
       ];
       menuItem.textGO = this.add
         .text(
@@ -145,7 +143,7 @@ class BaseScene extends Phaser.Scene {
         fontSize: "15px",
         fontFamily: "Montserrat-Regular",
         fill: "#000",
-        align: "center"
+        align: "center",
       }
     );
     footerText.setOrigin(0.5);
@@ -195,7 +193,7 @@ class BaseScene extends Phaser.Scene {
       facebookBtn,
       impressum,
       githubBtn,
-      footerText
+      footerText,
     ]);
   }
 
@@ -245,20 +243,8 @@ class BaseScene extends Phaser.Scene {
         y: yPos,
         text: `© 2021  https://graphlands.herokuapp.com - All Rights Reserved.`,
         origin: { x: 0.5, y: 0.5 },
-        style: { ...this.fontOptions, fill: "#000000" }
+        style: { ...this.fontOptions, fill: "#000000" },
       })
-      .setInteractive();
-    gameUrl.on("pointerover", () => {
-      gameUrl.setStyle({ fill: "#EEE" });
-    });
-
-    gameUrl.on("pointerout", () => {
-      gameUrl.setStyle({ fill: "#000" });
-    });
-
-    gameUrl.on("pointerup", () => {
-      this.openExternalLink("https://graphlands.herokuapp.com");
-    });
   }
 
   creatingAllButtonsAndBG() {
@@ -362,7 +348,6 @@ class BaseScene extends Phaser.Scene {
   }
 
   buttonEffect(btn) {
-
     btn.on("pointerout", () => {
       btn.clearTint();
     });
