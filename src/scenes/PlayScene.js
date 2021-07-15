@@ -177,7 +177,11 @@ class PlayScene extends BaseScene {
     let nodeImage = this.add.image(0, 0, this.getNodeImage(value));
     this.scaleObject(nodeImage, 10);
 
-    let valueBg = this.add.image(innerWidth / 20, -innerHeight / 20, "nodeValueBg");
+    let valueBg = this.add.image(
+      innerWidth / 20,
+      -innerHeight / 20,
+      "nodeValueBg"
+    );
     this.changeNodeValueBgColor(valueBg, value);
     this.scaleObject(valueBg, 40);
 
@@ -189,16 +193,16 @@ class PlayScene extends BaseScene {
       [nodeImage, valueBg, nodeValueText]
     );
     container.setSize(innerWidth / 10, innerHeight / 10);
-    container.setDepth(0);
+    container.setDepth(1);
 
     var node = new Node(id, value, container);
     this.nodesArray.push(node);
   }
 
-changeNodeValueBgColor(bg, value){
-  if(value < 0) bg.setTintFill(0xef5350); // red
-  else bg.setTintFill(0x74b23f); // green
-}
+  changeNodeValueBgColor(bg, value) {
+    if (value < 0) bg.setTintFill(0xef5350);
+    else bg.setTintFill(0x74b23f); // green
+  }
 
   createNodeValueText(value) {
     let nodeValueText = this.add.text(
@@ -500,6 +504,7 @@ changeNodeValueBgColor(bg, value){
         }
       }
       let rock = this.add.image(getXcoord, getYcoord, `rock-${randomRock}`);
+      rock.setDepth = 0;
       rocks.push(rock);
       prevRandom = randomRock;
     }
@@ -534,9 +539,7 @@ changeNodeValueBgColor(bg, value){
       this.tutorialMode &&
       this.nodesArray.every(element => element.isPositiveValue())
     ) {
-      this.scene.start("EndGameScene", {
-        message: "Congratulations! You have finished the tutorial!"
-      });
+      this.gameWonActions(this.tutorialCompleted);
     } else if (this.tutorialMode && this.steps == 0) {
       this.scene.start("EndGameScene", {
         message: "You ran out of steps!!"
@@ -557,15 +560,7 @@ changeNodeValueBgColor(bg, value){
         "level_" + this.difficulty + "_" + this.level,
         "completed"
       );
-      this.scene.start("EndGameScene", {
-        message: "Level " + this.level + " (" + this.difficulty + ") Completed",
-        level: this.level,
-        difficulty: this.difficulty,
-        edges: this.edges,
-        nodes: this.nodes,
-        maximumStepAllowed: this.maximumStepAllowed,
-        tutorialMode: false
-      });
+      this.gameWonActions(this.startWinScene);
     } else if (this.steps == 0) {
       this.scene.start("EndGameScene", {
         message:
@@ -583,6 +578,38 @@ changeNodeValueBgColor(bg, value){
         tutorialMode: false
       });
     }
+  }
+
+  gameWonActions(sceneToStart) {
+    this.nodesArray.forEach(node => {
+      this.soundNode = this.sound.add("soundNode", { volume: 3.0 });
+      node.container.disableInteractive();
+    });
+    this.undoBtn.disableInteractive();
+    this.restartBtn.disableInteractive();
+    this.time.addEvent({
+      delay: 1500,
+      callback: sceneToStart,
+      callbackScope: this
+    });
+  }
+
+  tutorialCompleted() {
+    return this.scene.start("EndGameScene", {
+      message: "Congratulations! You have finished the tutorial!"
+    });
+  }
+
+  startWinScene() {
+    this.scene.start("EndGameScene", {
+      message: "Level " + this.level + " (" + this.difficulty + ") Completed",
+      level: this.level,
+      difficulty: this.difficulty,
+      edges: this.edges,
+      nodes: this.nodes,
+      maximumStepAllowed: this.maximumStepAllowed,
+      tutorialMode: false
+    });
   }
 
   drawGraph() {
@@ -820,33 +847,39 @@ changeNodeValueBgColor(bg, value){
     }
     //make nodes clickable
     else if (this.currentTutorialStep == 4) {
-      this.setStepTextVisible(false);
-    }
-    //show steps
-    else if (this.currentTutorialStep == 5) {
-      this.setStepTextVisible(true);
+      this.movePointerTo(this.nodesArray[0].container, "node");
       this.setUndoButtonVisible(false);
-      this.hidePointer();
     }
     //undo btn
-    else if (this.currentTutorialStep == 6) {
+    else if (this.currentTutorialStep == 5) {
       this.setUndoButtonVisible(true);
       this.setRestartButtonVisible(false);
       this.movePointerTo(this.undoBtn, "undoBtn");
     }
     //restart btn
-    else if (this.currentTutorialStep == 7) {
+    else if (this.currentTutorialStep == 6) {
       this.setRestartButtonVisible(true);
-      this.setBestscoreTextVisible(false);
+      this.setStepTextVisible(false);
       this.movePointerTo(this.restartBtn, "restartBtn");
-      this.changeTutorialBtnState(this.nextButton, true);
+    }
+    //show steps
+    else if (this.currentTutorialStep == 7) {
+      this.setStepTextVisible(true);
+      this.movePointerTo(this.stepsText, "stepsText");
     }
     //win condition
     else if (this.currentTutorialStep == 8) {
-      this.setBestscoreTextVisible(true);
+      this.setBestscoreTextVisible(false);
       this.hidePointer();
-      this.changeTutorialBtnState(this.nextButton, false);
+      this.changeTutorialBtnState(this.nextButton, true);
     }
+    //show best score
+    else if (this.currentTutorialStep == 9) {
+      this.setBestscoreTextVisible(true);
+      this.changeTutorialBtnState(this.nextButton, false);
+      this.movePointerTo(this.bestScoreText, "bestScoreText");
+    }
+
   }
 
   changeTutorialBtnState(btn, state) {
@@ -882,7 +915,7 @@ changeNodeValueBgColor(bg, value){
       this.nodesArray[0].container.y,
       "pointer"
     );
-    this.pointer.setDepth = 1000;
+    this.pointer.depth = 3;
     this.pointer.visible = false;
     this.scaleObject(this.pointer, 20);
   }
@@ -894,14 +927,21 @@ changeNodeValueBgColor(bg, value){
   movePointerTo(obj, type) {
     let x, y;
     if (type === "node") {
-      x = obj.x + obj.width * 1/4;
-      y = obj.y + obj.height /2;
+      x = obj.x + obj.width * 1 / 4;
+      y = obj.y + obj.height / 2;
     } else if (type === "undoBtn") {
-      x = obj.x + obj.width * 3/5;
+      x = obj.x + obj.width * 3 / 5;
       y = obj.y + obj.height;
     } else if (type === "restartBtn") {
       x = obj.x;
-      y = obj.y + obj.height *6/5;
+      y = obj.y + obj.height * 6 / 5;
+    }
+    else if (type === "stepsText") {
+      x = obj.x + obj.width * 1 / 4;
+      y = obj.y + obj.height * 7/4;
+    } else if (type === "bestScoreText") {
+      x = obj.x + obj.width * 1 / 4;
+      y = obj.y + obj.height * 7/2;
     }
     this.playSplashAnimation(x, y);
     this.pointer.setPosition(x, y);

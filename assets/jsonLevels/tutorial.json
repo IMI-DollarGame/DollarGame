@@ -24,10 +24,7 @@
       "text": "Your goal is to reach the livable condition for all the islands. Every connected island will share a wealth point with the island you clicked on. Try to click on an island!"
     },
     {
-      "text": "If the wealth point value of an island is negative, that means they currently need help from the neighbors. Send your help to that island"
-    },
-    {
-      "text": "Try to win the game with as few moves as possible. If your steps run out, you loose."
+      "text": "If the wealth point value of an island is negative, that means they currently need help from the neighbors. Send your help to that island."
     },
     {
       "text": "If you want to revoke a move, click on the undo button to the top right."
@@ -36,7 +33,13 @@
       "text": "And in case you want to reset the level, press the restart button."
     },
     {
-      "text": "If every island has a wealth score of 0 or higher, you win the game. Try it yourself. Good luck!"
+      "text": "Every move is counted as a step. If your steps run out, you loose."
+    },
+    {
+      "text": "If every island has a wealth score of 0 or higher, you win the game."
+    },
+    {
+      "text": "Your best score will be calculated based on the lowest number of step you need to finish the game. Try to win the game with as few moves as possible. Good luck!"
     }
   ]
 }

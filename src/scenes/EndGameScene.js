@@ -17,7 +17,6 @@ class EndGameScene extends BaseScene {
 
   create() {
     this.createBG();
-    this.createBackButton();
     super.create();
     this.createGOTxt();
     this.storeScene();
@@ -53,7 +52,8 @@ class EndGameScene extends BaseScene {
     let thePic = "";
     if (
       this.message ===
-      "Level " + this.level + " (" + this.difficulty + ") Completed"
+        "Level " + this.level + " (" + this.difficulty + ") Completed" ||
+      this.message === this.tutorialEndMsg
     ) {
       thePic = "game-won";
     } else {
@@ -78,7 +78,8 @@ class EndGameScene extends BaseScene {
     });
     this.checkScene();
   }
-  createBackButton() {
+
+  createBackButton(location) {
     const backButton = this.add
       .image(innerWidth / 20, innerHeight / 20, "arrow")
       .setInteractive()
@@ -87,8 +88,8 @@ class EndGameScene extends BaseScene {
 
     backButton.on("pointerup", () => {
       this.playButtonSound();
-      this.scene.stop();
-      this.scene.start("LevelsScene");
+      // this.scene.stop();
+      this.scene.start(location);
     });
   }
   checkScene() {
@@ -109,14 +110,19 @@ class EndGameScene extends BaseScene {
       this.createBestScoreText();
       this.createRestartLvlBtn(0.43);
       this.createToNxtLvlBtn(0.53);
+      this.createBackButton("LevelsScene");
     } else if (this.message === loseMsg && bestScore !== null) {
+      this.createBackButton("LevelsScene");
       this.createBestScoreText();
       this.createRestartLvlBtn(0.47);
     } else if (this.message === loseMsg && bestScore === null) {
+      this.createBackButton("LevelsScene");
       this.createRestartLvlBtn(0.47);
     } else if (this.message === this.tutorialEndMsg) {
+      this.createBackButton("MenuScene");
       this.createTutorialEndText();
     } else if (this.message === this.tutorialLost) {
+      this.createBackButton("MenuScene");
       this.createTutorialEndText();
     }
   }
